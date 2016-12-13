@@ -25,6 +25,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     private static final int RC_SIGN_IN = 0;
@@ -32,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
+    private TextView feed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
+        findViewById(R.id.put).setOnClickListener(this);
+
         mStatusTextView = (TextView) findViewById(R.id.txt);
+        feed = (TextView) findViewById(R.id.feed);
 
 
 
@@ -54,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("FireBase", "onAuthStateChanged:signed_in:" + user.getUid());
                     updateUI(true);
                     mStatusTextView.setText(user.getDisplayName());
+
+
                 } else {
                     // User is signed out
                     Log.d("FireBase", "onAuthStateChanged:signed_out");
@@ -98,6 +111,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void getFeed() {
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d("Fira base event update", "Value is: " + value);
+                feed.setText(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Fire base event update", "Failed to read value.", error.toException());
+            }
+        });
+
+
+    }
+
 
     @Override
     public void onStart() {
@@ -123,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.sign_out_and_disconnect:
                 signOut();
+                break;
+            case R.id.put:
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("message");
+                myRef.setValue("Feed " + new Random().nextInt(999));
                 break;
         }
     }
@@ -165,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            getFeed();
         } else {
             mStatusTextView.setText("signed_out");
 
@@ -210,6 +258,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onResult(Status status) {
                         updateUI(false);
+                        if (mAuthListener != null) {
+                            mAuth.signOut();
+                        }
                     }
                 });
     }
