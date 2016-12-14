@@ -1,4 +1,4 @@
-package projetoum.equipe.iteach;
+package projetoum.equipe.iteach.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
+
+import projetoum.equipe.iteach.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     private static final int RC_SIGN_IN = 0;
