@@ -16,6 +16,7 @@ public class User {
     public Double lat;
     public Double lon;
 
+
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
