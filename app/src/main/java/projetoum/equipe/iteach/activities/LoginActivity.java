@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //    private TextView feed;
     private DAO dao;
     private ICallback<Boolean> updateUI;
+    private LoginActivity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         updateUI = new UpdateUI();
         dao = DAO.getInstace(updateUI, this);
+        mContext = this;
 
         findViewById(R.id.bt_login_google).setOnClickListener(this);
 //        findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
@@ -146,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             //updateUI.execute(true);
         } else {
+            Toast.makeText(this, "login fail", Toast.LENGTH_SHORT);
             // Signed out, show unauthenticated UI.
             //updateUI.execute(false);
         }
@@ -156,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "fail", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "connection failed", Toast.LENGTH_SHORT);
     }
 
 
@@ -183,9 +186,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             if (param) {
-                findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                findViewById(R.id.bt_login_google).setVisibility(View.GONE);
 //                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-//                Toast.makeText(this, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT);
 //                mStatusTextView.setText(dao.getFireBaseUser().getDisplayName());
 //                dao.getFeed(new ICallback<String>() {
 //                    @Override
@@ -194,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    }
 //                });
             } else {
-//                Toast.makeText(this, "signed_out", Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
 //                mStatusTextView.setText("signed_out");
 
 //                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
