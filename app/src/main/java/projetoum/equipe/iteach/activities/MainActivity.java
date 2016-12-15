@@ -1,4 +1,4 @@
-package projetoum.equipe.iteach;
+package projetoum.equipe.iteach.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -45,14 +45,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
 
+import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.utils.DAO;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
     private static final int RC_SIGN_IN = 0;
-    private static final int SIGN_IN_FACEBOOK = 1;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private TextView feed;
+    private DAO dao;
+    private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private LoginButton loginButton;
 
@@ -62,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
-
-        mAuth = FirebaseAuth.getInstance();
+        updateUI = new UpdateUI();
+        dao = DAO.getInstace(updateUI, this);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
@@ -71,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
         feed = (TextView) findViewById(R.id.feed);
-
 
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -96,45 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("FireBase", "onAuthStateChanged:signed_in:" + user.getUid());
-                    updateUI(true);
-                    mStatusTextView.setText(user.getDisplayName());
-
-
-                } else {
-                    // User is signed out
-                    Log.d("FireBase", "onAuthStateChanged:signed_out");
-                    updateUI(false);
-                }
-                // ...
-            }
-        };
-
-
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
-        }
-
-
-
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -153,42 +117,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void getFeed() {
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d("Fira base event update", "Value is: " + value);
-                feed.setText(value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("Fire base event update", "Failed to read value.", error.toException());
-            }
-        });
-
-
-    }
-
-
 
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        dao.addAuthStateListener();
     }
 
 
@@ -196,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (dao.getAuthListener() != null) {
+            dao.removeAuthStateListener();
         }
     }
 
@@ -211,9 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 signOut();
                 break;
             case R.id.put:
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("message");
-                myRef.setValue("Feed " + new Random().nextInt(999));
+                dao.fillFeed();
+
                 break;
         }
     }
@@ -237,10 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
-
-
 
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -249,52 +179,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             mStatusTextView.setText(acct.getDisplayName());
-            firebaseAuthWithGoogle(acct);
-            updateUI(true);
+            dao.firebaseAuthWithGoogle(acct);
+            //updateUI.execute(true);
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
+            //updateUI.execute(false);
         }
     }
 
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("FaceFirebase", "handleFacebookAccessToken:" + token);
 
-    private void updateUI(boolean signedIn) {
-        if (signedIn) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.login_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-            getFeed();
-        } else {
-            mStatusTextView.setText("signed_out");
-
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.login_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-        }
-    }
-
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("Firebase Login", "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("Firebase Login", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("Firebase Login", "signInWithCredential", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // ...
-                    }
-                });
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        dao.firebaseAuthWithFacebook(credential);
     }
 
 
@@ -309,10 +206,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        updateUI(false);
-                        if (mAuthListener != null) {
-                            mAuth.signOut();
+                        updateUI.execute(false);
+                        if (dao.getAuthListener() != null) {
+                            dao.signOut();
                             disconnectFromFacebook();
+                           // dao.removeAuthStateListener();
+
                         }
                     }
                 });
@@ -336,28 +235,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("FaceFirebase", "handleFacebookAccessToken:" + token);
+    public class UpdateUI implements ICallback<Boolean>{
 
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        @Override
+        public void execute(Boolean param) {
+
+
+            if (param) {
+                findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+                findViewById(R.id.login_button).setVisibility(View.GONE);
+                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+                mStatusTextView.setText(dao.getFireBaseUser().getDisplayName());
+                dao.getFeed(new ICallback<String>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("FaceFirebase", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("FaceFirebase", "signInWithCredential", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
+                    public void execute(String param) {
+                        feed.setText(param);
                     }
                 });
-    }
+            } else {
+                mStatusTextView.setText("signed_out");
 
+                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.login_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            }
+        }
+    };
 }
