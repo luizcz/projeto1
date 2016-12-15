@@ -30,7 +30,8 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/textView"
         android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
 
     <Button
         android:text="Google"
@@ -40,23 +41,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:textAllCaps="false"
-        android:id="@+id/button2"
+        android:id="@+id/bt_login_google"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:layout_width="300dp" />
 
     <Button
         android:text="Facebook"
         android:layout_height="wrap_content"
         android:background="@drawable/bt_transp_with_border"
-        android:layout_below="@+id/button2"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignStart="@+id/button2"
+        android:layout_below="@+id/bt_login_google"
+        android:layout_alignLeft="@+id/bt_login_google"
+        android:layout_alignStart="@+id/bt_login_google"
         android:layout_marginTop="10dp"
         android:textAllCaps="false"
-        android:id="@+id/button3"
+        android:id="@+id/bt_login_face"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:layout_width="300dp" />
 
     <TextView
@@ -67,7 +68,7 @@
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textAlignment="center"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="111dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
