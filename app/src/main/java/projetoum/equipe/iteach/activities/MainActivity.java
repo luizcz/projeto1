@@ -143,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.sign_out_and_disconnect:
                 signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 break;
             case R.id.put:
                 dao.fillFeed();

@@ -53,8 +53,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
-//    private TextView mStatusTextView;
-//    private TextView feed;
     private DAO dao;
     private ICallback<Boolean> updateUI;
     private LoginActivity mContext;
@@ -73,11 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         findViewById(R.id.bt_login_google).setOnClickListener(this);
         findViewById(R.id.bt_login_face).setOnClickListener(this);
-//        findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
-//        findViewById(R.id.put).setOnClickListener(this);
 
-//        mStatusTextView = (TextView) findViewById(R.id.txt);
-//        feed = (TextView) findViewById(R.id.feed);
 
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -87,6 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(LoginResult loginResult) {
                 Log.d("Facebook", "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                startActivity(new Intent(mContext, MainActivity.class));
+                finish();
             }
 
             @Override
@@ -119,13 +115,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
         dao.addAuthStateListener();
     }
-
 
 
     @Override
@@ -144,13 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.bt_login_face:
                 loginButton.performClick();
-                break;
-//            case R.id.sign_out_and_disconnect:
-//                signOut();
-//                break;
-            case R.id.put:
-                dao.fillFeed();
-
                 break;
         }
     }
@@ -179,16 +166,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT);
-//            mStatusTextView.setText(acct.getDisplayName());
+            Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
             dao.firebaseAuthWithGoogle(acct);
             startActivity(new Intent(this, MainActivity.class));
+            finish();
 
-            //updateUI.execute(true);
         } else {
-            Toast.makeText(this, "login fail", Toast.LENGTH_SHORT);
-            // Signed out, show unauthenticated UI.
-            //updateUI.execute(false);
+            Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -213,35 +197,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         dao.firebaseAuthWithFacebook(credential);
-        startActivity(new Intent(this, MainActivity.class));
     }
 
 
-    public void disconnectFromFacebook() {
-
-        if (AccessToken.getCurrentAccessToken() == null) {
-            return; // already logged out
-        }
-
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                .Callback() {
-            @Override
-            public void onCompleted(GraphResponse graphResponse) {
-
-                LoginManager.getInstance().logOut();
-
-            }
-        }).executeAsync();
-    }
+//    public void disconnectFromFacebook() {
+//
+//        if (AccessToken.getCurrentAccessToken() == null) {
+//            return; // already logged out
+//        }
+//
+//        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+//                .Callback() {
+//            @Override
+//            public void onCompleted(GraphResponse graphResponse) {
+//
+//                LoginManager.getInstance().logOut();
+//
+//            }
+//        }).executeAsync();
+//    }
 
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "connection failed", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "connection failed", Toast.LENGTH_SHORT).show();
     }
-
-
-
 
 
     public class UpdateUI implements ICallback<Boolean>{
@@ -251,10 +231,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             if (param) {
-                findViewById(R.id.bt_login_google).setVisibility(View.GONE);
+//                findViewById(R.id.bt_login_google).setVisibility(View.GONE);
 //                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-                Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT);
-//                mStatusTextView.setText(dao.getFireBaseUser().getDisplayName());
+                Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+
 //                dao.getFeed(new ICallback<String>() {
 //                    @Override
 //                    public void execute(String param) {
@@ -262,12 +242,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    }
 //                });
             } else {
-                Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-//                mStatusTextView.setText("signed_out");
+                Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
 
 //                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 //                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
-    };
+    }
 }
