@@ -106,6 +106,27 @@ public class DAO implements IRemote {
                 });
     }
 
+    public void firebaseAuthWithFacebook(AuthCredential credential){
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("FaceFirebase", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("FaceFirebase", "signInWithCredential", task.getException());
+                            Toast.makeText((Activity) ctx, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
     public FirebaseUser getFireBaseUser() {
 
 
