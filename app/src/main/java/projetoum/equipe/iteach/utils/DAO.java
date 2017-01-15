@@ -144,6 +144,7 @@ public class DAO implements IRemote {
 //        }
         return user;
 
+
     }
 
 
@@ -187,23 +188,78 @@ public class DAO implements IRemote {
 
 
     @Override
-    public void createUser(User user, ICallback callback) {
+    public void createUser(User user, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(user.getUserId());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.setValue(user);
 
     }
 
     @Override
-    public void deleteUser(User user, ICallback callback) {
+    public void deleteUser(User user, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(user.getUserId());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+        myRef.removeValue();
 
     }
 
     @Override
-    public void updateUser(User user, ICallback callback) {
+    public void updateUser(User user, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(user.getUserId());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+        myRef.setValue(user);
     }
 
     @Override
-    public void deleteUser(String userID, ICallback callback) {
+    public void deleteUser(String userID, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(userID);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+        myRef.removeValue();
     }
 
     @Override

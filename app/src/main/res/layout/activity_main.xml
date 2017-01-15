@@ -56,11 +56,20 @@
         android:layout_marginBottom="30dp" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/put_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Put User"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/put"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Put"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toRightOf="@+id/sign_in_button"
+        android:layout_toEndOf="@+id/sign_in_button" />
 
 </RelativeLayout>

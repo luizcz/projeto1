@@ -47,9 +47,11 @@ import java.util.Random;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
         findViewById(R.id.put).setOnClickListener(this);
+        findViewById(R.id.put_user).setOnClickListener(this);
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
         feed = (TextView) findViewById(R.id.feed);
@@ -114,9 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
 
 
-
     }
-
 
 
     @Override
@@ -124,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         dao.addAuthStateListener();
     }
-
 
 
     @Override
@@ -148,6 +148,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.put:
                 dao.fillFeed();
+            case R.id.put_user:
+                dao.createUser(new User("idmuitolouco", "joao", "joao@email.com", -7.215217, -35.909665), new ICallback<Integer>() {
+                    @Override
+                    public void execute(Integer param) {
+                        if (param == Constants.REQUEST_OK)
+                            Toast.makeText(getApplicationContext(), "Usuario criado", Toast.LENGTH_SHORT).show();
+                        if (param == Constants.REQUEST_BAD)
+                            Toast.makeText(getApplicationContext(), "Erro na criaçao do usuario", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 break;
         }
@@ -212,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (dao.getAuthListener() != null) {
                             dao.signOut();
                             disconnectFromFacebook();
-                           // dao.removeAuthStateListener();
+                            // dao.removeAuthStateListener();
 
                         }
                     }
@@ -237,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public class UpdateUI implements ICallback<Boolean>{
+    public class UpdateUI implements ICallback<Boolean> {
 
         @Override
         public void execute(Boolean param) {
@@ -262,5 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
-    };
+    }
+
+    ;
 }
