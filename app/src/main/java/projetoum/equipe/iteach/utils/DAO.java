@@ -311,27 +311,129 @@ public class DAO implements IRemote {
     }
 
     @Override
-    public void createClass(ClassObject classObject, ICallback callback) {
+    public void createClass(ClassObject classObject, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
+
+        DatabaseReference freeRef = myRef.push();
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.child(freeRef.getKey()).setValue(classObject);
+        classObject.setId(freeRef.getKey());
+    }
+
+    @Override
+    public void deleteClass(ClassObject classObject, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
+
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.removeValue();
 
     }
 
     @Override
-    public void deleteClass(ClassObject classObject, ICallback callback) {
+    public void updateClass(ClassObject classObject, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
 
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.setValue(classObject);
     }
 
     @Override
-    public void updateClass(ClassObject classObject, ICallback callback) {
+    public void deleteClass(String classID, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classID);
 
-    }
 
-    @Override
-    public void deleteClass(String classID, ICallback callback) {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.removeValue();
 
     }
 
     @Override
     public List<ClassObject> findClassByName(String name) {
+        /*FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
+        Query q = myRef.orderByChild("name");
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                System.out.println(dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+*/
         return null;
     }
 

@@ -11,20 +11,25 @@ import java.util.Map;
 
 public class ClassObject {
 
-    public String teacherId;
-    public List<String> studentsId;
-    public Long time;
-    public Double value;
-    public String address;
-    public Double lat;
-    public Double lon;
-    public Double slots;
-    public List<String> tags;
+    private String teacherId;
+    private List<String> studentsId;
+    private Long time;
+    private Double value;
+    private String address;
+    private Double lat;
+    private Double lon;
+    private Double slots;
+    private List<String> tags;
+    private String name;
+    private String id;
 
-    public ClassObject() {
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    public ClassObject(String name) {
+       this.name = name;
     }
 
+    public ClassObject(){
+
+    }
     public ClassObject(String teacherId, List<String> studentsId, Long time,
                  Double value, String address, Double lat, Double lon,
                  Double slots, List<String> tags) {
@@ -125,6 +130,22 @@ public class ClassObject {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
