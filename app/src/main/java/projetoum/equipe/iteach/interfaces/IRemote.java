@@ -29,7 +29,8 @@ public interface IRemote {
     public void updateClass(ClassObject classObject, ICallback callback);
     public void deleteClass(String classID, ICallback callback);
 
-    public List<ClassObject> findClassByName(String name);
+    public void findClassByName(String name, ICallback callback);
+    //public List<ClassObject> findClassByName(String name);
     public List<ClassObject> findClassByTag(String tag);
     public List<ClassObject> findClassByLocation(Location loc);
     public List<ClassObject> findClassByTeacher(String userID);

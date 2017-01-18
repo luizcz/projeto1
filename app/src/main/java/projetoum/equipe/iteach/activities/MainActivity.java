@@ -158,13 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.put:
                 dao.fillFeed();
             case R.id.put_user:
-                dao.createClass(new ClassObject("Aula de ingles I"), new ICallback<Integer>() {
+                dao.findClassByName("Aula de ingles I", new ICallback<String>() {
                     @Override
-                    public void execute(Integer param) {
-                        if (param == Constants.REQUEST_OK)
-                            Toast.makeText(getApplicationContext(), "Usuario criado", Toast.LENGTH_SHORT).show();
-                        if (param == Constants.REQUEST_BAD)
-                            Toast.makeText(getApplicationContext(), "Erro na criaçao do usuario", Toast.LENGTH_SHORT).show();
+                    public void execute(String param) {
                     }
                 });
 

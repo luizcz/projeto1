@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -403,14 +404,16 @@ public class DAO implements IRemote {
     }
 
     @Override
-    public List<ClassObject> findClassByName(String name) {
-        /*FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public void findClassByName(String name, final ICallback callback) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
         Query q = myRef.orderByChild("name");
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 System.out.println(dataSnapshot.getValue());
+                System.out.println(((HashMap)dataSnapshot.getValue()).get("name"));
+                callback.execute("nadanadanadna");
             }
 
             @Override
@@ -433,8 +436,7 @@ public class DAO implements IRemote {
 
             }
         });
-*/
-        return null;
+
     }
 
     @Override
