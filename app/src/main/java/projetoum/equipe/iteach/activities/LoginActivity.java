@@ -242,6 +242,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        feed.setText(param);
 //                    }
 //                });
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             } else {
                 Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
 

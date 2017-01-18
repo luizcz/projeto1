@@ -157,16 +157,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.put:
                 dao.fillFeed();
             case R.id.put_user:
-                dao.createUser(new User("idmuitolouco", "joao", "joao@email.com", -7.215217, -35.909665), new ICallback<Integer>() {
-                    @Override
-                    public void execute(Integer param) {
-                        if (param == Constants.REQUEST_OK)
-                            Toast.makeText(getApplicationContext(), "Usuario criado", Toast.LENGTH_SHORT).show();
-                        if (param == Constants.REQUEST_BAD)
-                            Toast.makeText(getApplicationContext(), "Erro na criaçao do usuario", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 break;
         }
     }

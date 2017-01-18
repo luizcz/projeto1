@@ -7,6 +7,8 @@ package projetoum.equipe.iteach.utils;
 public class Constants {
     public static int REQUEST_OK = 0;
     public static int REQUEST_BAD = 1;
+    public static String FIREBASE_LOCATION_USER = "user";
+    public static String FIREBASE_LOCATION_CLASS = "class";
 
 
 }
