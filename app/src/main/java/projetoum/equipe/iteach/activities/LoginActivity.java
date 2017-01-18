@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         updateUI = new UpdateUI();
@@ -158,6 +158,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
