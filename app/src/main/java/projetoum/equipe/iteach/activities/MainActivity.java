@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private LoginButton loginButton;
-    private MenuItem menuSearch;
-    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
         findViewById(R.id.put).setOnClickListener(this);
         findViewById(R.id.put_user).setOnClickListener(this);
+        findViewById(R.id.search_button).setOnClickListener(this);
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
         feed = (TextView) findViewById(R.id.feed);
@@ -165,62 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 break;
+            case R.id.search_button:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
-        menuSearch = menu.findItem(R.id.search);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String string) {
-                //search_input = string;
-                //httpHandler.getBooks(20, selected_filter, string);
-                //new TimeOut().execute("1000");
-                searchView.clearFocus();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String string) {
-                if (!string.equals("")){
-                    //progressBar.setVisibility(View.VISIBLE);
-                }
-                //search_input = string;
-                //httpHandler.getBooks(20, selected_filter, string);
-                //new TimeOut().execute("1000");
-                return true;
-            }
-        });
-
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search), new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                //list_filters.setVisibility(View.INVISIBLE);
-                return true;  // Return true to collapse action view
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-        });
-        return true;
-    }
 
 
     private void signIn() {
