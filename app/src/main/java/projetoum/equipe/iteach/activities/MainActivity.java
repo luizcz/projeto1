@@ -57,6 +57,7 @@ import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.activities.SearchActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 0;

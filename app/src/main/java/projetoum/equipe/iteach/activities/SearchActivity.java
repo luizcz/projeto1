@@ -5,39 +5,64 @@ import android.content.Context;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
-import android.widget.ListView;
-
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
-import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.adapter.UserAdapter;
+import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.DAO;
 
 public class SearchActivity extends AppCompatActivity {
 
     private MenuItem menuSearch;
     private SearchView searchView;
     private ClassAdapter searchAdapter;
+    private String search_input;
+    private RecyclerView mRecyclerView;
+    private UserAdapter adapter;
+    private DAO dao;
+    private List<User> list;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        searchAdapter = new ClassAdapter(new ArrayList<ClassObject>(), this);
-        ListView searchListView = (ListView) findViewById(R.id.search_list);
-        searchListView.setAdapter(searchAdapter);
+
+        dao = DAO.getInstace(this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        adapter = new UserAdapter(this);
+        mRecyclerView.setAdapter(adapter);
+
+        search_input = "";
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -55,49 +80,45 @@ public class SearchActivity extends AppCompatActivity {
                 (SearchView) menu.findItem(R.id.search).getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+//            @Override
+//            public boolean onQueryTextSubmit(String string) {
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("class");
+//                ref.orderByChild("name_lower").startAt(string.toLowerCase()).addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        Log.e("Qualquercoisa", "qualquercoisa");
+//                        ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+//                        searchAdapter.addClass(classObject);
+//                    }
+//
+//                    //                new TimeOut().execute("1000");
+//                    updateList(dao.getUsuarios(), input);
+//
+//                    searchView.clearFocus();
+//                    return true;
+//                }
+
             @Override
-            public boolean onQueryTextSubmit(String string) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("class");
-                ref.orderByChild("name_lower").startAt(string.toLowerCase()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.e("Qualquercoisa", "qualquercoisa");
-                        ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                        searchAdapter.addClass(classObject);
-                    }
+            public boolean onQueryTextSubmit(String input) {
+                search_input = input;
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                new TimeOut().execute("1000");
+                Log.i("dao", dao.getUsuarios().toString());
+                updateList(dao.getUsuarios(), input);
 
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
                 searchView.clearFocus();
                 return true;
             }
 
+
             @Override
-            public boolean onQueryTextChange(String string) {
-                if (!string.equals("")) {
-                    //progressBar.setVisibility(View.VISIBLE);
+            public boolean onQueryTextChange(String input) {
+                search_input = input;
+                if (!input.equals("")) {
+                    updateList(dao.getUsuarios(), input);
                 }
-                //search_input = string;
-                //httpHandler.getBooks(20, selected_filter, string);
-                //new TimeOut().execute("1000");
+
                 return true;
             }
         });
@@ -108,7 +129,6 @@ public class SearchActivity extends AppCompatActivity {
         MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search), new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                //list_filters.setVisibility(View.INVISIBLE);
                 return true;  // Return true to collapse action view
             }
 
@@ -119,4 +139,75 @@ public class SearchActivity extends AppCompatActivity {
         });
         return true;
     }
+
+    private List<User> getUsers(List<User> usuarios, String input){
+        List<User> users_filtered = new ArrayList<>();
+
+        List<User> copia = new ArrayList<>();
+        copia.addAll(dao.getUsuarios());
+//        Log.i("copia",copia.toString());
+
+
+
+        for (int i=0; i<copia.size();i++) {
+            if (copia.get(i).getName().contains(input)){
+                users_filtered.add(copia.get(i));
+                adapter.add(copia.get(i));
+            } else {
+                adapter.remove(copia.get(i));
+            }
+        }
+        return users_filtered;
+    }
+
+    public void updateList(List<User> result, String string) {
+        //((TextView) findViewById(R.id.sample_output)).setText("");
+        List<User> copia = new ArrayList<User>();
+        copia.addAll(dao.getUsuarios());
+
+//        Log.i("add", onlyAdd.toString());
+        adapter.removeAll();
+        Log.i("adapter",adapter.getUsuarios().toString());
+
+        for (int i=0; i < copia.size(); i++){
+            Log.i("i",String.valueOf(i));
+            if (copia.get(i).getName().toLowerCase().contains(string)){
+                adapter.add(copia.get(i));
+            }
+        }
+//        for (User item : onlyRemove) {
+//            if (onlyAdd.contains(item)) onlyAdd.remove(item);
+//            else
+//                adapter.remove(item);
+//        }
+//        for (User item : onlyAdd) {
+//            adapter.add(adapter.getItemCount(), item);
+//        }
+    }
+
+//    private class TimeOut extends AsyncTask<String, Void, String> {
+//        @Override
+//        protected String doInBackground(String... time) {
+//            int t = Integer.parseInt(time[0]);
+//            while (t > 0) t--;
+//            return "";
+//        }
+//
+//        // onPostExecute displays the results of the AsyncTask.
+//        @Override
+//        protected void onPostExecute(String result) {
+////            Log.i("httpReady", String.valueOf(httpHandler.isReady()));
+////            if (httpHandler.isReady()) {
+//            list = getUsers(dao.getUsuarios(), result);
+//
+////                handleQuery(search_input);
+////                progressBar.setVisibility(View.INVISIBLE);
+////            }
+////            else
+////                new TimeOut().execute("1000");
+////        }
+//        }
+//
+//
+//    }
 }

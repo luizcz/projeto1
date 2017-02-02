@@ -162,18 +162,18 @@ public class User {
 
     }
 
-    @Override
-    public int hashCode() {
-        int result = getUserId().hashCode();
-        result = 31 * result + getName().hashCode();
-        result = 31 * result + getEmail().hashCode();
-        result = 31 * result + (getLat() != null ? getLat().hashCode() : 0);
-        result = 31 * result + (getLon() != null ? getLon().hashCode() : 0);
-        result = 31 * result + (getFavoriteClasses() != null ? getFavoriteClasses().hashCode() : 0);
-        result = 31 * result + (getEnrolledClasses() != null ? getEnrolledClasses().hashCode() : 0);
-        result = 31 * result + (getBio() != null ? getBio().hashCode() : 0);
-        result = 31 * result + getCreationDate().hashCode();
-        result = 31 * result + (getAccountId() != null ? getAccountId().hashCode() : 0);
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = getUserId().hashCode();
+//        result = 31 * result + getName().hashCode();
+//        result = 31 * result + getEmail().hashCode();
+//        result = 31 * result + (getLat() != null ? getLat().hashCode() : 0);
+//        result = 31 * result + (getLon() != null ? getLon().hashCode() : 0);
+//        result = 31 * result + (getFavoriteClasses() != null ? getFavoriteClasses().hashCode() : 0);
+//        result = 31 * result + (getEnrolledClasses() != null ? getEnrolledClasses().hashCode() : 0);
+//        result = 31 * result + (getBio() != null ? getBio().hashCode() : 0);
+//        result = 31 * result + getCreationDate().hashCode();
+//        result = 31 * result + (getAccountId() != null ? getAccountId().hashCode() : 0);
+//        return result;
+//    }
 }

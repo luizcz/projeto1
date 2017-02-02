@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class DAO implements IRemote {
     private static DAO instance;
     private ICallback<Boolean> callback;
     private Context ctx;
+    private List<User> usuarios;
 
     private DAO() {
         mAuth = FirebaseAuth.getInstance();
@@ -77,7 +79,7 @@ public class DAO implements IRemote {
                 // ...
             }
         };
-
+        loadFakeProfiles();
 
     }
 
@@ -88,6 +90,16 @@ public class DAO implements IRemote {
 
 
         instance.setCallback(callback);
+        instance.setContext(ctx);
+
+        return instance;
+    }
+
+    public static DAO getInstace(Context ctx) {
+        if (instance == null) {
+            instance = new DAO();
+        }
+
         instance.setContext(ctx);
 
         return instance;
@@ -155,6 +167,18 @@ public class DAO implements IRemote {
         return user;
 
 
+    }
+
+    public void loadFakeProfiles(){
+        usuarios = new ArrayList<>();
+
+        for (int i = 0; i<10; i++){
+            usuarios.add(new User(String.valueOf(i), "Pessoa "+String.valueOf(i), "email@gmail.com"));
+        }
+    }
+
+    public List<User> getUsuarios() {
+        return usuarios;
     }
 
 
