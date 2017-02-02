@@ -58,7 +58,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String string) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("class");
-                ref.orderByChild("name").startAt(string).addChildEventListener(new ChildEventListener() {
+                ref.orderByChild("name_lower").startAt(string.toLowerCase()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Log.e("Qualquercoisa", "qualquercoisa");
