@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ITeach</string>
     <string name="facebook_app_id">237104046728139</string>
+    <string name="perfil">Perfil</string>
+    <string name="bio">Breve descrição: </string>
+
+
 </resources>

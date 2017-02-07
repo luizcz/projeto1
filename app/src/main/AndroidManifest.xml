@@ -21,7 +21,7 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:hardwareAccelerated="false"></activity>
+            android:hardwareAccelerated="false" />
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -31,7 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.PerfilActivity"></activity>
     </application>
 
 </manifest>

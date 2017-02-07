@@ -58,17 +58,38 @@ public class DAO implements IRemote {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d("FireBase", "onAuthStateChanged:signed_in:" + user.getUid());
-                    createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail()), new ICallback() {
+
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUid());
+
+
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void execute(Object param) {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()) {
+                                createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(), true), new ICallback() {
+                                    @Override
+                                    public void execute(Object param) {
+
+                                    }
+                                });
+                                callback.execute(true);
+                            }else {
+                                callback.execute(true);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
                     });
-                    callback.execute(true);
+
+
 
 
                 } else {

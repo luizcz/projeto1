@@ -21,6 +21,7 @@ public class User {
     public String bio;
     public String creationDate;
     public String accountId;
+    public Boolean firstTime;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -45,6 +46,13 @@ public class User {
         this.email = email;
     }
 
+    public User(String userId, String name, String email, Boolean firstTime) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.firstTime = firstTime;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -58,6 +66,7 @@ public class User {
         result.put("bio", bio);
         result.put("creationDate", creationDate);
         result.put("accountId", accountId);
+        result.put("firstTime", firstTime);
         return result;
     }
 
@@ -135,6 +144,14 @@ public class User {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public Boolean getFirstTime() {
+        return firstTime;
+    }
+
+    public void setFirstTime(Boolean firstTime) {
+        this.firstTime = firstTime;
     }
 
     @Override
