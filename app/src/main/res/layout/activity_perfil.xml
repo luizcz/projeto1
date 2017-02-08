@@ -8,16 +8,64 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context="projetoum.equipe.iteach.activities.PerfilActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/st_perfil"
-        android:text="@string/perfil"
-        android:textAlignment="center"
-        android:textSize="18sp"/>
+        android:id="@+id/st_nome"
+        android:text="@string/nome"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/cardview_light_background" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edt_nome"
+        android:layout_below="@id/st_nome"
+        android:textColor="@color/cardview_light_background"
+        android:padding="10dp"
+        android:background="@drawable/border"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/st_local"
+        android:text="@string/local"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/edt_nome"
+        android:textColor="@color/cardview_light_background" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edt_local"
+        android:layout_below="@id/st_local"
+        android:textColor="@color/cardview_light_background"
+        android:padding="10dp"
+        android:background="@drawable/border"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/st_telefone"
+        android:text="@string/telefone"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/edt_local"
+        android:textColor="@color/cardview_light_background" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edt_telefone"
+        android:layout_below="@id/st_telefone"
+        android:textColor="@color/cardview_light_background"
+        android:padding="10dp"
+        android:background="@drawable/border"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -26,16 +74,31 @@
         android:text="@string/bio"
         android:textSize="18sp"
         android:layout_marginTop="5dp"
-        android:layout_below="@id/st_perfil"/>
+        android:layout_below="@id/edt_telefone"
+        android:textColor="@color/cardview_light_background" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edt_bio"
         android:layout_below="@id/st_bio"
-        android:lines="3"/>
+        android:background="@drawable/border"
+        android:textColor="@color/cardview_light_background"
+        android:padding="10dp"
+        android:lines="7"/>
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border"
+        android:textColor="@color/cardview_light_background"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:id="@+id/bt_salvar_perfil"
+        android:text="@string/txt_botao_perfil"/>
 
 
 </RelativeLayout>

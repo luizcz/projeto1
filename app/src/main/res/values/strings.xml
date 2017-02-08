@@ -2,7 +2,11 @@
     <string name="app_name">ITeach</string>
     <string name="facebook_app_id">237104046728139</string>
     <string name="perfil">Perfil</string>
-    <string name="bio">Breve descrição: </string>
+    <string name="bio">Conte sobre você ou suas competências </string>
+    <string name="nome">Nome </string>
+    <string name="telefone">Telefone </string>
+    <string name="local">Local </string>
+    <string name="txt_botao_perfil">Ir para configurações</string>
 
 
 </resources>

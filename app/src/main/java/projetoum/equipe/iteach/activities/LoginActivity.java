@@ -47,6 +47,7 @@ import java.util.Random;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
@@ -81,8 +82,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(LoginResult loginResult) {
                 Log.d("Facebook", "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                startActivity(new Intent(mContext, MainActivity.class));
-                finish();
+                dao.getCurrentUser(new ICallback<User>() {
+                    @Override
+                    public void execute(User param) {
+                        if (param.getFirstTime() == null || param.getFirstTime()){
+                            startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                        }else
+                            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                        finish();
+                    }
+                });
             }
 
             @Override
@@ -170,13 +179,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
             dao.firebaseAuthWithGoogle(acct);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            dao.getCurrentUser(new ICallback<User>() {
+                @Override
+                public void execute(User param) {
+                    if (param.getFirstTime() == null || param.getFirstTime()){
+                        startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                    }else
+                        startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                    finish();
+                }
+            });
+
+
+
 
         } else {
             Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     //    private void signOut() {
 //        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -243,8 +264,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                    }
 //                });
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                dao.getCurrentUser(new ICallback<User>() {
+                    @Override
+                    public void execute(User param) {
+                        if (param.getFirstTime() == null || param.getFirstTime()){
+                            startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                        }else
+                            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                        finish();
+                    }
+                });
             } else {
                 Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
 

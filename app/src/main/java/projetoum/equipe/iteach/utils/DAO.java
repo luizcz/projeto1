@@ -50,6 +50,8 @@ public class DAO implements IRemote {
     private ICallback<Boolean> callback;
     private Context ctx;
     private List<User> usuarios;
+    private boolean resultado;
+    private User currentUser;
 
     private DAO() {
         mAuth = FirebaseAuth.getInstance();
@@ -70,6 +72,7 @@ public class DAO implements IRemote {
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                             if (!dataSnapshot.exists()) {
                                 createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(), true), new ICallback() {
                                     @Override
@@ -202,6 +205,34 @@ public class DAO implements IRemote {
         return usuarios;
     }
 
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void getCurrentUser(final ICallback<User> userICallback) {
+
+        FirebaseAuth firebaseAuth = mAuth;
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(user != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
+
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userICallback.execute(dataSnapshot.getValue(User.class));
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+    }
 
     public void getFeed(final ICallback<String> feedUpdate) {
         // Write a message to the database
@@ -483,6 +514,38 @@ public class DAO implements IRemote {
         });
 
     }
+
+    public boolean userFirsTime(){
+
+        FirebaseAuth firebaseAuth = mAuth;
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if(user != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
+
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    resultado = user.getFirstTime();
+                    //callback.execute(true);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
+        // ...
+        return resultado;
+    }
+
 
     @Override
     public List<ClassObject> findClassByTag(String tag) {

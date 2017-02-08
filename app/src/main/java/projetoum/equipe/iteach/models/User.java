@@ -22,12 +22,14 @@ public class User {
     public String creationDate;
     public String accountId;
     public Boolean firstTime;
+    public String local;
+    public String telefone;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, String bio, String creationDate, String accountId) {
+    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, String bio, String creationDate, String accountId, String local, String telefone) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -38,6 +40,8 @@ public class User {
         this.bio = bio;
         this.creationDate = creationDate;
         this.accountId = accountId;
+        this.local = local;
+        this.telefone = telefone;
     }
 
     public User(String userId, String name, String email) {
@@ -152,6 +156,22 @@ public class User {
 
     public void setFirstTime(Boolean firstTime) {
         this.firstTime = firstTime;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override
