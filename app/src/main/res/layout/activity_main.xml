@@ -73,6 +73,16 @@
         android:layout_toEndOf="@+id/sign_in_button" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/bt_edt_perfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar Perfil"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/sign_in_button"
+        android:layout_toEndOf="@+id/sign_in_button" />
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

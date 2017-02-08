@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.put).setOnClickListener(this);
         findViewById(R.id.put_user).setOnClickListener(this);
         findViewById(R.id.search_button).setOnClickListener(this);
+        findViewById(R.id.bt_edt_perfil).setOnClickListener(this);
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
         feed = (TextView) findViewById(R.id.feed);
@@ -167,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.search_button:
                 startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case R.id.bt_edt_perfil:
+                startActivity(new Intent(this, PerfilActivity.class));
+                finish();
                 break;
         }
     }
