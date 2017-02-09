@@ -211,6 +211,10 @@ public class DAO implements IRemote {
         return usuarios;
     }
 
+    public List<ClassObject> getClasses() {
+        return classes;
+    }
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }

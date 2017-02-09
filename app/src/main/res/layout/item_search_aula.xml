@@ -9,6 +9,7 @@
     <android.support.v7.widget.CardView
         android:layout_gravity="center"
         android:layout_width="match_parent"
+        android:id="@+id/card_aula"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
@@ -26,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Aula de Português"
-                android:id="@+id/txt_info"
+                android:id="@+id/aula_desc"
                 android:layout_alignBottom="@+id/img"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -55,24 +56,26 @@
                 android:layout_below="@+id/img"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/txt_info"
-                android:layout_toStartOf="@+id/txt_info"
+                android:layout_toLeftOf="@+id/aula_desc"
+                android:layout_toStartOf="@+id/aula_desc"
                 android:layout_marginLeft="3dp">
 
                 <ImageView
                     android:layout_width="21dp"
                     android:layout_height="21dp"
-                    app:srcCompat="@android:drawable/ic_lock_lock"
+                    android:src="@drawable/ic_pin"
                     android:id="@+id/imageView2"
                     android:layout_alignBottom="@+id/linearLayout"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:scaleType="fitCenter"
+                    android:padding="2dp" />
 
                 <TextView
                     android:text="500m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView4"
+                    android:id="@+id/aula_dist"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignBottom="@+id/linearLayout"
@@ -85,21 +88,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img"
-                android:layout_alignLeft="@+id/txt_info"
-                android:layout_alignStart="@+id/txt_info"
-                android:gravity="center_vertical">
+                android:layout_alignStart="@+id/aula_desc"
+                android:gravity="center_vertical"
+                android:layout_alignLeft="@+id/aula_desc">
 
                 <ImageView
                     android:layout_width="27dp"
                     android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_teacher"
+                    app:srcCompat="@drawable/ic_professor"
                     android:id="@+id/imageView3" />
 
                 <TextView
                     android:text="Prof Pasquale Neto"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/textView8"
+                    android:id="@+id/aula_prof_name"
                     android:layout_weight="1"
                     android:gravity="center_vertical" />
 
@@ -107,10 +110,11 @@
                     android:text="R$ 20,00"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView9"
+                    android:id="@+id/aula_valor"
                     android:layout_weight="0.45"
                     android:gravity="center_vertical"
-                    android:layout_marginRight="3dp" />
+                    android:layout_marginRight="3dp"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
 
 

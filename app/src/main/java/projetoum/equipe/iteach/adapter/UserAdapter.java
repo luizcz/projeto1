@@ -4,9 +4,7 @@ package projetoum.equipe.iteach.adapter;
  * Created by treinamento-asus on 02/02/2017.
  */
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.test.suitebuilder.TestMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,64 +12,31 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.models.User;
-import projetoum.equipe.iteach.utils.DAO;
 
-/**
- * Created by Victor on 4/9/2016.
- */
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
-    private List<User> usuarios;
-    private DAO dao;
-    private Context ctx;
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+    private List<User> usuarios = new ArrayList<>();
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserAdapter(Context ctx) {
-        dao = DAO.getInstace(ctx);
-
-        usuarios = new ArrayList<>();
-        usuarios.addAll(dao.getUsuarios());
-
-        this.ctx = ctx;
-    }
-
-
-    public void add(User item) {
-        usuarios.add(item);
-//        notifyItemInserted(position);
-        notifyDataSetChanged();
-    }
-
-    public void remove(User item) {
-        int position = usuarios.indexOf(item);
-        usuarios.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void removeAll(){
-        usuarios.clear();
-        notifyDataSetChanged();
+    public UserAdapter(List<User> usuarios) {
+        this.usuarios = usuarios;
     }
 
 
     // Create new views (invoked by the layout manager)
     @Override
-    public UserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
-        // create a new view
+    public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_professor, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        return new ViewHolder(v);
+        return new UserViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(UserAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(UserViewHolder holder, int position) {
 
         holder.nomeUser.setText(usuarios.get(position).getName());
         holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
@@ -83,7 +48,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
 //    // Replace the contents of a view (invoked by the layout manager)
 //    @Override
-//    public void onBindViewHolder(ViewHolder holder, final int position) {
+//    public void onBindViewHolder(UserViewHolder holder, final int position) {
 //        // - get element from your dataset at this position
 //        // - replace the contents of the view with that element
 //
@@ -101,39 +66,48 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     @Override
-    public void onViewRecycled(ViewHolder holder) {
+    public void onViewRecycled(UserViewHolder holder) {
         holder.nomeUser.setText("");
         super.onViewRecycled(holder);
     }
 
-    @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-
-    }
-
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class UserViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         private TextView nomeUser;
         private TextView numAulas;
         private TextView bio;
         private TextView membroSince;
 
-        public ViewHolder(View v) {
+        UserViewHolder(View v) {
             super(v);
 
             nomeUser = (TextView) v.findViewById(R.id.prof_name);
             numAulas = (TextView) v.findViewById(R.id.num_aulas);
-            bio = (TextView) v.findViewById(R.id.txt_info);
+            bio = (TextView) v.findViewById(R.id.aula_desc);
             membroSince = (TextView) v.findViewById(R.id.data_membro_desde);
         }
     }
-
     public List<User> getUsuarios() {
         return usuarios;
+    }
+
+    public void add(User item) {
+        usuarios.add(item);
+//        notifyItemInserted(position);
+        notifyDataSetChanged();
+    }
+
+    public void remove(User item) {
+        int position = usuarios.indexOf(item);
+        usuarios.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void removeAll(){
+        usuarios.clear();
+        notifyDataSetChanged();
     }
 }

@@ -4,6 +4,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,8 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.SearchAulasFragment;
+import projetoum.equipe.iteach.SearchProfsFragment;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
+import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -39,9 +45,20 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private ClassAdapter searchAdapter;
     private String search_input;
     private RecyclerView mRecyclerView;
-    private UserAdapter adapter;
+    private UserAdapter userAdapter;
+    private ClassAdapter classAdapter;
     private DAO dao;
-    private List<User> list;
+    private List<User> usuarios;
+    private List<ClassObject> classes;
+    private FragmentManager fragmentManager;
+    private Fragment currentFragment;
+    private int lastFragment;
+    private SearchAulasFragment searchAulasFragment;
+    private SearchProfsFragment searchProfsFragment;
+
+
+    public static final String SEARCH_AULAS_TAG = "SEARCH_AULAS_TAG";
+    public static final String SEARCH_PROFS_TAG = "SEARCH_PROFS_TAG";
 
 
     @Override
@@ -64,8 +81,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
 
         dao = DAO.getInstace(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        usuarios = dao.getUsuarios();
+        classes = dao.getClasses();
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
 
@@ -73,19 +92,29 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        adapter = new UserAdapter(this);
-        mRecyclerView.setAdapter(adapter);
+        userAdapter = new UserAdapter(usuarios);
+        classAdapter = new ClassAdapter(classes);
+        mRecyclerView.setAdapter(classAdapter);
 
         search_input = "";
-
-        dao = DAO.getInstace(this);
-
 
         ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
         Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.img)));
 
+        setUpFragments();
+    }
 
+    private void setUpFragments(){
+        searchAulasFragment = new SearchAulasFragment();
+        searchProfsFragment = new SearchProfsFragment();
+
+        currentFragment = searchAulasFragment;
+
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -185,9 +214,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         for (int i=0; i<copia.size();i++) {
             if (copia.get(i).getName().contains(input)){
                 users_filtered.add(copia.get(i));
-                adapter.add(copia.get(i));
+                userAdapter.add(copia.get(i));
             } else {
-                adapter.remove(copia.get(i));
+                userAdapter.remove(copia.get(i));
             }
         }
         return users_filtered;
@@ -199,22 +228,36 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         copia.addAll(dao.getUsuarios());
 
 //        Log.i("add", onlyAdd.toString());
-        adapter.removeAll();
-        Log.i("adapter",adapter.getUsuarios().toString());
+        userAdapter.removeAll();
+        Log.i("userAdapter", userAdapter.getUsuarios().toString());
 
         for (int i=0; i < copia.size(); i++){
             Log.i("i",String.valueOf(i));
             if (copia.get(i).getName().toLowerCase().contains(string)){
-                adapter.add(copia.get(i));
+                userAdapter.add(copia.get(i));
             }
         }
+
+//        List<User> copiaClasses = new ArrayList<User>();
+//        copiaClasses.addAll(dao.getClasses());
+//
+////        Log.i("add", onlyAdd.toString());
+//        userAdapter.removeAll();
+//        Log.i("userAdapter", userAdapter.getUsuarios().toString());
+//
+//        for (int i=0; i < copiaClasses.size(); i++){
+//            Log.i("i",String.valueOf(i));
+//            if (copiaClasses.get(i).getName().toLowerCase().contains(string)){
+//                userAdapter.add(copiaClasses.get(i));
+//            }
+//        }
 //        for (User item : onlyRemove) {
 //            if (onlyAdd.contains(item)) onlyAdd.remove(item);
 //            else
-//                adapter.remove(item);
+//                userAdapter.remove(item);
 //        }
 //        for (User item : onlyAdd) {
-//            adapter.add(adapter.getItemCount(), item);
+//            userAdapter.add(userAdapter.getItemCount(), item);
 //        }
     }
 
@@ -231,7 +274,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 //        protected void onPostExecute(String result) {
 ////            Log.i("httpReady", String.valueOf(httpHandler.isReady()));
 ////            if (httpHandler.isReady()) {
-//            list = getUsers(dao.getUsuarios(), result);
+//            usuarios = getUsers(dao.getUsuarios(), result);
 //
 ////                handleQuery(search_input);
 ////                progressBar.setVisibility(View.INVISIBLE);
@@ -252,24 +295,83 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_feed) {
-            startActivity(new Intent(this,MainActivity.class));
-        } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this,CadastroActivity.class));
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        } else if (id == R.id.nav_my_class) {
-            //startActivity(new Intent(this,CourseActivity.class));
-
-        } else if (id == R.id.nav_options) {
-            // startActivity(new Intent(this,OptionsActivity.class));
-
-        } else if (id == R.id.nav_class) {
-           // startActivity(new Intent(this,SearchActivity.class));
-
-        } else if (id == R.id.nav_teacher) {
-           // startActivity(new Intent(this,SearchActivity.class));
-
+        if (id == 0) {
+            id = lastFragment;
         }
+
+        switch (id){
+            case R.id.nav_feed:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
+            case R.id.nav_profile:
+                startActivity(new Intent(this,PerfilActivity.class));
+            case R.id.nav_my_class:
+                //startActivity(new Intent(this,CourseActivity.class));
+                break;
+            case R.id.nav_options:
+                // startActivity(new Intent(this,OptionsActivity.class));
+                break;
+            case R.id.nav_class:
+                getSupportActionBar().setTitle("Busca Aulas");
+                if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
+                    fragmentTransaction.hide(currentFragment);
+                    fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+                    fragmentTransaction.show(searchAulasFragment).commit();
+                } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
+                    fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
+                }
+                currentFragment = searchAulasFragment;
+                lastFragment = R.id.nav_class;
+                mRecyclerView.setAdapter(classAdapter);
+                break;
+                // startActivity(new Intent(this,SearchActivity.class));
+            case R.id.nav_teacher:
+                getSupportActionBar().setTitle("Busca Professores");
+                if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
+                    fragmentTransaction.hide(currentFragment);
+                    fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
+                    fragmentTransaction.show(searchProfsFragment).commit();
+                } else if (!fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG).isVisible()) {
+                    fragmentTransaction.hide(currentFragment).show(searchProfsFragment).commit();
+                }
+                currentFragment = searchProfsFragment;
+                lastFragment = R.id.nav_teacher;
+                mRecyclerView.setAdapter(userAdapter);
+                // startActivity(new Intent(this,SearchActivity.class));
+                break;
+            default:
+                break;
+        }
+
+//        if (id == R.id.nav_feed) {
+//            startActivity(new Intent(this,MainActivity.class));
+//        } else if (id == R.id.nav_profile) {
+//            startActivity(new Intent(this,PerfilActivity.class));
+//
+//        } else if (id == R.id.nav_my_class) {
+//            //startActivity(new Intent(this,CourseActivity.class));
+//
+//        } else if (id == R.id.nav_options) {
+//            // startActivity(new Intent(this,OptionsActivity.class));
+//
+//        } else if (id == R.id.nav_class) {
+//            getSupportActionBar().setTitle("Busca Aulas");
+//            if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
+//                fragmentTransaction.hide(currentFragment);
+//                fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+//                fragmentTransaction.show(searchAulasFragment).commit();
+//            } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
+//                fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
+//            }
+//            currentFragment = searchAulasFragment;
+//            lastFragment = R.id.nav_class;
+//
+//        } else if (id == R.id.nav_teacher) {
+//           // startActivity(new Intent(this,SearchActivity.class));
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mussum Ipsum, cacilds vidis litro abertis. Detraxit consequat et quo num tendi nada. Não sou faixa ... "
-                android:id="@+id/txt_info"
+                android:id="@+id/aula_desc"
                 android:layout_alignBottom="@+id/img"
                 android:layout_toRightOf="@+id/img"
                 android:layout_alignParentRight="true"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txt_info"
+                android:layout_below="@+id/aula_desc"
                 android:layout_margin="5dp"
                 android:orientation="horizontal">
 
