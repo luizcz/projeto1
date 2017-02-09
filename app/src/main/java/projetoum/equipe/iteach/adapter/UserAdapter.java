@@ -6,13 +6,18 @@ package projetoum.equipe.iteach.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.test.suitebuilder.TestMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.models.User;
@@ -67,7 +72,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(UserAdapter.ViewHolder holder, int position) {
+
         holder.nomeUser.setText(usuarios.get(position).getName());
+        holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
+        holder.bio.setText(usuarios.get(position).getBio());
+
+        Calendar cal = Calendar.getInstance();
+        holder.membroSince.setText(cal.get(Calendar.MONTH) + " de " + cal.get(Calendar.YEAR));
     }
 
 //    // Replace the contents of a view (invoked by the layout manager)
@@ -108,11 +119,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         private TextView nomeUser;
+        private TextView numAulas;
+        private TextView bio;
+        private TextView membroSince;
 
         public ViewHolder(View v) {
             super(v);
 
             nomeUser = (TextView) v.findViewById(R.id.prof_name);
+            numAulas = (TextView) v.findViewById(R.id.num_aulas);
+            bio = (TextView) v.findViewById(R.id.txt_info);
+            membroSince = (TextView) v.findViewById(R.id.data_membro_desde);
         }
     }
 

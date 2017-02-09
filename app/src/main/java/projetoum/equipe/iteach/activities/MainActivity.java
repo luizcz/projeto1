@@ -312,7 +312,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -323,36 +322,27 @@ public class MainActivity extends AppCompatActivity
                             dao.signOut();
                             disconnectFromFacebook();
                             // dao.removeAuthStateListener();
-
                         }
                     }
                 });
     }
 
     public void disconnectFromFacebook() {
-
         if (AccessToken.getCurrentAccessToken() == null) {
             return; // already logged out
         }
-
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
                 .Callback() {
             @Override
             public void onCompleted(GraphResponse graphResponse) {
-
                 LoginManager.getInstance().logOut();
-
             }
         }).executeAsync();
     }
 
-
     public class UpdateUI implements ICallback<Boolean> {
-
         @Override
         public void execute(Boolean param) {
-
-
             if (param) {
                 findViewById(R.id.sign_in_button).setVisibility(View.GONE);
                 findViewById(R.id.login_button).setVisibility(View.GONE);
@@ -370,7 +360,6 @@ public class MainActivity extends AppCompatActivity
                 Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) findViewById(R.id.img)));
             } else {
                 mStatusTextView.setText("signed_out");
-
                 findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
                 findViewById(R.id.login_button).setVisibility(View.VISIBLE);
                 findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);

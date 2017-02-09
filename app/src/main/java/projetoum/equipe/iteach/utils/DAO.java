@@ -45,6 +45,7 @@ public class DAO implements IRemote {
     private ICallback<Boolean> callback;
     private Context ctx;
     private List<User> usuarios;
+    private List<ClassObject> classes;
     private boolean resultado;
     private User currentUser;
     private FirebaseDatabase mDatabase;
@@ -100,6 +101,7 @@ public class DAO implements IRemote {
             }
         };
         loadFakeProfiles();
+        loadFakeClasses();
 
     }
 
@@ -194,6 +196,14 @@ public class DAO implements IRemote {
 
         for (int i = 0; i<10; i++){
             usuarios.add(new User(String.valueOf(i), "Pessoa "+String.valueOf(i), "email@gmail.com"));
+        }
+    }
+
+    public void loadFakeClasses(){
+        classes = new ArrayList<>();
+
+        for (int i = 0; i<10; i++){
+            classes.add(new ClassObject("Classe " + String.valueOf(i)));
         }
     }
 
