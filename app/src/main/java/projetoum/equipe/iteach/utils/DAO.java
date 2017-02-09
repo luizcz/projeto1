@@ -3,14 +3,11 @@ package projetoum.equipe.iteach.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -29,10 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.interfaces.IRemote;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -52,6 +47,7 @@ public class DAO implements IRemote {
     private List<User> usuarios;
     private boolean resultado;
     private User currentUser;
+    private FirebaseDatabase mDatabase;
 
     private DAO() {
         mAuth = FirebaseAuth.getInstance();
@@ -65,7 +61,7 @@ public class DAO implements IRemote {
                     // User is signed in
                     Log.d("FireBase", "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    final FirebaseDatabase database = getFirebaseInstance();
                     DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUid());
 
 
@@ -215,7 +211,7 @@ public class DAO implements IRemote {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if(user != null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
 
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -236,8 +232,8 @@ public class DAO implements IRemote {
 
     public void getFeed(final ICallback<String> feedUpdate) {
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        mDatabase = getFirebaseInstance();
+        DatabaseReference myRef = mDatabase.getReference("message");
 
 
         // Read from the database
@@ -266,7 +262,7 @@ public class DAO implements IRemote {
 
     public void fillFeed() {
         if(mAuth.getCurrentUser() != null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference("message");
             myRef.setValue("Feed " + new Random().nextInt(999));
         }
@@ -275,7 +271,7 @@ public class DAO implements IRemote {
 
     @Override
     public void createUser(User user, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -324,7 +320,7 @@ public class DAO implements IRemote {
 
     @Override
     public void deleteUser(User user, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -343,7 +339,7 @@ public class DAO implements IRemote {
 
     @Override
     public void updateUser(User user, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -361,7 +357,7 @@ public class DAO implements IRemote {
 
     @Override
     public void deleteUser(String userID, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+userID);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -389,7 +385,7 @@ public class DAO implements IRemote {
 
     @Override
     public void createClass(ClassObject classObject, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
 
         DatabaseReference freeRef = myRef.push();
@@ -413,7 +409,7 @@ public class DAO implements IRemote {
 
     @Override
     public void deleteClass(ClassObject classObject, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
 
 
@@ -436,7 +432,7 @@ public class DAO implements IRemote {
 
     @Override
     public void updateClass(ClassObject classObject, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
 
 
@@ -458,7 +454,7 @@ public class DAO implements IRemote {
 
     @Override
     public void deleteClass(String classID, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classID);
 
 
@@ -481,7 +477,7 @@ public class DAO implements IRemote {
 
     @Override
     public void findClassByName(String name, final ICallback callback) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
         Query q = myRef.orderByChild("name");
         q.addChildEventListener(new ChildEventListener() {
@@ -521,7 +517,7 @@ public class DAO implements IRemote {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if(user != null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
 
 
@@ -599,5 +595,14 @@ public class DAO implements IRemote {
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+    public FirebaseDatabase getFirebaseInstance() {
+        if (mDatabase == null) {
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabase.setPersistenceEnabled(true);
+        }
+
+        return mDatabase;
     }
 }

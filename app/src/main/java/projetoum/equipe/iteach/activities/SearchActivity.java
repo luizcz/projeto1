@@ -2,15 +2,26 @@ package projetoum.equipe.iteach.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +29,11 @@ import java.util.List;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
+import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private MenuItem menuSearch;
     private SearchView searchView;
@@ -38,6 +50,20 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+
         dao = DAO.getInstace(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
 
@@ -52,6 +78,14 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
 
         search_input = "";
+
+        dao = DAO.getInstace(this);
+
+
+        ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
+        ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.img)));
+
 
     }
 
@@ -210,4 +244,39 @@ public class SearchActivity extends AppCompatActivity {
 //
 //
 //    }
+
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_feed) {
+            startActivity(new Intent(this,MainActivity.class));
+        } else if (id == R.id.nav_profile) {
+            startActivity(new Intent(this,PerfilActivity.class));
+
+        } else if (id == R.id.nav_my_class) {
+            //startActivity(new Intent(this,CourseActivity.class));
+
+        } else if (id == R.id.nav_options) {
+            // startActivity(new Intent(this,OptionsActivity.class));
+
+        } else if (id == R.id.nav_class) {
+           // startActivity(new Intent(this,SearchActivity.class));
+
+        } else if (id == R.id.nav_teacher) {
+           // startActivity(new Intent(this,SearchActivity.class));
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+
 }

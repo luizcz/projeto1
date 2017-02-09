@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/ic_feed"
+            android:title="Feed" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Meu Perfil" />
+        <item
+            android:id="@+id/nav_my_class"
+            android:icon="@drawable/ic_course"
+            android:title="Minhas Aulas" />
+        <item
+            android:id="@+id/nav_options"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configurações" />
+    </group>
+
+    <item android:title="Buscar">
+        <menu>
+            <item
+                android:id="@+id/nav_class"
+                android:icon="@drawable/ic_class"
+                android:title="Aulas" />
+            <item
+                android:id="@+id/nav_teacher"
+                android:icon="@drawable/ic_teacher"
+                android:title="Professores" />
+        </menu>
+    </item>
+
+</menu>

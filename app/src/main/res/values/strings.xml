@@ -7,6 +7,12 @@
     <string name="telefone">Telefone </string>
     <string name="local">Local </string>
     <string name="txt_botao_perfil">Ir para configurações</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>
