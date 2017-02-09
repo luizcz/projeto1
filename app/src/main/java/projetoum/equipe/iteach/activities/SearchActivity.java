@@ -29,7 +29,6 @@ import java.util.List;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
-import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -256,7 +255,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         if (id == R.id.nav_feed) {
             startActivity(new Intent(this,MainActivity.class));
         } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this,PerfilActivity.class));
+            startActivity(new Intent(this,CadastroActivity.class));
 
         } else if (id == R.id.nav_my_class) {
             //startActivity(new Intent(this,CourseActivity.class));

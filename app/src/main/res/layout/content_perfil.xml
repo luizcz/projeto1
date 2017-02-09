@@ -2,108 +2,108 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_perfil"
+    android:id="@+id/content_perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="projetoum.equipe.iteach.activities.PerfilActivity"
-    tools:showIn="@layout/app_bar_perfil">
+    tools:context="projetoum.equipe.iteach.activities.PerfilActivity">
 
-
-    <TextView
-        android:id="@+id/st_nome"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/nome"
-        android:textColor="@color/cardview_light_background"
-        android:textSize="18sp" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edt_nome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/st_nome"
-        android:background="@drawable/border"
-        android:padding="10dp"
-        android:textColor="@color/cardview_light_background" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
 
-    <TextView
-        android:id="@+id/st_local"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edt_nome"
-        android:layout_marginTop="5dp"
-        android:text="@string/local"
-        android:textColor="@color/cardview_light_background"
-        android:textSize="18sp" />
+            <TextView
+                android:text="Joao da Silva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/label_name"
+                android:textColor="@android:color/white"
+                android:textSize="48sp"
+                android:maxLength="14"
+                android:gravity="center_horizontal" />
 
-    <EditText
-        android:id="@+id/edt_local"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/st_local"
-        android:background="@drawable/border"
-        android:padding="10dp"
-        android:textColor="@color/cardview_light_background" />
 
-    <TextView
-        android:id="@+id/st_telefone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edt_local"
-        android:layout_marginTop="5dp"
-        android:text="@string/telefone"
-        android:textColor="@color/cardview_light_background"
-        android:textSize="18sp" />
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img"
+                android:src="@drawable/logo"
+                android:scaleType="fitCenter"
+                app:riv_corner_radius="30dip"
+                app:riv_border_width="1dip"
+                app:riv_border_color="#FFFFFF"
+                app:riv_mutate_background="true"
+                app:riv_tile_mode="repeat"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:elevation="10dp"
+                app:riv_oval="false" />
 
-    <EditText
-        android:id="@+id/edt_telefone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/st_telefone"
-        android:background="@drawable/border"
-        android:padding="10dp"
-        android:textColor="@color/cardview_light_background" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/ratingBar"
+                android:stepSize="0.5"
+                android:rating="4.5"
+                android:numStars="5"/>
+            <TextView
+                android:text="99 Avaliações"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:paddingBottom="10dp"
+                android:gravity="right"/>
+            <TextView
+                android:text="Informações"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"/>
+            <TextView
+                android:text="Local"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:id="@+id/label_local"
+                android:gravity="left"/>
+            <TextView
+                android:text="Muitas informações importantes\nEstudou em escola\nTrabalhou em emprego"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:gravity="left"
+                android:id="@+id/label_info" />
+            <TextView
+                android:text="Aulas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/st_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edt_telefone"
-        android:layout_marginTop="5dp"
-        android:text="@string/bio"
-        android:textColor="@color/cardview_light_background"
-        android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/edt_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/st_bio"
-        android:background="@drawable/border"
-        android:lines="7"
-        android:padding="10dp"
-        android:textColor="@color/cardview_light_background" />
-
-    <Button
-        android:id="@+id/bt_salvar_perfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/border"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/txt_botao_perfil"
-        android:textColor="@color/cardview_light_background" />
-
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
-

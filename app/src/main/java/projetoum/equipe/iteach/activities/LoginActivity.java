@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void execute(User param) {
                         if (param.getFirstTime() == null || param.getFirstTime()){
-                            startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                            startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
                         }else
                             startActivity(new Intent(LoginActivity.this , MainActivity.class));
                         finish();
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void execute(User param) {
                     if (param.getFirstTime() == null || param.getFirstTime()){
-                        startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                        startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
                     }else
                         startActivity(new Intent(LoginActivity.this , MainActivity.class));
                     finish();
@@ -247,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void execute(User param) {
                         if (param.getFirstTime() == null || param.getFirstTime()){
-                            startActivity(new Intent(LoginActivity.this, PerfilActivity.class));
+                            startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
                         }else
                             startActivity(new Intent(LoginActivity.this , MainActivity.class));
                         finish();

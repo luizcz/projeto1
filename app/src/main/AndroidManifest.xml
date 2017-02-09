@@ -30,15 +30,19 @@
         </activity>
         <activity
             android:name=".activities.SearchActivity"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".activities.PerfilActivity"
+            android:name=".activities.CadastroActivity"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.PerfilActivity"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
