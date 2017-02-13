@@ -43,6 +43,10 @@
         <activity
             android:name=".activities.PerfilActivity"
             android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.VisualizarAulaActivity"
+            android:label="@string/title_activity_visualizar_aula"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

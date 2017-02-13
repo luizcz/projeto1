@@ -1,6 +1,7 @@
 package projetoum.equipe.iteach.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.activities.CadastroActivity;
+import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
@@ -21,8 +24,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     private List<ClassObject> classes = new ArrayList<>();
     private DAO dao;
+    private Context mContext;
 
     public ClassAdapter(Context ctx) {
+        mContext = ctx;
         dao = DAO.getInstace(ctx);
 
         this.classes = new ArrayList<>();
@@ -38,6 +43,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     @Override
     public void onBindViewHolder(ClassViewHolder holder, int position) {
+
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
+                intent.putExtra("aula", "Nome da Aula");
+                v.getContext().startActivity(intent);
+            }
+        });
+
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
         holder.aula_prof_name.setText(classes.get(position).getTeacherId());
         holder.aula_desc.setText(classes.get(position).getName());
@@ -59,6 +74,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         ClassViewHolder(View itemView) {
             super(itemView);
+
             cv = (CardView)itemView.findViewById(R.id.card_aula);
             aula_dist = (TextView)itemView.findViewById(R.id.aula_dist);
             aula_prof_name = (TextView)itemView.findViewById(R.id.aula_prof_name);
