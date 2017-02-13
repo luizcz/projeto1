@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
-import projetoum.equipe.iteach.SearchAulasFragment;
-import projetoum.equipe.iteach.SearchProfsFragment;
+import projetoum.equipe.iteach.fragments.SearchAulasFragment;
+import projetoum.equipe.iteach.fragments.SearchProfsFragment;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -43,7 +43,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private MenuItem menuSearch;
     private SearchView searchView;
     private ClassAdapter searchAdapter;
-    private String search_input;
     private RecyclerView mRecyclerView;
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
@@ -69,6 +68,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
         setSupportActionBar(toolbar);
+        getWindow().setBackgroundDrawableResource(R.drawable.background);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -92,11 +92,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        userAdapter = new UserAdapter(usuarios);
-        classAdapter = new ClassAdapter(classes);
+        userAdapter = new UserAdapter(getBaseContext());
+        classAdapter = new ClassAdapter(getBaseContext());
         mRecyclerView.setAdapter(classAdapter);
-
-        search_input = "";
 
         ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
@@ -163,12 +161,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public boolean onQueryTextSubmit(String input) {
-                search_input = input;
-
-//                new TimeOut().execute("1000");
-                Log.i("dao", dao.getUsuarios().toString());
-                updateList(dao.getUsuarios(), input);
-
+                if (currentFragment == searchProfsFragment){
+                    updateProfs(dao.getUsuarios(), input);
+                } else if (currentFragment == searchAulasFragment){
+                    updateAulas(dao.getClasses(), input);
+                }
                 searchView.clearFocus();
                 return true;
             }
@@ -176,11 +173,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public boolean onQueryTextChange(String input) {
-                search_input = input;
-                if (!input.equals("")) {
-                    updateList(dao.getUsuarios(), input);
+                if (currentFragment == searchProfsFragment){
+                    updateProfs(dao.getUsuarios(), input);
+                } else if (currentFragment == searchAulasFragment){
+                    updateAulas(dao.getClasses(), input);
                 }
-
                 return true;
             }
         });
@@ -202,41 +199,58 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    private List<User> getUsers(List<User> usuarios, String input){
-        List<User> users_filtered = new ArrayList<>();
+    private void updateAulas(List<ClassObject> classes, String input) {
+        List<ClassObject> copia = new ArrayList<>();
+        copia.addAll(classes);
 
-        List<User> copia = new ArrayList<>();
-        copia.addAll(dao.getUsuarios());
-//        Log.i("copia",copia.toString());
+        classAdapter.removeAll();
 
-
-
-        for (int i=0; i<copia.size();i++) {
-            if (copia.get(i).getName().contains(input)){
-                users_filtered.add(copia.get(i));
-                userAdapter.add(copia.get(i));
-            } else {
-                userAdapter.remove(copia.get(i));
+        if (!input.equals("")) {
+            for (int i=0; i < copia.size(); i++){
+                Log.i("i",String.valueOf(i));
+                if (copia.get(i).getName().toLowerCase().contains(input)){
+                    classAdapter.add(copia.get(i));
+                }
             }
+        } else {
+            classAdapter.setClasses(dao.getClasses());
         }
-        return users_filtered;
     }
 
-    public void updateList(List<User> result, String string) {
-        //((TextView) findViewById(R.id.sample_output)).setText("");
+    private void updateProfs(List<User> usuarios, String input) {
         List<User> copia = new ArrayList<User>();
-        copia.addAll(dao.getUsuarios());
+        copia.addAll(usuarios);
 
-//        Log.i("add", onlyAdd.toString());
         userAdapter.removeAll();
-        Log.i("userAdapter", userAdapter.getUsuarios().toString());
 
-        for (int i=0; i < copia.size(); i++){
-            Log.i("i",String.valueOf(i));
-            if (copia.get(i).getName().toLowerCase().contains(string)){
-                userAdapter.add(copia.get(i));
+        if (!input.equals("")) {
+            for (int i = 0; i < copia.size(); i++) {
+                Log.i("i", String.valueOf(i));
+                if (copia.get(i).getName().toLowerCase().contains(input)) {
+                    userAdapter.add(copia.get(i));
+                }
             }
+        } else {
+            userAdapter.setUsuarios(dao.getUsuarios());
         }
+    }
+
+
+//    public void updateList(List<User> result, String string) {
+//        //((TextView) findViewById(R.id.sample_output)).setText("");
+//        List<User> copia = new ArrayList<User>();
+//        copia.addAll(dao.getUsuarios());
+//
+////        Log.i("add", onlyAdd.toString());
+//        userAdapter.removeAll();
+//        Log.i("userAdapter", userAdapter.getUsuarios().toString());
+//
+//        for (int i=0; i < copia.size(); i++){
+//            Log.i("i",String.valueOf(i));
+//            if (copia.get(i).getName().toLowerCase().contains(string)){
+//                userAdapter.add(copia.get(i));
+//            }
+//        }
 
 //        List<User> copiaClasses = new ArrayList<User>();
 //        copiaClasses.addAll(dao.getClasses());
@@ -259,7 +273,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 //        for (User item : onlyAdd) {
 //            userAdapter.add(userAdapter.getItemCount(), item);
 //        }
-    }
+//    }
 
 //    private class TimeOut extends AsyncTask<String, Void, String> {
 //        @Override
@@ -283,8 +297,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 ////                new TimeOut().execute("1000");
 ////        }
 //        }
-//
-//
 //    }
 
 

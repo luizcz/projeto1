@@ -4,6 +4,7 @@ package projetoum.equipe.iteach.adapter;
  * Created by treinamento-asus on 02/02/2017.
  */
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,20 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.DAO;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private List<User> usuarios = new ArrayList<>();
+    private List<User> usuarios;
+    private DAO dao;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserAdapter(List<User> usuarios) {
-        this.usuarios = usuarios;
+    public UserAdapter(Context ctx) {
+        dao = DAO.getInstace(ctx);
+
+        this.usuarios =  new ArrayList<>();
+        this.usuarios.addAll(dao.getUsuarios());
     }
 
 
@@ -46,20 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.membroSince.setText(cal.get(Calendar.MONTH) + " de " + cal.get(Calendar.YEAR));
     }
 
-//    // Replace the contents of a view (invoked by the layout manager)
-//    @Override
-//    public void onBindViewHolder(UserViewHolder holder, final int position) {
-//        // - get element from your dataset at this position
-//        // - replace the contents of the view with that element
-//
-//        holder.nomeUser.setText(usuarios.get(position).getName());
-//
-//
-//            //Log.d("test",mDataset.get(position).getNomeCursivo()+ " image id "+mDataset.get(position).getResId());
-//    }
 
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return usuarios.size();
@@ -92,6 +86,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
     public List<User> getUsuarios() {
         return usuarios;
+    }
+
+    public void setUsuarios(List<User> usuarios){
+        this.usuarios.addAll(usuarios);
     }
 
     public void add(User item) {

@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,13 +15,18 @@ import java.util.Random;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.DAO;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
 
     private List<ClassObject> classes = new ArrayList<>();
+    private DAO dao;
 
-    public ClassAdapter(List<ClassObject> classes) {
-        this.classes = classes;
+    public ClassAdapter(Context ctx) {
+        dao = DAO.getInstace(ctx);
+
+        this.classes = new ArrayList<>();
+        this.classes.addAll(dao.getClasses());
     }
 
 
@@ -43,11 +49,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         return classes.size();
     }
 
-//    public void addClass(ClassObject classObject) {
-//        classes.add(classObject);
-//        notifyDataSetChanged();
-//    }
-
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
@@ -66,9 +67,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         }
     }
 
+    public void setClasses(List<ClassObject> classes){
+        removeAll();
+        this.classes.addAll(classes);
+        notifyDataSetChanged();
+    }
+
     public void add(ClassObject item) {
         classes.add(item);
-//        notifyItemInserted(position);
         notifyDataSetChanged();
     }
 
