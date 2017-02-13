@@ -317,9 +317,11 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-                ((TextView) findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-                ((TextView) findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) findViewById(R.id.img)));
+                View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+
+                ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
+                ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
+                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.img)));
             } else {
                 mStatusTextView.setText("signed_out");
                 findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
