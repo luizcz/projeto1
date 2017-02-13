@@ -141,24 +141,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-//            @Override
-//            public boolean onQueryTextSubmit(String string) {
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("class");
-//                ref.orderByChild("name_lower").startAt(string.toLowerCase()).addChildEventListener(new ChildEventListener() {
-//                    @Override
-//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                        Log.e("Qualquercoisa", "qualquercoisa");
-//                        ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-//                        searchAdapter.addClass(classObject);
-//                    }
-//
-//                    //                new TimeOut().execute("1000");
-//                    updateList(dao.getUsuarios(), input);
-//
-//                    searchView.clearFocus();
-//                    return true;
-//                }
-
             @Override
             public boolean onQueryTextSubmit(String input) {
                 if (currentFragment == searchProfsFragment){
@@ -235,73 +217,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-
-//    public void updateList(List<User> result, String string) {
-//        //((TextView) findViewById(R.id.sample_output)).setText("");
-//        List<User> copia = new ArrayList<User>();
-//        copia.addAll(dao.getUsuarios());
-//
-////        Log.i("add", onlyAdd.toString());
-//        userAdapter.removeAll();
-//        Log.i("userAdapter", userAdapter.getUsuarios().toString());
-//
-//        for (int i=0; i < copia.size(); i++){
-//            Log.i("i",String.valueOf(i));
-//            if (copia.get(i).getName().toLowerCase().contains(string)){
-//                userAdapter.add(copia.get(i));
-//            }
-//        }
-
-//        List<User> copiaClasses = new ArrayList<User>();
-//        copiaClasses.addAll(dao.getClasses());
-//
-////        Log.i("add", onlyAdd.toString());
-//        userAdapter.removeAll();
-//        Log.i("userAdapter", userAdapter.getUsuarios().toString());
-//
-//        for (int i=0; i < copiaClasses.size(); i++){
-//            Log.i("i",String.valueOf(i));
-//            if (copiaClasses.get(i).getName().toLowerCase().contains(string)){
-//                userAdapter.add(copiaClasses.get(i));
-//            }
-//        }
-//        for (User item : onlyRemove) {
-//            if (onlyAdd.contains(item)) onlyAdd.remove(item);
-//            else
-//                userAdapter.remove(item);
-//        }
-//        for (User item : onlyAdd) {
-//            userAdapter.add(userAdapter.getItemCount(), item);
-//        }
-//    }
-
-//    private class TimeOut extends AsyncTask<String, Void, String> {
-//        @Override
-//        protected String doInBackground(String... time) {
-//            int t = Integer.parseInt(time[0]);
-//            while (t > 0) t--;
-//            return "";
-//        }
-//
-//        // onPostExecute displays the results of the AsyncTask.
-//        @Override
-//        protected void onPostExecute(String result) {
-////            Log.i("httpReady", String.valueOf(httpHandler.isReady()));
-////            if (httpHandler.isReady()) {
-//            usuarios = getUsers(dao.getUsuarios(), result);
-//
-////                handleQuery(search_input);
-////                progressBar.setVisibility(View.INVISIBLE);
-////            }
-////            else
-////                new TimeOut().execute("1000");
-////        }
-//        }
-//    }
-
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -356,34 +271,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             default:
                 break;
         }
-
-//        if (id == R.id.nav_feed) {
-//            startActivity(new Intent(this,MainActivity.class));
-//        } else if (id == R.id.nav_profile) {
-//            startActivity(new Intent(this,PerfilActivity.class));
-//
-//        } else if (id == R.id.nav_my_class) {
-//            //startActivity(new Intent(this,CourseActivity.class));
-//
-//        } else if (id == R.id.nav_options) {
-//            // startActivity(new Intent(this,OptionsActivity.class));
-//
-//        } else if (id == R.id.nav_class) {
-//            getSupportActionBar().setTitle("Busca Aulas");
-//            if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
-//                fragmentTransaction.hide(currentFragment);
-//                fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
-//                fragmentTransaction.show(searchAulasFragment).commit();
-//            } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
-//                fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
-//            }
-//            currentFragment = searchAulasFragment;
-//            lastFragment = R.id.nav_class;
-//
-//        } else if (id == R.id.nav_teacher) {
-//           // startActivity(new Intent(this,SearchActivity.class));
-//
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

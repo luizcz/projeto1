@@ -59,14 +59,6 @@
         android:layout_marginBottom="30dp" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/put_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Put User"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <android.support.v7.widget.AppCompatButton
         android:id="@+id/put"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,14 +76,5 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/sign_in_button"
         android:layout_toEndOf="@+id/sign_in_button" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pesquisar"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/sign_in_button"/>
-
 
 </RelativeLayout>

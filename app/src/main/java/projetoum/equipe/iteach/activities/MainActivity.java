@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_feed);
 
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();
         dao = DAO.getInstace(updateUI, this);
@@ -82,8 +81,6 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
         findViewById(R.id.put).setOnClickListener(this);
-        findViewById(R.id.put_user).setOnClickListener(this);
-        findViewById(R.id.search_button).setOnClickListener(this);
         findViewById(R.id.bt_edt_perfil).setOnClickListener(this);
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
@@ -221,17 +218,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.put:
                 dao.fillFeed();
-            case R.id.put_user:
-                dao.findClassByName("Aula de ingles I", new ICallback<String>() {
-                    @Override
-                    public void execute(String param) {
-                    }
-                });
-
-                break;
-            case R.id.search_button:
-                startActivity(new Intent(this, SearchActivity.class));
-                break;
             case R.id.bt_edt_perfil:
                 startActivity(new Intent(this, CadastroActivity.class));
                 finish();
