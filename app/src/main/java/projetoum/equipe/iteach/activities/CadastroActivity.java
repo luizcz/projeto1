@@ -23,7 +23,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class CadastroActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+public class CadastroActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private DAO dao;
     User usuarioAtual;
@@ -41,7 +41,7 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_cadastro);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
+        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -53,8 +53,7 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
-
+        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
 
         mContext = this;
@@ -68,25 +67,24 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         dao = DAO.getInstace(mContext);
 
 
-
-        ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-        ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.img)));
+        ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
+        ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.img)));
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
                 usuarioAtual = param;
-                if(usuarioAtual.getName() != null){
+                if (usuarioAtual.getName() != null) {
                     edtNome.setText(usuarioAtual.getName());
                 }
-                if(usuarioAtual.getTelefone() != null){
+                if (usuarioAtual.getTelefone() != null) {
                     edtTelefone.setText(usuarioAtual.getTelefone());
                 }
-                if(usuarioAtual.getLocal() != null){
+                if (usuarioAtual.getLocal() != null) {
                     edtLocal.setText(usuarioAtual.getLocal());
                 }
-                if(usuarioAtual.getBio() != null){
+                if (usuarioAtual.getBio() != null) {
                     edtBio.setText(usuarioAtual.getBio());
                 }
             }
@@ -96,35 +94,34 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         btProximo.setOnClickListener(this);
 
 
-
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.bt_salvar_perfil){
+        if (v.getId() == R.id.bt_salvar_perfil) {
             carregarDadosUsuario();
             usuarioAtual.setFirstTime(false);
             dao.updateUser(usuarioAtual, new ICallback() {
                 @Override
                 public void execute(Object param) {
-                    startActivity(new Intent(CadastroActivity.this , MainActivity.class));
+                    startActivity(new Intent(CadastroActivity.this, MainActivity.class));
                     finish();
                 }
             });
         }
     }
 
-    private void carregarDadosUsuario(){
-        if(edtNome.getText() != null){
+    private void carregarDadosUsuario() {
+        if (edtNome.getText() != null) {
             usuarioAtual.setName(edtNome.getText().toString());
         }
-        if(edtTelefone.getText() != null){
+        if (edtTelefone.getText() != null) {
             usuarioAtual.setTelefone(edtTelefone.getText().toString());
         }
-        if(edtLocal.getText() != null){
+        if (edtLocal.getText() != null) {
             usuarioAtual.setLocal(edtLocal.getText().toString());
         }
-        if(edtBio.getText() != null){
+        if (edtBio.getText() != null) {
             usuarioAtual.setBio(edtBio.getText().toString());
         }
     }
@@ -137,7 +134,7 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         int id = item.getItemId();
 
         if (id == R.id.nav_feed) {
-            startActivity(new Intent(this,MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_profile) {
             //startActivity(new Intent(this,CadastroActivity.class));
 
@@ -148,10 +145,15 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
             // startActivity(new Intent(this,OptionsActivity.class));
 
         } else if (id == R.id.nav_class) {
-            startActivity(new Intent(this,SearchActivity.class));
+            startActivity(new Intent(this, SearchActivity.class));
 
         } else if (id == R.id.nav_teacher) {
-            startActivity(new Intent(this,SearchActivity.class));
+            startActivity(new Intent(this, SearchActivity.class));
+
+        } else if (id == R.id.nav_logout) {
+            dao.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
 
         }
 

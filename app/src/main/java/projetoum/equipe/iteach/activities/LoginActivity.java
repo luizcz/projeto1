@@ -171,7 +171,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+            Log.i("Login",acct.getDisplayName());
             dao.firebaseAuthWithGoogle(acct);
             dao.getCurrentUser(new ICallback<User>() {
                 @Override
@@ -186,7 +187,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         } else {
-            Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
+            Log.i("Login","login fail");
+
         }
     }
 

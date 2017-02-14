@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
         dao = DAO.getInstace(this);
         usuarios = dao.getUsuarios();
@@ -103,14 +103,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         classAdapter = new ClassAdapter(getBaseContext());
         mRecyclerView.setAdapter(classAdapter);
 
-        ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-        ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.img)));
+        ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
+        ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.img)));
 
         setUpFragments();
     }
 
-    private void setUpFragments(){
+    private void setUpFragments() {
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
@@ -150,9 +150,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public boolean onQueryTextSubmit(String input) {
-                if (currentFragment == searchProfsFragment){
+                if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
-                } else if (currentFragment == searchAulasFragment){
+                } else if (currentFragment == searchAulasFragment) {
                     updateAulas(dao.getClasses(), input);
                 }
                 searchView.clearFocus();
@@ -162,9 +162,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             @Override
             public boolean onQueryTextChange(String input) {
-                if (currentFragment == searchProfsFragment){
+                if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
-                } else if (currentFragment == searchAulasFragment){
+                } else if (currentFragment == searchAulasFragment) {
                     updateAulas(dao.getClasses(), input);
                 }
                 return true;
@@ -195,9 +195,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         classAdapter.removeAll();
 
         if (!input.equals("")) {
-            for (int i=0; i < copia.size(); i++){
-                Log.i("i",String.valueOf(i));
-                if (copia.get(i).getName().toLowerCase().contains(input)){
+            for (int i = 0; i < copia.size(); i++) {
+                Log.i("i", String.valueOf(i));
+                if (copia.get(i).getName().toLowerCase().contains(input)) {
                     classAdapter.add(copia.get(i));
                 }
             }
@@ -235,18 +235,25 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             id = lastFragment;
         }
 
-        switch (id){
+        switch (id) {
             case R.id.nav_feed:
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(this,PerfilActivity.class));
+                startActivity(new Intent(this, PerfilActivity.class));
             case R.id.nav_my_class:
                 //startActivity(new Intent(this,CourseActivity.class));
                 break;
             case R.id.nav_options:
                 // startActivity(new Intent(this,OptionsActivity.class));
                 break;
+            case R.id.nav_logout:
+                dao.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+
+                break;
+
             case R.id.nav_class:
                 getSupportActionBar().setTitle("Busca Aulas");
                 if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
@@ -260,7 +267,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 lastFragment = R.id.nav_class;
                 mRecyclerView.setAdapter(classAdapter);
                 break;
-                // startActivity(new Intent(this,SearchActivity.class));
+            // startActivity(new Intent(this,SearchActivity.class));
             case R.id.nav_teacher:
                 getSupportActionBar().setTitle("Busca Professores");
                 if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
