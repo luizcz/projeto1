@@ -5,6 +5,9 @@ package projetoum.equipe.iteach.adapter;
  */
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_professor, parent, false);
+
         return new UserViewHolder(v);
     }
 
@@ -74,10 +78,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         private TextView numAulas;
         private TextView bio;
         private TextView membroSince;
+        CardView cv;
 
         UserViewHolder(View v) {
             super(v);
 
+            cv = (CardView)itemView.findViewById(R.id.card_professor);
+
+            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
+            }
             nomeUser = (TextView) v.findViewById(R.id.prof_name);
             numAulas = (TextView) v.findViewById(R.id.num_aulas);
             bio = (TextView) v.findViewById(R.id.aula_desc);

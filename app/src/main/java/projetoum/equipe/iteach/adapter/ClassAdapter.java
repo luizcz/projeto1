@@ -2,6 +2,8 @@ package projetoum.equipe.iteach.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,6 +59,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.aula_prof_name.setText(classes.get(position).getTeacherId());
         holder.aula_desc.setText(classes.get(position).getName());
         holder.aula_valor.setText("R$ " + String.valueOf((new Random()).nextInt(100)) + ",00");
+
     }
 
     @Override
@@ -76,6 +79,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             super(itemView);
 
             cv = (CardView)itemView.findViewById(R.id.card_aula);
+            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
+            }
             aula_dist = (TextView)itemView.findViewById(R.id.aula_dist);
             aula_prof_name = (TextView)itemView.findViewById(R.id.aula_prof_name);
             aula_desc = (TextView)itemView.findViewById(R.id.aula_desc);
