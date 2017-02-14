@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="projetoum.equipe.iteach.activities.VisualizarAulaActivity"
     tools:showIn="@layout/activity_visualizar_aula">
@@ -16,47 +17,54 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/aula_portugues"
                 android:id="@+id/imageView4"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:adjustViewBounds="true" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_horizontal">
+                android:gravity="center_vertical|center_horizontal">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/aula_portugues"
-                    android:id="@+id/imageView5"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
                     android:layout_weight="1"
-                    android:adjustViewBounds="false" />
+                    android:src="@drawable/aula_portugues"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
 
                 <TextView
                     android:text="Professora Helena"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/aula_nome_professor"
+                    android:layout_weight="1"
                     android:textAlignment="center"
                     android:textStyle="normal|bold"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white" />
 
                 <RatingBar
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/aula_rating"
+                    android:layout_weight="1"
                     android:isIndicator="false"
-                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                    style="@android:style/Widget.DeviceDefault.RatingBar"
                     android:numStars="5"
-                    android:rating="0" />
+                    android:rating="2"
+                    android:saveEnabled="false" />
             </LinearLayout>
 
         </LinearLayout>
@@ -65,7 +73,9 @@
             android:text="Vagas ocupadas:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_vagas" />
+            android:id="@+id/aula_vagas"
+            android:textColor="@android:color/white"
+            android:paddingTop="10dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -75,19 +85,26 @@
             android:text="Valor:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_valor" />
+            android:id="@+id/aula_valor"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:text="Data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_data" />
+            android:id="@+id/aula_data"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:text="Horario:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_horario" />
+            android:id="@+id/aula_horario"
+            android:textColor="@android:color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <TextView
             android:text="Conteúdo da Aula"
@@ -95,13 +112,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/aula_conteudo_title"
             android:textAlignment="center"
-            android:textStyle="normal|bold" />
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:text="Preposições\nUso de Crase\nVerbos Irregulares"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_conteudo_body" />
+            android:id="@+id/aula_conteudo_body"
+            android:textColor="@android:color/white" />
 
         <Space
             android:layout_width="match_parent"
@@ -113,20 +132,29 @@
             android:layout_height="wrap_content"
             android:id="@+id/aula_local"
             android:textAlignment="center"
-            android:textStyle="normal|bold" />
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:text="Avenida Marechal Floriano Peixoto, S/N - Centro, Campina Grande - PB, 58400-165"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/aula_endereco"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
 
-        <ImageView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/aula_portugues"
-            android:id="@+id/aula_mapa" />
+            android:layout_height="200dp">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/map"
+                tools:context=".MapsActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -149,14 +177,16 @@
                 android:scaleType="fitEnd"
                 android:layout_weight="1"
                 android:cropToPadding="false"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:tint="@android:color/white" />
 
             <TextView
                 android:text="3,7 Km"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/aula_mapa_dist"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
@@ -176,7 +206,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="40dp" />
 
     </LinearLayout>
 
