@@ -101,7 +101,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         userAdapter = new UserAdapter(getBaseContext());
         classAdapter = new ClassAdapter(getBaseContext());
-        mRecyclerView.setAdapter(classAdapter);
+
+        if (getIntent().getStringExtra("busca").equals("aula")){
+            mRecyclerView.setAdapter(classAdapter);
+        } else {
+            mRecyclerView.setAdapter(userAdapter);
+        }
 
         ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
@@ -114,7 +119,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
-        currentFragment = searchAulasFragment;
+        if (getIntent().getStringExtra("busca").equals("aula")){
+            currentFragment = searchAulasFragment;
+        } else {
+            currentFragment = searchProfsFragment;
+        }
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

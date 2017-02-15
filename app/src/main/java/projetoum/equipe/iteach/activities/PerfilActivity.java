@@ -142,10 +142,14 @@ public class PerfilActivity extends AppCompatActivity
                 // startActivity(new Intent(this,OptionsActivity.class));
 
             } else if (id == R.id.nav_class) {
-                startActivity(new Intent(this, SearchActivity.class));
+                Intent intent = new Intent(this, SearchActivity.class);
+                intent.putExtra("busca","aula");
+                startActivity(intent);
 
             } else if (id == R.id.nav_teacher) {
-                startActivity(new Intent(this, SearchActivity.class));
+                Intent intent = new Intent(this, SearchActivity.class);
+                intent.putExtra("busca","user");
+                startActivity(intent);
 
             }  else if (id == R.id.nav_logout) {
                 dao.signOut();
