@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
-import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -91,7 +90,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
             nomeUser = (TextView) v.findViewById(R.id.prof_name);
             numAulas = (TextView) v.findViewById(R.id.num_aulas);
-            bio = (TextView) v.findViewById(R.id.aula_desc);
+            bio = (TextView) v.findViewById(R.id.card_aula_desc);
             membroSince = (TextView) v.findViewById(R.id.data_membro_desde);
         }
     }

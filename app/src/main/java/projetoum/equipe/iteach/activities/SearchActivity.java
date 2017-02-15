@@ -24,11 +24,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,8 +37,6 @@ import projetoum.equipe.iteach.adapter.UserAdapter;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
-
-import static projetoum.equipe.iteach.R.id.map;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -110,7 +103,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.img)));
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
 
         setUpFragments();
     }

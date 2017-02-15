@@ -37,7 +37,7 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img"
+                android:id="@+id/card_aula_img"
                 android:src="@drawable/logo"
                 android:scaleType="fitCenter"
                 app:riv_corner_radius="30dip"

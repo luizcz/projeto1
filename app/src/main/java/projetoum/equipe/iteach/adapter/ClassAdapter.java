@@ -16,10 +16,8 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
-import projetoum.equipe.iteach.activities.CadastroActivity;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.models.ClassObject;
-import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
@@ -50,7 +48,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
-                intent.putExtra("aula", "Nome da Aula");
+                intent.putExtra("aula_id", "Nome da Aula");
                 v.getContext().startActivity(intent);
             }
         });
@@ -83,10 +81,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
             }
-            aula_dist = (TextView)itemView.findViewById(R.id.aula_dist);
-            aula_prof_name = (TextView)itemView.findViewById(R.id.aula_prof_name);
-            aula_desc = (TextView)itemView.findViewById(R.id.aula_desc);
-            aula_valor = (TextView)itemView.findViewById(R.id.aula_valor);
+            aula_dist = (TextView)itemView.findViewById(R.id.card_aula_dist);
+            aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
+            aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
+            aula_valor = (TextView)itemView.findViewById(R.id.card_aula_valor);
         }
     }
 

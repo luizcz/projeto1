@@ -13,8 +13,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -60,13 +59,9 @@
                 <RatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/aula_rating"
-                    android:layout_weight="1"
-                    android:isIndicator="false"
-                    style="@android:style/Widget.DeviceDefault.RatingBar"
-                    android:numStars="5"
-                    android:rating="2"
-                    android:saveEnabled="false" />
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:rating="4.5"
+                    android:isIndicator="true"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -87,7 +82,7 @@
             android:text="Valor:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_valor"
+            android:id="@+id/card_aula_valor"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -132,7 +127,7 @@
             android:text="Local"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/aula_local"
+            android:id="@+id/aula_local_title"
             android:textAlignment="center"
             android:textStyle="normal|bold"
             android:textColor="@android:color/white" />
@@ -153,7 +148,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/map"
+                android:id="@+id/aula_mapa"
                 tools:context=".MapsActivity"
                 android:name="com.google.android.gms.maps.SupportMapFragment" />
         </LinearLayout>

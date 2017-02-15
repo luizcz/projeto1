@@ -34,15 +34,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:id="@+id/img" />
+                android:id="@+id/card_aula_img" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"                    android:textColor="@android:color/white"
-
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:text="Prof. Pasquale Neto"
                 android:id="@+id/prof_name"
-                android:layout_alignTop="@+id/img"
+                android:layout_alignTop="@+id/card_aula_img"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="15dp"
@@ -52,10 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mussum Ipsum, cacilds vidis litro abertis. Detraxit consequat et quo num tendi nada. Não sou faixa ... "
-                android:id="@+id/aula_desc"
-                android:layout_alignBottom="@+id/img"                    android:textColor="@android:color/white"
-
-                android:layout_toRightOf="@+id/img"
+                android:id="@+id/card_aula_desc"
+                android:layout_alignBottom="@+id/card_aula_img"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/card_aula_img"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/prof_name"
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/aula_desc"
+                android:layout_below="@+id/card_aula_desc"
                 android:layout_margin="5dp"
                 android:orientation="horizontal">
 
@@ -150,6 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="?android:attr/ratingBarStyleSmall"
+                        android:id="@+id/aula_rating"
                         android:rating="4.5"
                         android:isIndicator="true"
                         />

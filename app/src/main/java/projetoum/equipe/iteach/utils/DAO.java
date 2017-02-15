@@ -53,7 +53,6 @@ public class DAO implements IRemote {
     private DAO() {
         mAuth = FirebaseAuth.getInstance();
 
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -84,14 +83,8 @@ public class DAO implements IRemote {
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) {}
                     });
-
-
-
-
                 } else {
                     // User is signed out
                     Log.d("FireBase", "onAuthStateChanged:signed_out");
@@ -109,7 +102,6 @@ public class DAO implements IRemote {
         if (instance == null) {
             instance = new DAO();
         }
-
 
         instance.setCallback(callback);
         instance.setContext(ctx);
@@ -173,7 +165,6 @@ public class DAO implements IRemote {
 
     public FirebaseUser getFireBaseUser() {
 
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //        if (user != null) {
 //            // Name, email address, and profile photo Url
@@ -187,8 +178,6 @@ public class DAO implements IRemote {
 //            String uid = user.getUid();
 //        }
         return user;
-
-
     }
 
     public void loadFakeProfiles(){
@@ -449,8 +438,6 @@ public class DAO implements IRemote {
         FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
 
-
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -470,8 +457,6 @@ public class DAO implements IRemote {
     public void deleteClass(String classID, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classID);
-
-
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -522,7 +507,6 @@ public class DAO implements IRemote {
 
             }
         });
-
     }
 
     public boolean userFirsTime(){
@@ -548,10 +532,7 @@ public class DAO implements IRemote {
 
                 }
             });
-
-
         }
-
         // ...
         return resultado;
     }

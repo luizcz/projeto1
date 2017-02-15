@@ -24,24 +24,24 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/aula_desc"
+                android:id="@+id/card_aula_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/img"
+                android:layout_alignBottom="@+id/card_aula_img"
 
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="5dp"
-                android:layout_toEndOf="@+id/img"
-                android:layout_toRightOf="@+id/img"
+                android:layout_toEndOf="@+id/card_aula_img"
+                android:layout_toRightOf="@+id/card_aula_img"
                 android:text="Aula de Português"
                 android:textColor="@android:color/white"
                 android:textStyle="normal|bold" />
 
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/card_aula_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
@@ -56,10 +56,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/img"
+                android:layout_below="@+id/card_aula_img"
                 android:layout_marginLeft="3dp"
-                android:layout_toLeftOf="@+id/aula_desc"
-                android:layout_toStartOf="@+id/aula_desc"
+                android:layout_toLeftOf="@+id/card_aula_desc"
+                android:layout_toStartOf="@+id/card_aula_desc"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -76,7 +76,7 @@
                     android:tint="@android:color/white" />
 
                 <TextView
-                    android:id="@+id/aula_dist"
+                    android:id="@+id/card_aula_dist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/linearLayout"
@@ -91,9 +91,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/aula_desc"
-                android:layout_alignStart="@+id/aula_desc"
-                android:layout_below="@+id/img"
+                android:layout_alignLeft="@+id/card_aula_desc"
+                android:layout_alignStart="@+id/card_aula_desc"
+                android:layout_below="@+id/card_aula_img"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -105,7 +105,7 @@
                     app:srcCompat="@drawable/ic_professor" />
 
                 <TextView
-                    android:id="@+id/aula_prof_name"
+                    android:id="@+id/card_aula_prof_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
@@ -115,7 +115,7 @@
                     android:textColor="@android:color/white" />
 
                 <TextView
-                    android:id="@+id/aula_valor"
+                    android:id="@+id/card_aula_valor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"

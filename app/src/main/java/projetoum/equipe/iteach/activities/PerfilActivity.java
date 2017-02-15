@@ -9,13 +9,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -62,7 +60,7 @@ public class PerfilActivity extends AppCompatActivity
 
         ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.img)));
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
 
 
         TextView name = (TextView) findViewById(R.id.label_name);
@@ -102,7 +100,7 @@ public class PerfilActivity extends AppCompatActivity
                 String facebookUserId = dao.getFireBaseUser().getUid();
 
                 String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
-                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.img));
+                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
 
 
             } else if (firstProvider.equals("google.com")) {
@@ -206,7 +204,7 @@ public class PerfilActivity extends AppCompatActivity
                 // Get account information
                 String photoUrl = acct.getPhotoUrl().toString();
 
-                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.img));
+                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
 
 
             }
