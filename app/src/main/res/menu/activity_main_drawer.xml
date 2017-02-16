@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+
+    <group android:id="@+id/g1" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_feed"
             android:icon="@drawable/ic_feed"
@@ -18,7 +19,10 @@
             android:id="@+id/nav_options"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configurações" />
+
     </group>
+
+
 
     <item android:title="Buscar">
         <menu>
@@ -32,5 +36,18 @@
                 android:title="Professores" />
         </menu>
     </item>
+
+
+    <group android:id="@+id/g2" android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit"
+            android:title="Log out" />
+    </group>
+
+
+
+
 
 </menu>

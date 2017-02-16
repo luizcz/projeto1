@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="projetoum.equipe.iteach.activities.VisualizarAulaActivity"
+    tools:showIn="@layout/activity_visualizar_aula">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/aula_portugues"
+                android:id="@+id/imageView4"
+                android:layout_weight="1"
+                android:adjustViewBounds="true" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/aula_portugues"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
+
+                <TextView
+                    android:text="Professora Helena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/aula_nome_professor"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textStyle="normal|bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white" />
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:rating="4.5"
+                    android:isIndicator="true"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="Vagas ocupadas:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_vagas"
+            android:textColor="@android:color/white"
+            android:paddingTop="10dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:text="Valor:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_aula_valor"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:text="Data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_data"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:text="Horario:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_horario"
+            android:textColor="@android:color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:text="Conteúdo da Aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_conteudo_title"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:text="Preposições\nUso de Crase\nVerbos Irregulares"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_conteudo_body"
+            android:textColor="@android:color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:text="Local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_local_title"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:text="Avenida Marechal Floriano Peixoto, S/N - Centro, Campina Grande - PB, 58400-165"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_endereco"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/aula_mapa"
+                tools:context=".MapsActivity"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:src="@drawable/ic_pin"
+                android:id="@+id/aula_mapa_pin"
+                android:layout_alignBottom="@+id/linearLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:scaleType="fitEnd"
+                android:layout_weight="1"
+                android:cropToPadding="false"
+                android:layout_marginRight="5dp"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:text="3,7 Km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/aula_mapa_dist"
+                android:layout_weight="1"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="30dp" />
+
+        <Button
+            android:text="Participar da Aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_botao_participar"
+            android:textAlignment="center"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+
+
+
+
+</android.support.v4.widget.NestedScrollView>

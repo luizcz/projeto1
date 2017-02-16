@@ -29,7 +29,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
@@ -38,6 +38,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginActivity mContext;
     private CallbackManager mCallbackManager;
     private LoginButton loginButton;
+    private View btGoogle;
+    private View btFb;
+    private View signinLabel;
+    private View progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         dao = DAO.getInstace(updateUI, this);
         mContext = this;
 
-        findViewById(R.id.bt_login_google).setOnClickListener(this);
-        findViewById(R.id.bt_login_face).setOnClickListener(this);
+        btGoogle = findViewById(R.id.bt_login_google);
+        btGoogle.setOnClickListener(this);
+        btGoogle.setVisibility(View.INVISIBLE);
+
+        btFb = findViewById(R.id.bt_login_face);
+        btFb.setOnClickListener(this);
+        btFb.setVisibility(View.INVISIBLE);
+
+        signinLabel = findViewById(R.id.signin_label);
+        signinLabel.setVisibility(View.INVISIBLE);
+
+        progress = findViewById(R.id.progressBar2);
+
 
 
         mCallbackManager = CallbackManager.Factory.create();
@@ -64,10 +79,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {
-                        if (param.getFirstTime() == null || param.getFirstTime()){
+                        if (param.getFirstTime() == null || param.getFirstTime()) {
                             startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
-                        }else
-                            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                        } else
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
                 });
@@ -156,24 +171,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+            Log.i("Login",acct.getDisplayName());
             dao.firebaseAuthWithGoogle(acct);
             dao.getCurrentUser(new ICallback<User>() {
                 @Override
                 public void execute(User param) {
-                    if (param.getFirstTime() == null || param.getFirstTime()){
+                    if (param.getFirstTime() == null || param.getFirstTime()) {
                         startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
-                    }else
-                        startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                    } else
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
             });
 
 
-
-
         } else {
-            Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
+            Log.i("Login","login fail");
+
         }
     }
 
@@ -226,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public class UpdateUI implements ICallback<Boolean>{
+    public class UpdateUI implements ICallback<Boolean> {
 
         @Override
         public void execute(Boolean param) {
@@ -235,26 +251,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (param) {
 //                findViewById(R.id.bt_login_google).setVisibility(View.GONE);
 //                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-                Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
 //                dao.getFeed(new ICallback<String>() {
 //                    @Override
 //                    public void execute(String param) {
 //                        feed.setText(param);
 //                    }
 //                });
-
+                Log.i("Login", "status: signed_in");
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {
-                        if (param.getFirstTime() == null || param.getFirstTime()){
+                        if (param.getFirstTime() == null || param.getFirstTime()) {
                             startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
-                        }else
-                            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+                        } else
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
                 });
             } else {
-                Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
+                Log.i("Login", "status: signed_out");
+                btGoogle.setVisibility(View.VISIBLE);
+                btFb.setVisibility(View.VISIBLE);
+                signinLabel.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
 
 //                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
 //                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);

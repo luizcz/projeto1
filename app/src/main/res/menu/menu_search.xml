@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:All4One="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/search"
         android:title="Pesquisar por livros"
         android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView"/>
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/item_filtros"
+        android:title="Filtros"
+        All4One:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_sort_by_size">
+
+        <menu android:id="@+id/menu_filtros">
+            <item
+                android:id="@+id/alfa"
+                android:title="Alfabeticamente"
+                android:icon="@drawable/ic_alpha"/>
+            <item
+                android:id="@+id/rating"
+                android:title="Avaliação"
+                android:icon="@drawable/ic_star"/>
+            <item
+                android:id="@+id/price"
+                android:title="Preço"
+                android:icon="@drawable/ic_money"/>
+            <item
+                android:id="@+id/dist"
+                android:title="Distância"
+                android:icon="@drawable/ic_rule"/>
+
+        </menu>
+    </item>
+
+
+
 
 </menu>

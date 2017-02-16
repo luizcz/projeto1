@@ -79,7 +79,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
         ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.img)));
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.card_aula_img)));
 
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);

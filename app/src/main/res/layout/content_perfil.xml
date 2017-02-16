@@ -15,7 +15,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -25,20 +28,20 @@
             android:layout_centerHorizontal="true">
 
             <TextView
-                android:text="Joao da Silva"
+                android:text="123456789012345678901"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/label_name"
                 android:textColor="@android:color/white"
-                android:textSize="48sp"
-                android:maxLength="14"
+                android:textSize="38sp"
+                android:maxLength="16"
                 android:gravity="center_horizontal" />
 
 
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img"
-                android:src="@drawable/logo"
+                android:id="@+id/card_aula_img"
+                android:src="@color/transparent"
                 android:scaleType="fitCenter"
                 app:riv_corner_radius="30dip"
                 app:riv_border_width="1dip"
@@ -51,12 +54,14 @@
                 app:riv_oval="false" />
 
             <RatingBar
+                style="@style/StarRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/ratingBar"
                 android:stepSize="0.5"
                 android:rating="4.5"
+                android:isIndicator="true"
                 android:numStars="5"/>
             <TextView
                 android:text="99 Avaliações"

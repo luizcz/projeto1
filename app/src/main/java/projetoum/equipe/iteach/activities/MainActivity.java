@@ -11,22 +11,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -49,12 +44,9 @@ public class MainActivity extends AppCompatActivity
     private static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView mStatusTextView;
-    private TextView feed;
     private DAO dao;
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
-    private LoginButton loginButton;
     private NavigationView navigationView;
 
     @Override
@@ -74,44 +66,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_feed);
 
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();
         dao = DAO.getInstace(updateUI, this);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_and_disconnect).setOnClickListener(this);
-        findViewById(R.id.put).setOnClickListener(this);
-        findViewById(R.id.put_user).setOnClickListener(this);
-        findViewById(R.id.search_button).setOnClickListener(this);
-        findViewById(R.id.bt_edt_perfil).setOnClickListener(this);
-        findViewById(R.id.bt_cadastro_aula).setOnClickListener(this);
 
-        mStatusTextView = (TextView) findViewById(R.id.txt);
-        feed = (TextView) findViewById(R.id.feed);
 
         mCallbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("Facebook", "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("Facebook", "facebook:onCancel");
-                // ...
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("Facebook", "facebook:onError", error);
-                // ...
-            }
-        });
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -175,10 +136,20 @@ public class MainActivity extends AppCompatActivity
             // startActivity(new Intent(this,OptionsActivity.class));
 
         } else if (id == R.id.nav_class) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("busca","aula");
+            startActivity(intent);
 
         } else if (id == R.id.nav_teacher) {
-            startActivity(new Intent(this, SearchActivity.class));
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("busca","user");
+            startActivity(intent);
+
+        }
+        else if (id == R.id.nav_logout) {
+            dao.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
 
         }
 
@@ -212,7 +183,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_in_button:
+          /*  case R.id.sign_in_button:
                 signIn();
                 break;
             case R.id.sign_out_and_disconnect:
@@ -222,24 +193,10 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.put:
                 dao.fillFeed();
-            case R.id.put_user:
-                dao.findClassByName("Aula de ingles I", new ICallback<String>() {
-                    @Override
-                    public void execute(String param) {
-                    }
-                });
-
-                break;
-            case R.id.search_button:
-                startActivity(new Intent(this, SearchActivity.class));
-                break;
             case R.id.bt_edt_perfil:
                 startActivity(new Intent(this, CadastroActivity.class));
                 finish();
-                break;
-            case R.id.bt_cadastro_aula:
-                startActivity(new Intent(this, CadastroAulaActivity.class));
-                break;
+                break;*/
         }
     }
 
@@ -270,7 +227,6 @@ public class MainActivity extends AppCompatActivity
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(acct.getDisplayName());
             dao.firebaseAuthWithGoogle(acct);
             //updateUI.execute(true);
         } else {
@@ -324,25 +280,14 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void execute(Boolean param) {
             if (param) {
-                findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-                findViewById(R.id.login_button).setVisibility(View.GONE);
-                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-                mStatusTextView.setText(dao.getFireBaseUser().getDisplayName());
-                dao.getFeed(new ICallback<String>() {
-                    @Override
-                    public void execute(String param) {
-                        feed.setText(param);
-                    }
-                });
 
-                ((TextView) findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-                ((TextView) findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) findViewById(R.id.img)));
+
+                View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+
+                ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
+                ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
+                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
             } else {
-                mStatusTextView.setText("signed_out");
-                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-                findViewById(R.id.login_button).setVisibility(View.VISIBLE);
-                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
     }
