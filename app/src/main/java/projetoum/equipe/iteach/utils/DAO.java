@@ -3,6 +3,7 @@ package projetoum.equipe.iteach.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -52,6 +54,7 @@ public class DAO implements IRemote {
 
     private DAO() {
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -189,11 +192,36 @@ public class DAO implements IRemote {
     }
 
     public void loadFakeClasses(){
+        DatabaseReference ref = mDatabase.getReference("class");
         classes = new ArrayList<>();
 
-        for (int i = 0; i<10; i++){
-            classes.add(new ClassObject("Classe " + String.valueOf(i)));
-        }
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classes.add(classObject);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public List<User> getUsuarios() {

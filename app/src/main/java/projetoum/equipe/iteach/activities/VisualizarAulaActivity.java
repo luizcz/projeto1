@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -19,6 +20,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.List;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -30,6 +41,8 @@ import static projetoum.equipe.iteach.R.id.aula_mapa;
 public class VisualizarAulaActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Toolbar toolbar;
     private DAO dao;
+    private String user;
+    private String class_object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +62,9 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         builder.setMessage("Deseja se increver nessa aula?");
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing but close the dialog
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+                DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
+                newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
                 dialog.dismiss();
             }
         });
@@ -86,7 +101,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void preencherDados() {
-        toolbar.setTitle("Reforço de Português");
+        toolbar.setTitle(getIntent().getExtras().getString("aula_id"));
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
 
