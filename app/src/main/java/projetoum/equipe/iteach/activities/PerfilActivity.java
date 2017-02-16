@@ -68,7 +68,7 @@ public class PerfilActivity extends AppCompatActivity
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
 
         name.setTypeface(giz);
-        name.setText(dao.getFireBaseUser().getDisplayName());
+        name.setText(pattern(dao.getFireBaseUser().getDisplayName()));
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
@@ -79,16 +79,14 @@ public class PerfilActivity extends AppCompatActivity
                     usuarioAtual.getRating()
                     edtNome.setText(usuarioAtual.getName());
                 }*/
-                if(usuarioAtual.getLocal() != null){
+                if (usuarioAtual.getLocal() != null) {
                     ((TextView) findViewById(R.id.label_local)).setText(usuarioAtual.getLocal());
                 }
-                if(usuarioAtual.getBio() != null){
+                if (usuarioAtual.getBio() != null) {
                     ((TextView) findViewById(R.id.label_info)).setText(usuarioAtual.getBio());
                 }
             }
         });
-
-
 
 
         for (UserInfo profile : dao.getFireBaseUser().getProviderData()) {
@@ -97,19 +95,35 @@ public class PerfilActivity extends AppCompatActivity
 
             if (firstProvider.equals("facebook.com")) {
 
-                String facebookUserId = dao.getFireBaseUser().getUid();
+                String facebookUserId = profile.getUid();
 
                 String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
+                System.out.println(photoUrl);
                 Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
 
 
             } else if (firstProvider.equals("google.com")) {
 
+
                 loadGoogleUserDetails();
             }
         }
 
+    }
+
+    private String pattern(String displayName) {
+        String pattern = "";
+        String[] split = displayName.split(" ");
+        pattern += " "+ split[0];
+        if (split.length > 1 && pattern.length() < 16) {
+            if (pattern.length() + split[1].length() <= 16) {
+                pattern += " "+ split[split.length - 1];
+            } else {
+                pattern += " "+ split[split.length - 1].substring(0, 1) + ".";
+            }
         }
+        return pattern;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,50 +135,49 @@ public class PerfilActivity extends AppCompatActivity
     }
 
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        @SuppressWarnings("StatementWithEmptyBody")
-        @Override
-        public boolean onNavigationItemSelected (MenuItem item){
-            // Handle navigation view item clicks here.
-            int id = item.getItemId();
+        if (id == R.id.nav_feed) {
+            finish();
+        } else if (id == R.id.nav_profile) {
+            //startActivity(new Intent(this, PerfilActivity.class));
 
-            if (id == R.id.nav_feed) {
-                finish();
-            } else if (id == R.id.nav_profile) {
-                //startActivity(new Intent(this, PerfilActivity.class));
+        } else if (id == R.id.nav_my_class) {
+            //startActivity(new Intent(this,CourseActivity.class));
 
-            } else if (id == R.id.nav_my_class) {
-                //startActivity(new Intent(this,CourseActivity.class));
+        } else if (id == R.id.nav_options) {
+            // startActivity(new Intent(this,OptionsActivity.class));
 
-            } else if (id == R.id.nav_options) {
-                // startActivity(new Intent(this,OptionsActivity.class));
+        } else if (id == R.id.nav_class) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("busca", "aula");
+            startActivity(intent);
+            finish();
 
-            } else if (id == R.id.nav_class) {
-                Intent intent = new Intent(this, SearchActivity.class);
-                intent.putExtra("busca","aula");
-                startActivity(intent);
-                finish();
+        } else if (id == R.id.nav_teacher) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("busca", "user");
+            startActivity(intent);
+            finish();
 
-            } else if (id == R.id.nav_teacher) {
-                Intent intent = new Intent(this, SearchActivity.class);
-                intent.putExtra("busca","user");
-                startActivity(intent);
-                finish();
+        } else if (id == R.id.nav_logout) {
+            dao.signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
 
-            }  else if (id == R.id.nav_logout) {
-                dao.signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-
-            }
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
-        private static final int RC_SIGN_IN = 8888;
+
+    private static final int RC_SIGN_IN = 8888;
 
     public void loadGoogleUserDetails() {
         try {
@@ -213,8 +226,8 @@ public class PerfilActivity extends AppCompatActivity
         }
     }
 
-    public void action(MenuItem item){
-        switch (item.getItemId()){
+    public void action(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.edit:
                 startActivity(new Intent(PerfilActivity.this, CadastroActivity.class));
                 break;
