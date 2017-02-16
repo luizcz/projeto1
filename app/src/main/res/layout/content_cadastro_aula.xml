@@ -60,6 +60,7 @@
             android:layout_below="@id/st_titulo"
             android:background="@drawable/border"
             android:padding="10dp"
+            android:maxLength="30"
             android:textColor="@color/cardview_light_background" />
 
 
@@ -83,6 +84,7 @@
             android:layout_below="@id/st_local_aula"
             android:background="@drawable/border"
             android:padding="10dp"
+            android:maxLines="3"
             android:textColor="@color/cardview_light_background" />
 
 

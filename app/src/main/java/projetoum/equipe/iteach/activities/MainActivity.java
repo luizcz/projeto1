@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +37,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.utils.DAO;
@@ -48,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private NavigationView navigationView;
+    private EditText edtt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +111,20 @@ public class MainActivity extends AppCompatActivity
             }
         });*/
 
+
+
+       /* edtt = (EditText) findViewById(R.id.edt_date);
+        edtt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("aaaaaaaaaaaaaaa");
+                new DatePickerDialog(MainActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });*/
 
     }
 
@@ -201,6 +223,31 @@ public class MainActivity extends AppCompatActivity
                 finish();
                 break;*/
         }
+    }
+
+    Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+
+    };
+
+
+
+    private void updateLabel() {
+
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        ((EditText)findViewById(R.id.edt_date)).setText(sdf.format(myCalendar.getTime()));
     }
 
 
