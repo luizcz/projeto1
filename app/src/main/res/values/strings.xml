@@ -24,6 +24,7 @@
     <string name="data">Data</string>
     <string name="tags">Tags (ex: artes, desenho,pintura)</string>
     <string name="botao_criar_aula">Criar Aula</string>
+    <string name="local_aula">Endereço da aula</string>
 
 
 

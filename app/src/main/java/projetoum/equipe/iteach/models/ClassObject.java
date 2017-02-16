@@ -1,5 +1,7 @@
 package projetoum.equipe.iteach.models;
 
+import android.net.Uri;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -22,6 +24,9 @@ public class ClassObject {
     private List<String> tags;
     private String name;
     private String id;
+    private String imagem ;
+    private String data;
+    private String subject;
 
     public ClassObject(String name) {
         this.name = name;
@@ -62,6 +67,9 @@ public class ClassObject {
         result.put("tags", tags);
         result.put("name", name);
         result.put("id", id);
+        result.put("data", data);
+        result.put("image", imagem);
+        result.put("subject", subject);
 
         return result;
     }
@@ -152,6 +160,30 @@ public class ClassObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     @Override

@@ -22,8 +22,24 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:id="@+id/img_propaganda"
-            android:elevation="8dp"
-            android:src="@drawable/plus"/>
+            android:background="@drawable/border"
+
+            />
+            <TextView
+                android:id="@+id/myImageViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/img_propaganda"
+                android:layout_alignTop="@id/img_propaganda"
+                android:layout_alignRight="@id/img_propaganda"
+                android:layout_alignBottom="@id/img_propaganda"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="Selecione uma imagem sobre o assunto "
+                android:textColor="#ffffff" />
+
+
+
 
 
 
@@ -46,11 +62,35 @@
             android:padding="10dp"
             android:textColor="@color/cardview_light_background" />
 
+
+
+
+
+        <TextView
+            android:id="@+id/st_local_aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_titulo"
+            android:layout_marginTop="5dp"
+            android:text="@string/local_aula"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_local_aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/st_local_aula"
+            android:background="@drawable/border"
+            android:padding="10dp"
+            android:textColor="@color/cardview_light_background" />
+
+
         <TextView
             android:id="@+id/st_num_vagas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edt_titulo"
+            android:layout_below="@id/edt_local_aula"
             android:layout_marginTop="5dp"
             android:text="@string/num_vagas"
             android:textColor="@color/cardview_light_background"

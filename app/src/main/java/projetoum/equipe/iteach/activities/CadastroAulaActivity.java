@@ -1,6 +1,9 @@
 package projetoum.equipe.iteach.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +17,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class CadastroAulaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
@@ -31,8 +48,10 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText horarioFimEd;
     private EditText assuntoEd;
     private EditText tagsEd;
+    private EditText localEd;
     private ImageView imagePropaganda;
-
+    private StorageReference mReference;
+    private int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +75,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
         dao = DAO.getInstace(this);
 
-
+        mReference = FirebaseStorage.getInstance().getReference();
 
         ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
@@ -70,6 +89,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         horarioFimEd = (EditText) findViewById(R.id.edt_horario_fim);
         assuntoEd = (EditText) findViewById(R.id.edt_assunto);
         tagsEd = (EditText) findViewById(R.id.edt_tags);
+        localEd = (EditText) findViewById(R.id.edt_local_aula);
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
 
         imagePropaganda.setOnClickListener(this);
@@ -110,7 +130,100 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     public void onClick(View v) {
         switch (v.getId()){
         case R.id.bt_salvar_aula:
+            enviarAula();
+            break;
+        case R.id.img_propaganda:
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+
+                imagePropaganda.setImageBitmap(bitmap);
+                findViewById(R.id.myImageViewText).setVisibility(View.GONE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void enviarAula(){
+        String nome = String.valueOf(new Date().getTime()) + ".png";
+        StorageReference filepath = mReference.child("imagens").child(nome);
+        imagePropaganda.setDrawingCacheEnabled(true);
+
+        imagePropaganda.buildDrawingCache();
+
+        Bitmap bm = imagePropaganda.getDrawingCache();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        filepath.putBytes(byteArray).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                enviarAulaComFoto(taskSnapshot.getDownloadUrl().toString());
+            }
+        });
+    }
+
+
+    private void enviarAulaComFoto(String imagem){
+        final ClassObject classe = new ClassObject();
+        classe.setImagem(imagem);
+        if(tituloEd.getText() != null){
+            classe.setName(tituloEd.getText().toString());
+        }
+        if(numVagasEd.getText() != null){
+            classe.setSlots(Double.parseDouble(numVagasEd.getText().toString()));
+        }
+        if(dataEd.getText() != null){
+            classe.setData(dataEd.getText().toString());
+        }
+        if(horarioInicioEd.getText() != null){}
+        if(horarioFimEd.getText() != null){}
+        if(assuntoEd.getText() != null){
+            classe.setSubject(assuntoEd.getText().toString());
+        }
+        if(tagsEd.getText() != null){
+            List<String> lista = Arrays.asList(tagsEd.getText().toString().split(","));
+            classe.setTags(lista);
+        }
+        if(localEd.getText() != null){
+            classe.setAddress(localEd.getText().toString());
+        }
+
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                classe.setTeacherId(param.getUserId());
+            }
+        });
+
+
+
+        dao.createClass(classe, new ICallback() {
+            @Override
+            public void execute(Object param) {
+                Toast.makeText(CadastroAulaActivity.this, param.toString(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
     }
 }
