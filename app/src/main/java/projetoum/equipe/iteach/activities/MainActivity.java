@@ -183,6 +183,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.floatingActionButton:
+                startActivity(new Intent(this,CadastroAulaActivity.class));
+                break;
           /*  case R.id.sign_in_button:
                 signIn();
                 break;
