@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.put_user).setOnClickListener(this);
         findViewById(R.id.search_button).setOnClickListener(this);
         findViewById(R.id.bt_edt_perfil).setOnClickListener(this);
+        findViewById(R.id.bt_cadastro_aula).setOnClickListener(this);
 
         mStatusTextView = (TextView) findViewById(R.id.txt);
         feed = (TextView) findViewById(R.id.feed);
@@ -235,6 +236,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.bt_edt_perfil:
                 startActivity(new Intent(this, CadastroActivity.class));
                 finish();
+                break;
+            case R.id.bt_cadastro_aula:
+                startActivity(new Intent(this, CadastroAulaActivity.class));
                 break;
         }
     }
