@@ -76,7 +76,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         ClassViewHolder(View itemView) {
             super(itemView);
 
-            cv = (CardView)itemView.findViewById(R.id.card_aula);
+            cv = (CardView) itemView.findViewById(R.id.card_aula);
+
             cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));

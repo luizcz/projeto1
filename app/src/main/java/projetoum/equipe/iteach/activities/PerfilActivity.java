@@ -129,7 +129,7 @@ public class PerfilActivity extends AppCompatActivity
             int id = item.getItemId();
 
             if (id == R.id.nav_feed) {
-                startActivity(new Intent(this, MainActivity.class));
+                finish();
             } else if (id == R.id.nav_profile) {
                 //startActivity(new Intent(this, PerfilActivity.class));
 
@@ -143,11 +143,13 @@ public class PerfilActivity extends AppCompatActivity
                 Intent intent = new Intent(this, SearchActivity.class);
                 intent.putExtra("busca","aula");
                 startActivity(intent);
+                finish();
 
             } else if (id == R.id.nav_teacher) {
                 Intent intent = new Intent(this, SearchActivity.class);
                 intent.putExtra("busca","user");
                 startActivity(intent);
+                finish();
 
             }  else if (id == R.id.nav_logout) {
                 dao.signOut();

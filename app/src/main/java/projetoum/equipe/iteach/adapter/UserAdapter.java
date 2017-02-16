@@ -73,25 +73,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     // you provide access to all the views for a data item in a view holder
     public class UserViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        private TextView nomeUser;
-        private TextView numAulas;
-        private TextView bio;
-        private TextView membroSince;
         CardView cv;
+        TextView nomeUser;
+        TextView numAulas;
+        TextView bio;
+        TextView membroSince;
 
-        UserViewHolder(View v) {
-            super(v);
+        UserViewHolder(View itemView) {
+            super(itemView);
 
-            cv = (CardView)itemView.findViewById(R.id.card_professor);
+            cv = (CardView) itemView.findViewById(R.id.card_professor);
 
             cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
             }
-            nomeUser = (TextView) v.findViewById(R.id.prof_name);
-            numAulas = (TextView) v.findViewById(R.id.num_aulas);
-            bio = (TextView) v.findViewById(R.id.card_aula_desc);
-            membroSince = (TextView) v.findViewById(R.id.data_membro_desde);
+            nomeUser = (TextView) itemView.findViewById(R.id.prof_name);
+            numAulas = (TextView) itemView.findViewById(R.id.num_aulas);
+            bio = (TextView) itemView.findViewById(R.id.card_aula_desc);
+            membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
         }
     }
     public List<User> getUsuarios() {
