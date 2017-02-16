@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,13 +43,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     }
 
     @Override
-    public void onBindViewHolder(ClassViewHolder holder, int position) {
+    public void onBindViewHolder(ClassViewHolder holder, final int position) {
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
-                intent.putExtra("aula_id", "Nome da Aula");
+                intent.putExtra("aula_id", dao.getClasses().get(position).getId());
                 v.getContext().startActivity(intent);
             }
         });

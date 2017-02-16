@@ -12,7 +12,6 @@ import java.util.Map;
 public class ClassObject {
 
     private String teacherId;
-    private List<String> studentsId;
     private Long time;
     private Double value;
     private String address;
@@ -31,12 +30,10 @@ public class ClassObject {
 
     }
 
-    public ClassObject(String teacherId, List<String> studentsId, Long time,
+    public ClassObject(String teacherId, Long time,
                        Double value, String address, Double lat, Double lon,
                        Double slots, List<String> tags, String name, String id) {
         this.teacherId = teacherId;
-        this.studentsId = studentsId;
-
         this.time = time;
         this.value = value;
         this.address = address;
@@ -52,7 +49,6 @@ public class ClassObject {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("teacherId", teacherId);
-        result.put("studentsId", studentsId);
         result.put("time", time);
         result.put("value", value);
         result.put("address", address);
@@ -72,14 +68,6 @@ public class ClassObject {
 
     public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
-    }
-
-    public List<String> getStudentsId() {
-        return studentsId;
-    }
-
-    public void setStudentsId(List<String> studentsId) {
-        this.studentsId = studentsId;
     }
 
     public Long getTime() {
@@ -162,8 +150,6 @@ public class ClassObject {
         ClassObject that = (ClassObject) o;
 
         if (!getTeacherId().equals(that.getTeacherId())) return false;
-        if (getStudentsId() != null ? !getStudentsId().equals(that.getStudentsId()) : that.getStudentsId() != null)
-            return false;
         if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
             return false;
         if (getValue() != null ? !getValue().equals(that.getValue()) : that.getValue() != null)
@@ -178,7 +164,8 @@ public class ClassObject {
             return false;
         if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null)
             return false;
-        if (!getName().equals(that.getName())) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
         return getId().equals(that.getId());
 
     }
@@ -186,7 +173,6 @@ public class ClassObject {
     @Override
     public int hashCode() {
         int result = getTeacherId().hashCode();
-        result = 31 * result + (getStudentsId() != null ? getStudentsId().hashCode() : 0);
         result = 31 * result + (getTime() != null ? getTime().hashCode() : 0);
         result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
@@ -194,9 +180,8 @@ public class ClassObject {
         result = 31 * result + (getLon() != null ? getLon().hashCode() : 0);
         result = 31 * result + (getSlots() != null ? getSlots().hashCode() : 0);
         result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
-        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + getId().hashCode();
         return result;
     }
-
 }
