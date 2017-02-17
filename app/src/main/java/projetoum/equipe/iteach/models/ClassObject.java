@@ -23,7 +23,7 @@ public class ClassObject {
     private List<String> tags;
     private String name;
     private String id;
-    private String imagem ;
+    private String imagem;
     private String data;
     private String subject;
 
@@ -180,24 +180,6 @@ public class ClassObject {
         if (!(o instanceof ClassObject)) return false;
 
         ClassObject that = (ClassObject) o;
-
-        if (!getTeacherId().equals(that.getTeacherId())) return false;
-        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
-            return false;
-        if (getValue() != null ? !getValue().equals(that.getValue()) : that.getValue() != null)
-            return false;
-        if (getAddress() != null ? !getAddress().equals(that.getAddress()) : that.getAddress() != null)
-            return false;
-        if (getLat() != null ? !getLat().equals(that.getLat()) : that.getLat() != null)
-            return false;
-        if (getLon() != null ? !getLon().equals(that.getLon()) : that.getLon() != null)
-            return false;
-        if (getSlots() != null ? !getSlots().equals(that.getSlots()) : that.getSlots() != null)
-            return false;
-        if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null)
-            return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
         return getId().equals(that.getId());
 
     }

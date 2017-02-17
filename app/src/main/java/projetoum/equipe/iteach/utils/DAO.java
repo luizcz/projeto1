@@ -3,7 +3,6 @@ package projetoum.equipe.iteach.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +45,7 @@ public class DAO implements IRemote {
     private ICallback<Boolean> callback;
     private Context ctx;
     private List<User> usuarios;
-    private List<ClassObject> classes;
+    private List<ClassObject> mClasses;
     private boolean resultado;
     private User currentUser;
     private FirebaseDatabase mDatabase;
@@ -97,7 +95,7 @@ public class DAO implements IRemote {
             }
         };
         loadFakeProfiles();
-        loadFakeClasses();
+        loadFirstClasses();
 
     }
 
@@ -191,25 +189,32 @@ public class DAO implements IRemote {
         }
     }
 
-    public void loadFakeClasses(){
-        DatabaseReference ref = mDatabase.getReference("class");
-        classes = new ArrayList<>();
+    public void loadFirstClasses(){
+        DatabaseReference ref = getFirebaseInstance().getReference("class");
+        Query q = ref.limitToFirst(30);
+        mClasses = new ArrayList<>();
 
-        ref.addChildEventListener(new ChildEventListener() {
+        q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                classes.add(classObject);
+                mClasses.add(classObject);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                try {
+                    mClasses.set(mClasses.indexOf(classObject), classObject);
+                }catch (Exception e){
 
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                mClasses.remove(classObject);
             }
 
             @Override
@@ -229,7 +234,7 @@ public class DAO implements IRemote {
     }
 
     public List<ClassObject> getClasses() {
-        return classes;
+        return mClasses;
     }
 
     public void setCurrentUser(User currentUser) {
@@ -587,8 +592,44 @@ public class DAO implements IRemote {
     }
 
     @Override
-    public List<ClassObject> searchClass(String anything) {
-        return null;
+    public searchClass(String anything, ICallback callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
+        Query q = ref..limitToFirst(30);
+        mClasses = new ArrayList<>();
+
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                mClasses.add(classObject);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                try {
+                    mClasses.set(mClasses.indexOf(classObject), classObject);
+                }catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                mClasses.remove(classObject);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public FirebaseAuth getAuth() {

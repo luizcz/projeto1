@@ -121,7 +121,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 //        if (intent.getStringExtra("aulaId").equals("10")){
 //            ClassObject aulaSelecionada = new ClassObject();
 //
-//            for (ClassObject aula: dao.getClasses()){
+//            for (ClassObject aula: dao.getmClasses()){
 //                if (aula.getId().equals(10)){
 //                    aulaSelecionada = aula;
 //                    break;

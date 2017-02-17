@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         dao = DAO.getInstace(this);
         usuarios = dao.getUsuarios();
-        classes = dao.getClasses();
+        classes = dao.getmClasses();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -155,7 +155,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
                 } else if (currentFragment == searchAulasFragment) {
-                    updateAulas(dao.getClasses(), input);
+                    updateAulas(dao.getmClasses(), input);
                 }
                 searchView.clearFocus();
                 return true;
@@ -167,7 +167,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
                 } else if (currentFragment == searchAulasFragment) {
-                    updateAulas(dao.getClasses(), input);
+                    updateAulas(dao.getmClasses(), input);
                 }
                 return true;
             }
@@ -204,7 +204,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 }
             }
         } else {
-            classAdapter.setClasses(dao.getClasses());
+            classAdapter.setClasses(dao.getmClasses());
         }
     }
 
