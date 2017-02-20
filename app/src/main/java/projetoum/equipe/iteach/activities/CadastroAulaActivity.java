@@ -211,11 +211,17 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             @Override
             public void execute(User param) {
                 classe.setTeacherId(param.getUserId());
+                criarClasse(classe);
             }
         });
 
 
 
+
+
+    }
+
+    private void criarClasse(ClassObject classe){
         dao.createClass(classe, new ICallback() {
             @Override
             public void execute(Object param) {
@@ -224,6 +230,5 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 finish();
             }
         });
-
     }
 }
