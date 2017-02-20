@@ -50,6 +50,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
                 intent.putExtra("aula_id", dao.getClasses().get(position).getId());
+                intent.putExtra("position", position);
                 v.getContext().startActivity(intent);
             }
         });

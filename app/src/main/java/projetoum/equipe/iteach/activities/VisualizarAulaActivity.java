@@ -149,7 +149,17 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        ClassObject classe = null;
+        if(getIntent().hasExtra("position"))
+            classe = dao.getClasses().get(getIntent().getExtras().getInt("position"));
+
         LatLng sydney = new LatLng(-34, 151);
+
+        if( classe != null && classe.getLat() != null && classe.getLon() != null){
+            sydney = new LatLng(classe.getLat(), classe.getLon());
+        }
+
+
         googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
