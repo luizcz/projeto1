@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,9 +15,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +30,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,19 +49,24 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText numVagasEd;
     private EditText valorEd;
     private EditText dataEd;
-    private EditText horarioInicioEd;
-    private EditText horarioFimEd;
+    private TextView horarioInicioEd;
+    private TextView horarioFimEd;
     private EditText assuntoEd;
     private EditText tagsEd;
     private EditText localEd;
     private ImageView imagePropaganda;
     private StorageReference mReference;
+    private int mHour, mMinute;
+    private boolean inicio;
+    private List<String> diasSemana;
     private int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_aula);
+
+        diasSemana = new ArrayList<String>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
@@ -85,12 +95,15 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
         valorEd = (EditText) findViewById(R.id.edt_valor);
         dataEd = (EditText) findViewById(R.id.edt_date);
-        horarioInicioEd = (EditText) findViewById(R.id.edt_horario_inicio);
-        horarioFimEd = (EditText) findViewById(R.id.edt_horario_fim);
+        horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
+        horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
         assuntoEd = (EditText) findViewById(R.id.edt_assunto);
         tagsEd = (EditText) findViewById(R.id.edt_tags);
         localEd = (EditText) findViewById(R.id.edt_local_aula);
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
+
+        horarioInicioEd.setOnClickListener(this);
+        horarioFimEd.setOnClickListener(this);
 
         imagePropaganda.setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
@@ -131,6 +144,14 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         switch (v.getId()){
         case R.id.bt_salvar_aula:
             enviarAula();
+            break;
+        case R.id.edt_horario_inicio:
+            inicio = true;
+            showTimePickerDialog();
+            break;
+        case R.id.edt_horario_fim:
+            inicio = false;
+            showTimePickerDialog();
             break;
         case R.id.img_propaganda:
             Intent intent = new Intent();
@@ -215,11 +236,31 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-
-
-
-
     }
+
+    public void showTimePickerDialog() {
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,R.style.TimePickerTheme,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        if(inicio)
+                            horarioInicioEd.setText(hourOfDay + ":" + minute);
+                        else
+                            horarioFimEd.setText(hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
+    }
+
+
 
     private void criarClasse(ClassObject classe){
         dao.createClass(classe, new ICallback() {
@@ -230,5 +271,16 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 finish();
             }
         });
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        if(checked)
+            diasSemana.add(((CheckBox) view).getText().toString());
+        else
+            diasSemana.remove(((CheckBox) view).getText().toString());
+        
     }
 }

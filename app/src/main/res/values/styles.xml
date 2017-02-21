@@ -42,4 +42,8 @@
         <item name="android:maxHeight">41dip</item>
 
     </style>
+
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 </resources>
