@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,7 +50,8 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText tituloEd;
     private EditText numVagasEd;
     private EditText valorEd;
-    private EditText dataEd;
+    private TextView dataEd;
+    private TextView dataFimEd;
     private TextView horarioInicioEd;
     private TextView horarioFimEd;
     private EditText assuntoEd;
@@ -56,8 +59,9 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText localEd;
     private ImageView imagePropaganda;
     private StorageReference mReference;
-    private int mHour, mMinute;
+    private int mDay, mYear, mMonth, mHour, mMinute;
     private boolean inicio;
+    private boolean inicioDate;
     private List<String> diasSemana;
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -94,7 +98,8 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
         valorEd = (EditText) findViewById(R.id.edt_valor);
-        dataEd = (EditText) findViewById(R.id.edt_date);
+        dataEd = (TextView) findViewById(R.id.edt_date);
+        dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
         horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
         horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
         assuntoEd = (EditText) findViewById(R.id.edt_assunto);
@@ -104,6 +109,9 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
         horarioInicioEd.setOnClickListener(this);
         horarioFimEd.setOnClickListener(this);
+        dataEd.setOnClickListener(this);
+        dataFimEd.setOnClickListener(this);
+
 
         imagePropaganda.setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
@@ -153,6 +161,15 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             inicio = false;
             showTimePickerDialog();
             break;
+        case R.id.edt_date_fim:
+            inicioDate = false;
+            showDateDialog();
+            break;
+        case R.id.edt_date:
+            inicioDate = true;
+            showDateDialog();
+            break;
+
         case R.id.img_propaganda:
             Intent intent = new Intent();
             intent.setType("image/*");
@@ -215,8 +232,11 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         if(dataEd.getText() != null){
             classe.setData(dataEd.getText().toString());
         }
-        if(horarioInicioEd.getText() != null){}
-        if(horarioFimEd.getText() != null){}
+        if(dataFimEd.getText() != null){
+            classe.setDataFim(dataFimEd.getText().toString());
+        }
+        if(horarioInicioEd.getText() != null){classe.setHoraInicio(horarioInicioEd.getText().toString());}
+        if(horarioFimEd.getText() != null){classe.setHoraFim(horarioFimEd.getText().toString());}
         if(assuntoEd.getText() != null){
             classe.setSubject(assuntoEd.getText().toString());
         }
@@ -227,6 +247,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         if(localEd.getText() != null){
             classe.setAddress(localEd.getText().toString());
         }
+        classe.setDiasSemana(diasSemana);
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
@@ -260,7 +281,30 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         timePickerDialog.show();
     }
 
+    public void showDateDialog(){
+    // Get Current Date
+    final Calendar c = Calendar.getInstance();
+    mYear = c.get(Calendar.YEAR);
+    mMonth = c.get(Calendar.MONTH);
+    mDay = c.get(Calendar.DAY_OF_MONTH);
 
+
+    DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.TimePickerTheme,
+            new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+
+                    if(inicioDate)
+                        dataEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    else
+                        dataFimEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                }
+            }, mYear, mMonth, mDay);
+    datePickerDialog.show();
+
+    }
 
     private void criarClasse(ClassObject classe){
         dao.createClass(classe, new ICallback() {
@@ -281,6 +325,17 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             diasSemana.add(((CheckBox) view).getText().toString());
         else
             diasSemana.remove(((CheckBox) view).getText().toString());
-        
+
+    }
+
+    private void validarClasse(ClassObject classe){
+        if(classe.getName() == null || classe.getName().isEmpty()){
+            //TODO decidir erro
+        }else if(classe.getAddress() == null || classe.getAddress().isEmpty()){
+
+        }else if(classe.getSlots() == null || classe.getSlots() <= 0){
+
+        }
+
     }
 }

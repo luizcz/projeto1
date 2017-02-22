@@ -26,6 +26,10 @@ public class ClassObject {
     private String imagem;
     private String data;
     private String subject;
+    private List<String> diasSemana;
+    private String dataFim;
+    private String horaInicio;
+    private String horaFim;
 
     public ClassObject(String name) {
         this.name = name;
@@ -66,6 +70,10 @@ public class ClassObject {
         result.put("data", data);
         result.put("image", imagem);
         result.put("subject", subject);
+        result.put("diasSemana", diasSemana);
+        result.put("dataFim", dataFim);
+        result.put("horaInicio", horaInicio);
+        result.put("horaFim", horaFim);
 
         return result;
     }
@@ -172,6 +180,38 @@ public class ClassObject {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public List<String> getDiasSemana() {
+        return diasSemana;
+    }
+
+    public void setDiasSemana(List<String> diasSemana) {
+        this.diasSemana = diasSemana;
+    }
+
+    public String getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(String dataFim) {
+        this.dataFim = dataFim;
+    }
+
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(String horaFim) {
+        this.horaFim = horaFim;
     }
 
     @Override
