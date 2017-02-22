@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.adapter.ClassAdapter;
+import projetoum.equipe.iteach.adapter.UserAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.interfaces.IRemote;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -48,8 +49,6 @@ public class DAO implements IRemote {
     private static DAO instance;
     private ICallback<Boolean> callback;
     private Context ctx;
-    private List<User> usuarios;
-    private List<ClassObject> mClasses;
     private boolean resultado;
     private User currentUser;
     private FirebaseDatabase mDatabase;
@@ -99,8 +98,6 @@ public class DAO implements IRemote {
                 // ...
             }
         };
-        loadFakeProfiles();
-        //loadFirstClasses();
 
     }
 
@@ -186,13 +183,6 @@ public class DAO implements IRemote {
         return user;
     }
 
-    public void loadFakeProfiles() {
-        usuarios = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            usuarios.add(new User(String.valueOf(i), "Pessoa " + String.valueOf(i), "email@gmail.com"));
-        }
-    }
 
     public void loadFirstClasses(final ClassAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference("class");
@@ -232,13 +222,6 @@ public class DAO implements IRemote {
         });
     }
 
-    public List<User> getUsuarios() {
-        return usuarios;
-    }
-
-    public List<ClassObject> getClasses() {
-        return mClasses;
-    }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -637,7 +620,6 @@ public class DAO implements IRemote {
         final String lower = anything.toLowerCase();
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
         Query q = ref.orderByKey();
-        mClasses = new ArrayList<>();
 
 
         q.addChildEventListener(new ChildEventListener() {
@@ -685,8 +667,60 @@ public class DAO implements IRemote {
 
     }
 
+
     @Override
-    public void loadFirstTeachers(ClassAdapter adapter) {
+    public void searchUser(final String anything, final UserAdapter adapter) {
+        adapter.removeAll();
+        final String lower = anything.toLowerCase();
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+        Query q = ref.orderByKey();
+
+
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                try {
+                    if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                        User user = dataSnapshot.getValue(User.class);
+                        adapter.add(user);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                    User user = dataSnapshot.getValue(User.class);
+                    adapter.update(user);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                    User user = dataSnapshot.getValue(User.class);
+                    adapter.remove(user);
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    @Override
+    public void loadFirstTeachers(UserAdapter adapter) {
 
     }
 

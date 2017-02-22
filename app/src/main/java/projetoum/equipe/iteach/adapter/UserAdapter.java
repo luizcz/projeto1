@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -31,8 +32,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public UserAdapter(Context ctx) {
         dao = DAO.getInstace(ctx);
 
-        this.usuarios =  new ArrayList<>();
-        this.usuarios.addAll(dao.getUsuarios());
+        this.usuarios = new ArrayList<>();
     }
 
 
@@ -84,9 +84,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
             cv = (CardView) itemView.findViewById(R.id.card_professor);
 
-            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
+            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.transparent));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
+                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.cardback));
             }
             nomeUser = (TextView) itemView.findViewById(R.id.prof_name);
             numAulas = (TextView) itemView.findViewById(R.id.num_aulas);
@@ -94,18 +94,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
         }
     }
+
     public List<User> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(List<User> usuarios){
+    public void setUsuarios(List<User> usuarios) {
         this.usuarios.addAll(usuarios);
     }
 
     public void add(User item) {
         usuarios.add(item);
-//        notifyItemInserted(position);
-        notifyDataSetChanged();
+        int position = usuarios.indexOf(item);
+        notifyItemInserted(position);
+        // notifyDataSetChanged();
     }
 
     public void remove(User item) {
@@ -114,8 +116,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyItemRemoved(position);
     }
 
-    public void removeAll(){
+    public void removeAll() {
         usuarios.clear();
         notifyDataSetChanged();
+    }
+
+    public void update(User item) {
+        int position = usuarios.indexOf(item);
+        usuarios.set(position, item);
+        notifyItemChanged(position);
     }
 }

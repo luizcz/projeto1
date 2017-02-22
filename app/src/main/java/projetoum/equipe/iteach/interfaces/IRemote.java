@@ -5,6 +5,7 @@ import android.location.Location;
 import java.util.List;
 
 import projetoum.equipe.iteach.adapter.ClassAdapter;
+import projetoum.equipe.iteach.adapter.UserAdapter;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.Rating;
 import projetoum.equipe.iteach.models.User;
@@ -20,6 +21,7 @@ public interface IRemote {
     public void deleteUser(User user, ICallback callback);
     public void updateUser(User user, ICallback callback);
     public void deleteUser(String userID, ICallback callback);
+    public void searchUser(String anything,UserAdapter adapter);
 
 
     public void rateUser(Rating rating, User user, ICallback callback);
@@ -40,5 +42,5 @@ public interface IRemote {
     public void searchClass(String anything,ClassAdapter adapter);
 
 
-    void loadFirstTeachers(ClassAdapter adapter);
+    public void loadFirstTeachers(UserAdapter adapter);
 }

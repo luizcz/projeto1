@@ -48,8 +48,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
     private DAO dao;
-    private List<User> usuarios;
-    private List<ClassObject> classes;
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
     private int lastFragment;
@@ -82,8 +80,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
         dao = DAO.getInstace(this);
-        usuarios = dao.getUsuarios();
-        classes = dao.getClasses();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -93,7 +89,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        userAdapter = new UserAdapter(getBaseContext());
+        userAdapter = new UserAdapter(this);
         classAdapter = new ClassAdapter(this);
 
         if (getIntent().getStringExtra("busca").equals("aula")){
@@ -119,7 +115,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             dao.loadFirstClasses(classAdapter);
         } else {
             currentFragment = searchProfsFragment;
-            //dao.loadFirstTeachers(this);
+            dao.loadFirstTeachers(userAdapter);
         }
 
         fragmentManager = getSupportFragmentManager();
@@ -157,7 +153,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextSubmit(String input) {
                 if (currentFragment == searchProfsFragment) {
-                    updateProfs(dao.getUsuarios(), input);
+                    dao.searchUser(input,userAdapter);
                 } else if (currentFragment == searchAulasFragment) {
                    dao.searchClass(input,classAdapter);
                 }
@@ -169,7 +165,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextChange(String input) {
                 if (currentFragment == searchProfsFragment) {
-                    updateProfs(dao.getUsuarios(), input);
+                    dao.searchUser(input,userAdapter);
                 } else if (currentFragment == searchAulasFragment) {
                     dao.searchClass(input,classAdapter);
                 }
@@ -192,42 +188,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             }
         });
         return true;
-    }
-
-  /*  private void updateAulas(List<ClassObject> classes, String input) {
-        List<ClassObject> copia = new ArrayList<>();
-        copia.addAll(classes);
-
-        classAdapter.removeAll();
-
-        if (!input.equals("")) {
-            for (int i = 0; i < copia.size(); i++) {
-                Log.i("i", String.valueOf(i));
-                if (copia.get(i).getName().toLowerCase().contains(input)) {
-                    classAdapter.add(copia.get(i));
-                }
-            }
-        } else {
-            classAdapter.setClasses(dao.getClasses());
-        }
-    }*/
-
-    private void updateProfs(List<User> usuarios, String input) {
-        List<User> copia = new ArrayList<User>();
-        copia.addAll(usuarios);
-
-        userAdapter.removeAll();
-
-        if (!input.equals("")) {
-            for (int i = 0; i < copia.size(); i++) {
-                Log.i("i", String.valueOf(i));
-                if (copia.get(i).getName().toLowerCase().contains(input)) {
-                    userAdapter.add(copia.get(i));
-                }
-            }
-        } else {
-            userAdapter.setUsuarios(dao.getUsuarios());
-        }
     }
 
     @Override
