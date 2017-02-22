@@ -111,7 +111,7 @@
     <string name="preco">Valor</string>
     <string name="assunto">Assunto</string>
     <string name="horario">Horário</string>
-    <string name="data">Data</string>
+    <string name="data">Data de início das aulas</string>
     <string name="tags">Tags (ex: artes, desenho,pintura)</string>
     <string name="botao_criar_aula">Criar Aula</string>
     <string name="local_aula">Endereço da aula</string>
