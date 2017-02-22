@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
@@ -43,6 +44,17 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private DAO dao;
     private String user;
     private String class_object;
+    private ClassObject mClass;
+    private GoogleMap mMap;
+    private TextView aula_nome_professor;
+    private RatingBar aula_rating;
+    private TextView aula_vagas;
+    private TextView card_aula_valor;
+    private TextView aula_data;
+    private TextView aula_horario;
+    private TextView aula_conteudo_body;
+    private TextView aula_endereco;
+    private TextView aula_mapa_dist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,26 +109,28 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        preencherDados();
+
+        aula_nome_professor = (TextView) findViewById(R.id.aula_nome_professor);
+        aula_rating = (RatingBar) findViewById(R.id.aula_rating);
+        aula_vagas = (TextView) findViewById(R.id.aula_vagas);
+        card_aula_valor = (TextView) findViewById(R.id.card_aula_valor);
+        aula_data = (TextView) findViewById(R.id.aula_data);
+        aula_horario = (TextView) findViewById(R.id.aula_horario);
+        aula_conteudo_body = (TextView) findViewById(R.id.aula_conteudo_body);
+        aula_endereco = (TextView) findViewById(R.id.aula_endereco);
+        aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
+
+
     }
 
     private void preencherDados() {
-        toolbar.setTitle(getIntent().getExtras().getString("aula_id"));
+        toolbar.setTitle(mClass.getName());
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
 
 //        Intent intent = getIntent();
 //        String nomeAula = intent.getStringExtra("aula");
 
-        TextView aula_nome_professor = (TextView) findViewById(R.id.aula_nome_professor);
-        RatingBar aula_rating = (RatingBar) findViewById(R.id.aula_rating);
-        TextView aula_vagas = (TextView) findViewById(R.id.aula_vagas);
-        TextView card_aula_valor = (TextView) findViewById(R.id.card_aula_valor);
-        TextView aula_data = (TextView) findViewById(R.id.aula_data);
-        TextView aula_horario = (TextView) findViewById(R.id.aula_horario);
-        TextView aula_conteudo_body = (TextView) findViewById(R.id.aula_conteudo_body);
-        TextView aula_endereco = (TextView) findViewById(R.id.aula_endereco);
-        TextView aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
 
 //        if (intent.getStringExtra("aulaId").equals("10")){
 //            ClassObject aulaSelecionada = new ClassObject();
@@ -134,32 +148,50 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 //            }
 //
 //
-//            aula_nome_professor.setText(aulaSelecionada.getName());
-////        aula_rating.setRating(aulaSelecionada.getRating());
-//            aula_vagas.setText("Vagas ocupadas: " + String.valueOf(aulaSelecionada.getSlots()));
-//            card_aula_valor.setText("R$ " + String.valueOf(aulaSelecionada.getValue()) + ",00");
-//            aula_data.setText("Data: " + "Terças e Quintas");
-//            aula_horario.setText("Horario: " + String.valueOf(aulaSelecionada.getTime()));
-//            aula_conteudo_body.setText("Preposições\nUso de Crase\nVerbos Irregulares");
-//            aula_endereco.setText(aulaSelecionada.getAddress());
-//            aula_mapa_dist.setText(String.valueOf(10) + " Km");
-//        }
-
+        aula_nome_professor.setText(mClass.getName());
+//        aula_rating.setRating(aulaSelecionada.getRating());
+        aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
+        card_aula_valor.setText("R$ " + String.valueOf(mClass.getValue()) + ",00");
+        aula_data.setText("Data: " + "Terças e Quintas");
+        aula_horario.setText("Horario: " + String.valueOf(mClass.getTime()));
+        aula_conteudo_body.setText(mClass.getData());
+        aula_endereco.setText(mClass.getAddress());
+        aula_mapa_dist.setText(String.valueOf(10) + " Km");
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(-34, 151);
-        googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
-
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        this.mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
             }
         });
+
+
+        if (getIntent().hasExtra("aula_id"))
+            dao.findClassById(getIntent().getStringExtra("aula_id"), new ICallback<ClassObject>() {
+                @Override
+                public void execute(ClassObject param) {
+                    mClass = param;
+
+                    LatLng sydney = new LatLng(-34, 151);
+
+                    if (mClass != null && mClass.getLat() != null && mClass.getLon() != null) {
+                        sydney = new LatLng(mClass.getLat(), mClass.getLon());
+                    }
+
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
+
+                    preencherDados();
+                }
+            });
+
     }
 
     @Override

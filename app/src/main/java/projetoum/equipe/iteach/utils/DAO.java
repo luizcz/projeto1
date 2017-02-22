@@ -2,6 +2,8 @@ package projetoum.equipe.iteach.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -437,9 +440,30 @@ public class DAO implements IRemote {
                 callback.execute(Constants.REQUEST_BAD);
             }
         });
-
+        getLocationFromAddress(classObject);
         myRef.child(freeRef.getKey()).setValue(classObject);
         classObject.setId(freeRef.getKey());
+    }
+
+    public void getLocationFromAddress(ClassObject classe) {
+
+        Geocoder coder = new Geocoder(ctx);
+        List<Address> address;
+
+
+        try {
+            address = coder.getFromLocationName(classe.getAddress(), 5);
+            if (address == null) {
+                return;
+            }
+            Address location = address.get(0);
+            classe.setLat(location.getLatitude());
+            classe.setLon(location.getLongitude());
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -572,6 +596,24 @@ public class DAO implements IRemote {
     @Override
     public List<ClassObject> findClassByTag(String tag) {
         return null;
+    }
+
+    @Override
+    public void findClassById(String id, final ICallback<ClassObject> callback) {
+        FirebaseDatabase database = getFirebaseInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + id);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                callback.execute(classObject);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(null);
+            }
+        });
     }
 
     @Override

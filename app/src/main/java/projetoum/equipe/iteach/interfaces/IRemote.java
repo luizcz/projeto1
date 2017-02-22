@@ -33,6 +33,7 @@ public interface IRemote {
     public void findClassByName(String name, ICallback callback);
     //public List<ClassObject> findClassByName(String name);
     public List<ClassObject> findClassByTag(String tag);
+    public void findClassById(String id,ICallback<ClassObject> callback);
     public List<ClassObject> findClassByLocation(Location loc);
     public List<ClassObject> findClassByTeacher(String userID);
     public List<ClassObject> findClassByAttendee(String userID);
