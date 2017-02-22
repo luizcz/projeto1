@@ -90,22 +90,11 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         });
 
         final AlertDialog alert = builder.create();
-
         Button participar = (Button) findViewById(R.id.aula_botao_participar);
         participar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alert.show();
-            }
-        });
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
 

@@ -60,8 +60,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
         holder.aula_prof_name.setText(classes.get(position).getTeacherId());
         holder.aula_desc.setText(classes.get(position).getName());
-        holder.aula_valor.setText("R$ " + String.valueOf((new Random()).nextInt(100)) + ",00");
 
+
+        Double valor = classes.get(position).getValue();
+        if (valor==null){
+            holder.aula_valor.setText("R$ 00,00");
+        } else {
+            holder.aula_valor.setText("R$ " + String.valueOf(valor) + ",00");
+        }
 
     }
 

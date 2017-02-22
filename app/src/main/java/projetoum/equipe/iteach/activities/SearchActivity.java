@@ -43,7 +43,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     private MenuItem menuSearch;
     private SearchView searchView;
-    private ClassAdapter searchAdapter;
     private RecyclerView mRecyclerView;
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
@@ -53,7 +52,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private int lastFragment;
     private SearchAulasFragment searchAulasFragment;
     private SearchProfsFragment searchProfsFragment;
-
 
     public static final String SEARCH_AULAS_TAG = "SEARCH_AULAS_TAG";
     public static final String SEARCH_PROFS_TAG = "SEARCH_PROFS_TAG";
@@ -241,7 +239,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 lastFragment = R.id.nav_class;
                 mRecyclerView.setAdapter(classAdapter);
                 break;
-            // startActivity(new Intent(this,SearchActivity.class));
             case R.id.nav_teacher:
                 getSupportActionBar().setTitle("Busca Professores");
                 if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
@@ -254,7 +251,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 currentFragment = searchProfsFragment;
                 lastFragment = R.id.nav_teacher;
                 mRecyclerView.setAdapter(userAdapter);
-                // startActivity(new Intent(this,SearchActivity.class));
                 break;
             default:
                 break;
