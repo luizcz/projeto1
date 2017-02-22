@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_professor"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         card_view:cardCornerRadius="4dp">
 
 
@@ -22,149 +22,154 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_professor"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:tint="@android:color/white"
-                android:visibility="visible"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/card_aula_img" />
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="Prof. Pasquale Neto"
                 android:id="@+id/prof_name"
-                android:layout_alignTop="@+id/card_aula_img"
-                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginRight="15dp"
-                android:textStyle="normal|bold"
-                android:textSize="18sp" />
+                android:text="Prof. Pasquale Neto"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="normal|bold" />
 
             <TextView
+                android:id="@+id/card_aula_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mussum Ipsum, cacilds vidis litro abertis. Detraxit consequat et quo num tendi nada. Não sou faixa ... "
-                android:id="@+id/card_aula_desc"
                 android:layout_alignBottom="@+id/card_aula_img"
+                android:layout_alignEnd="@+id/prof_name"
+                android:layout_alignRight="@+id/prof_name"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="Mussum Ipsum, cacilds vidis litro abertis. Detraxit consequat et quo num tendi nada. Não sou faixa ... "
                 android:textColor="@android:color/white"
-                android:layout_toRightOf="@+id/card_aula_img"
+                android:textSize="12sp"
+                android:layout_toRightOf="@+id/img"
+                android:layout_toEndOf="@+id/img"
+                android:layout_below="@+id/prof_name"
+                android:paddingTop="10dp"
+                android:maxLines="4"
+                android:paddingBottom="15dp" />
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_aula_desc"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/prof_name"
-                android:layout_marginLeft="5dp"/>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/card_aula_desc"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:layout_margin="5dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_alignParentStart="true"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1455"
-                        android:layout_gravity="center_horizontal"
                         android:id="@+id/num_aulas"
-                        android:textColor="@android:color/white"
-                        android:textSize="10sp"/>
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Aulas ministradas"
                         android:layout_gravity="center_horizontal"
-                        android:id="@+id/textView10"
+                        android:text="1455"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp"
-                        />
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Aulas ministradas"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp" />
 
 
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="wrap_content" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:orientation="vertical">
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"
+                    android:textAlignment="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Membro desde"
                         android:layout_gravity="center_horizontal"
+                        android:text="Membro desde"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp"/>
+                        android:textSize="10sp" />
 
                     <TextView
+                        android:id="@+id/data_membro_desde"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/data_membro_desde"
                         android:layout_gravity="center_horizontal"
                         android:text="Dez 2014"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp"
-                        />
+                        android:textSize="10sp" />
 
 
                 </LinearLayout>
-
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
+                    android:orientation="vertical"
                     android:textAlignment="center"
-                    android:orientation="vertical">
+                    android:layout_alignParentRight="true">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 Avaliações"
                         android:layout_gravity="center_horizontal"
+                        android:text="3 Avaliações"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp"/>
+                        android:textSize="10sp" />
 
                     <RatingBar
+                        android:id="@+id/aula_rating"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:progressTint="@android:color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:id="@+id/aula_rating"
-                        android:rating="4.5"
                         android:isIndicator="true"
-                        />
+                        android:numStars="5"
+                        android:rating="4.5" />
 
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_professor"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="2dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp" />
 
 
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-
 
 
 </LinearLayout>

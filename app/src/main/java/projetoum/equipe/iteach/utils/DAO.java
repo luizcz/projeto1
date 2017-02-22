@@ -26,7 +26,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -74,7 +76,12 @@ public class DAO implements IRemote {
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
                             if (!dataSnapshot.exists()) {
-                                createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(), true), new ICallback() {
+                                Calendar cal = Calendar.getInstance();
+                                cal.add(Calendar.DATE, 1);
+                                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                                String formatted = format.format(cal.getTime());
+
+                                createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(),user.getPhotoUrl().toString(),formatted, true), new ICallback() {
                                     @Override
                                     public void execute(Object param) {
 
@@ -185,7 +192,7 @@ public class DAO implements IRemote {
 
 
     public void loadFirstClasses(final ClassAdapter adapter) {
-        DatabaseReference ref = getFirebaseInstance().getReference("class");
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
         Query q = ref.limitToFirst(30);
 
         q.addChildEventListener(new ChildEventListener() {
@@ -720,8 +727,39 @@ public class DAO implements IRemote {
 
 
     @Override
-    public void loadFirstTeachers(UserAdapter adapter) {
+    public void loadFirstTeachers(final UserAdapter adapter) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+        Query q = ref.limitToFirst(30);
 
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                adapter.add(user);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                adapter.update(user);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                adapter.remove(user);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public FirebaseAuth getAuth() {

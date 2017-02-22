@@ -14,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
@@ -27,11 +30,12 @@ import projetoum.equipe.iteach.utils.DAO;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<User> usuarios;
     private DAO dao;
+    private Context mContext;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public UserAdapter(Context ctx) {
         dao = DAO.getInstace(ctx);
-
+        mContext = ctx;
         this.usuarios = new ArrayList<>();
     }
 
@@ -52,8 +56,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
         holder.bio.setText(usuarios.get(position).getBio());
 
-        Calendar cal = Calendar.getInstance();
-        holder.membroSince.setText(cal.get(Calendar.MONTH) + " de " + cal.get(Calendar.YEAR));
+        holder.membroSince.setText(usuarios.get(position).getCreationDate());
+        if (usuarios.get(position).getLowResURI() != null && !usuarios.get(position).getLowResURI().isEmpty())
+            Picasso.with(mContext).load(usuarios.get(position).getLowResURI()).fit().centerCrop().into(holder.img);
     }
 
 
@@ -78,6 +83,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         TextView numAulas;
         TextView bio;
         TextView membroSince;
+        CircleImageView img;
 
         UserViewHolder(View itemView) {
             super(itemView);
@@ -92,6 +98,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             numAulas = (TextView) itemView.findViewById(R.id.num_aulas);
             bio = (TextView) itemView.findViewById(R.id.card_aula_desc);
             membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
+            img = (CircleImageView) itemView.findViewById(R.id.img);
         }
     }
 
@@ -105,8 +112,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public void add(User item) {
         usuarios.add(item);
-        int position = usuarios.indexOf(item);
-        notifyItemInserted(position);
+        notifyItemInserted(usuarios.size() - 1);
         // notifyDataSetChanged();
     }
 
@@ -124,6 +130,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void update(User item) {
         int position = usuarios.indexOf(item);
         usuarios.set(position, item);
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 }

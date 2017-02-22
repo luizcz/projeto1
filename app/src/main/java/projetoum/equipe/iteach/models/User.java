@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class User {
 
+
     public String userId;
     public String name;
     public String email;
@@ -19,11 +20,13 @@ public class User {
     public List<String> favoriteClasses;
     public List<String> enrolledClasses;
     public String bio;
-    public String creationDate;
+    public String creationDate = "";
     public String accountId;
     public Boolean firstTime;
     public String local;
     public String telefone;
+    public String highResURI;
+    private String lowResURI;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -50,11 +53,13 @@ public class User {
         this.email = email;
     }
 
-    public User(String userId, String name, String email, Boolean firstTime) {
+    public User(String userId, String name, String email,String lowResURI,String creationDate, Boolean firstTime) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.firstTime = firstTime;
+        this.lowResURI = lowResURI;
+        this.creationDate = creationDate;
     }
 
     @Exclude
@@ -172,6 +177,22 @@ public class User {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getLowResURI() {
+        return lowResURI;
+    }
+
+    public void setLowResURI(String lowResURI) {
+        this.lowResURI = lowResURI;
+    }
+
+    public String getHighResURI() {
+        return highResURI;
+    }
+
+    public void setHighResURI(String highResURI) {
+        this.highResURI = highResURI;
     }
 
     @Override

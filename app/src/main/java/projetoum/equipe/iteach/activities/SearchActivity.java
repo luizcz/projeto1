@@ -60,7 +60,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -92,7 +92,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         userAdapter = new UserAdapter(this);
         classAdapter = new ClassAdapter(this);
 
-        if (getIntent().getStringExtra("busca").equals("aula")){
+        if (getIntent().getStringExtra("busca").equals("aula")) {
             mRecyclerView.setAdapter(classAdapter);
         } else {
             mRecyclerView.setAdapter(userAdapter);
@@ -110,18 +110,24 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
-        if (getIntent().getStringExtra("busca").equals("aula")){
-            currentFragment = searchAulasFragment;
-            dao.loadFirstClasses(classAdapter);
-        } else {
-            currentFragment = searchProfsFragment;
-            dao.loadFirstTeachers(userAdapter);
-        }
+        firstLoad();
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
         fragmentTransaction.commit();
+    }
+
+    private void firstLoad() {
+        if (getIntent().getStringExtra("busca").equals("aula")) {
+            currentFragment = searchAulasFragment;
+            if (classAdapter.getItemCount() == 0)
+                dao.loadFirstClasses(classAdapter);
+        } else {
+            currentFragment = searchProfsFragment;
+            if (userAdapter.getItemCount() == 0)
+                dao.loadFirstTeachers(userAdapter);
+        }
     }
 
     @Override
@@ -132,6 +138,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
+       // firstLoad();
     }
 
     @Override
@@ -153,9 +160,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextSubmit(String input) {
                 if (currentFragment == searchProfsFragment) {
-                    dao.searchUser(input,userAdapter);
+                    dao.searchUser(input, userAdapter);
                 } else if (currentFragment == searchAulasFragment) {
-                   dao.searchClass(input,classAdapter);
+                    dao.searchClass(input, classAdapter);
                 }
                 searchView.clearFocus();
                 return true;
@@ -165,9 +172,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             @Override
             public boolean onQueryTextChange(String input) {
                 if (currentFragment == searchProfsFragment) {
-                    dao.searchUser(input,userAdapter);
+                    dao.searchUser(input, userAdapter);
                 } else if (currentFragment == searchAulasFragment) {
-                    dao.searchClass(input,classAdapter);
+                    dao.searchClass(input, classAdapter);
                 }
                 return true;
             }

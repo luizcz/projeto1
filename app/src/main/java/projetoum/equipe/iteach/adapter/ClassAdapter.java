@@ -9,12 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -58,6 +62,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.aula_desc.setText(classes.get(position).getName());
         holder.aula_valor.setText("R$ " + String.valueOf((new Random()).nextInt(100)) + ",00");
 
+
     }
 
     @Override
@@ -78,6 +83,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         TextView aula_desc;
         TextView aula_valor;
 
+
         ClassViewHolder(View itemView) {
             super(itemView);
 
@@ -91,6 +97,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
             aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView)itemView.findViewById(R.id.card_aula_valor);
+
+
         }
     }
 
@@ -102,7 +110,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     public void add(ClassObject item) {
         classes.add(item);
-        notifyItemInserted(classes.indexOf(item));
+        notifyItemInserted(classes.size()-1);
         //notifyDataSetChanged();
     }
 
@@ -120,6 +128,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     public void update(ClassObject item){
         int position = classes.indexOf(item);
         classes.set(position,item);
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 }
