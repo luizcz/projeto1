@@ -31,7 +31,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         dao = DAO.getInstace(ctx);
 
         this.classes = new ArrayList<>();
-        this.classes.addAll(dao.getmClasses());
     }
 
 
@@ -48,7 +47,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
-                intent.putExtra("aula_id", dao.getmClasses().get(position).getId());
+                intent.putExtra("aula_id", classes.get(position).getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -102,8 +101,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     public void add(ClassObject item) {
         classes.add(item);
-//        notifyItemInserted(position);
-        notifyDataSetChanged();
+        notifyItemInserted(classes.indexOf(item));
+        //notifyDataSetChanged();
     }
 
     public void remove(ClassObject item) {
@@ -115,5 +114,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     public void removeAll(){
         classes.clear();
         notifyDataSetChanged();
+    }
+
+    public void update(ClassObject item){
+        int position = classes.indexOf(item);
+        classes.set(position,item);
+        notifyItemChanged(position);
     }
 }

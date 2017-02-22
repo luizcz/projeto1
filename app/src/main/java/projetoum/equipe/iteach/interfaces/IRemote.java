@@ -4,6 +4,7 @@ import android.location.Location;
 
 import java.util.List;
 
+import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.Rating;
 import projetoum.equipe.iteach.models.User;
@@ -35,12 +36,8 @@ public interface IRemote {
     public List<ClassObject> findClassByLocation(Location loc);
     public List<ClassObject> findClassByTeacher(String userID);
     public List<ClassObject> findClassByAttendee(String userID);
-    public void searchClass(String anything, ICallback callback);
+    public void searchClass(String anything,ClassAdapter adapter);
 
 
-
-
-
-
-
+    void loadFirstTeachers(ClassAdapter adapter);
 }

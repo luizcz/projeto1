@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.interfaces.IRemote;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -63,7 +64,7 @@ public class DAO implements IRemote {
                     Log.d("FireBase", "onAuthStateChanged:signed_in:" + user.getUid());
 
                     final FirebaseDatabase database = getFirebaseInstance();
-                    DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUid());
+                    DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
 
 
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -78,13 +79,14 @@ public class DAO implements IRemote {
                                     }
                                 });
                                 callback.execute(true);
-                            }else {
+                            } else {
                                 callback.execute(true);
                             }
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {}
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
                     });
                 } else {
                     // User is signed out
@@ -95,7 +97,7 @@ public class DAO implements IRemote {
             }
         };
         loadFakeProfiles();
-        loadFirstClasses();
+        //loadFirstClasses();
 
     }
 
@@ -143,7 +145,7 @@ public class DAO implements IRemote {
                 });
     }
 
-    public void firebaseAuthWithFacebook(AuthCredential credential){
+    public void firebaseAuthWithFacebook(AuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -181,40 +183,38 @@ public class DAO implements IRemote {
         return user;
     }
 
-    public void loadFakeProfiles(){
+    public void loadFakeProfiles() {
         usuarios = new ArrayList<>();
 
-        for (int i = 0; i<10; i++){
-            usuarios.add(new User(String.valueOf(i), "Pessoa "+String.valueOf(i), "email@gmail.com"));
+        for (int i = 0; i < 10; i++) {
+            usuarios.add(new User(String.valueOf(i), "Pessoa " + String.valueOf(i), "email@gmail.com"));
         }
     }
 
-    public void loadFirstClasses(){
+    public void loadFirstClasses(final ClassAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference("class");
         Query q = ref.limitToFirst(30);
-        mClasses = new ArrayList<>();
 
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                mClasses.add(classObject);
+                classObject.setId(dataSnapshot.getKey());
+                adapter.add(classObject);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                try {
-                    mClasses.set(mClasses.indexOf(classObject), classObject);
-                }catch (Exception e){
-
-                }
+                classObject.setId(dataSnapshot.getKey());
+                adapter.update(classObject);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                mClasses.remove(classObject);
+                classObject.setId(dataSnapshot.getKey());
+                adapter.remove(classObject);
             }
 
             @Override
@@ -246,7 +246,7 @@ public class DAO implements IRemote {
         FirebaseAuth firebaseAuth = mAuth;
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user != null) {
+        if (user != null) {
             FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
 
@@ -295,9 +295,8 @@ public class DAO implements IRemote {
     }
 
 
-
     public void fillFeed() {
-        if(mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null) {
             FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference("message");
             myRef.setValue("Feed " + new Random().nextInt(999));
@@ -308,7 +307,7 @@ public class DAO implements IRemote {
     @Override
     public void createUser(User user, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUserId());
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -357,7 +356,7 @@ public class DAO implements IRemote {
     @Override
     public void deleteUser(User user, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUserId());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -376,7 +375,7 @@ public class DAO implements IRemote {
     @Override
     public void updateUser(User user, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+user.getUserId());
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUserId());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -394,7 +393,7 @@ public class DAO implements IRemote {
     @Override
     public void deleteUser(String userID, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER+"/"+userID);
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + userID);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -446,8 +445,7 @@ public class DAO implements IRemote {
     @Override
     public void deleteClass(ClassObject classObject, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
-
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + classObject.getId());
 
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -469,7 +467,7 @@ public class DAO implements IRemote {
     @Override
     public void updateClass(ClassObject classObject, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classObject.getId());
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + classObject.getId());
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -489,7 +487,7 @@ public class DAO implements IRemote {
     @Override
     public void deleteClass(String classID, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS+"/"+classID);
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + classID);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -516,7 +514,7 @@ public class DAO implements IRemote {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 System.out.println(dataSnapshot.getValue());
-                System.out.println(((HashMap)dataSnapshot.getValue()).get("name"));
+                System.out.println(((HashMap) dataSnapshot.getValue()).get("name"));
                 callback.execute("nadanadanadna");
             }
 
@@ -542,12 +540,12 @@ public class DAO implements IRemote {
         });
     }
 
-    public boolean userFirsTime(){
+    public boolean userFirsTime() {
 
         FirebaseAuth firebaseAuth = mAuth;
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user != null) {
+        if (user != null) {
             FirebaseDatabase database = getFirebaseInstance();
             DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + user.getUid());
 
@@ -592,32 +590,44 @@ public class DAO implements IRemote {
     }
 
     @Override
-    public searchClass(String anything, ICallback callback) {
+    public void searchClass(final String anything, final ClassAdapter adapter) {
+        adapter.removeAll();
+        final String lower = anything.toLowerCase();
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
-        Query q = ref..limitToFirst(30);
+        Query q = ref.orderByKey();
         mClasses = new ArrayList<>();
+
 
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                mClasses.add(classObject);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
                 try {
-                    mClasses.set(mClasses.indexOf(classObject), classObject);
-                }catch (Exception e){
+                    if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                        ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                        classObject.setId(dataSnapshot.getKey());
+                        adapter.add(classObject);
+                    }
+                } catch (NullPointerException e) {
 
                 }
             }
 
             @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                    ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                    classObject.setId(dataSnapshot.getKey());
+                    adapter.update(classObject);
+                }
+            }
+
+            @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
-                mClasses.remove(classObject);
+                if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
+                    ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                    classObject.setId(dataSnapshot.getKey());
+                    adapter.remove(classObject);
+                }
             }
 
             @Override
@@ -630,6 +640,12 @@ public class DAO implements IRemote {
 
             }
         });
+
+    }
+
+    @Override
+    public void loadFirstTeachers(ClassAdapter adapter) {
+
     }
 
     public FirebaseAuth getAuth() {

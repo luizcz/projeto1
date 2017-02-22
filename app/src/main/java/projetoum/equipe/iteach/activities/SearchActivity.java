@@ -34,11 +34,12 @@ import projetoum.equipe.iteach.fragments.SearchAulasFragment;
 import projetoum.equipe.iteach.fragments.SearchProfsFragment;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
+import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ICallback {
 
     private MenuItem menuSearch;
     private SearchView searchView;
@@ -61,7 +62,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -82,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         dao = DAO.getInstace(this);
         usuarios = dao.getUsuarios();
-        classes = dao.getmClasses();
+        classes = dao.getClasses();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
@@ -93,7 +94,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         userAdapter = new UserAdapter(getBaseContext());
-        classAdapter = new ClassAdapter(getBaseContext());
+        classAdapter = new ClassAdapter(this);
 
         if (getIntent().getStringExtra("busca").equals("aula")){
             mRecyclerView.setAdapter(classAdapter);
@@ -108,14 +109,17 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         setUpFragments();
     }
 
+
     private void setUpFragments() {
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
         if (getIntent().getStringExtra("busca").equals("aula")){
             currentFragment = searchAulasFragment;
+            dao.loadFirstClasses(classAdapter);
         } else {
             currentFragment = searchProfsFragment;
+            //dao.loadFirstTeachers(this);
         }
 
         fragmentManager = getSupportFragmentManager();
@@ -155,7 +159,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
                 } else if (currentFragment == searchAulasFragment) {
-                    updateAulas(dao.getmClasses(), input);
+                   dao.searchClass(input,classAdapter);
                 }
                 searchView.clearFocus();
                 return true;
@@ -167,7 +171,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 if (currentFragment == searchProfsFragment) {
                     updateProfs(dao.getUsuarios(), input);
                 } else if (currentFragment == searchAulasFragment) {
-                    updateAulas(dao.getmClasses(), input);
+                    dao.searchClass(input,classAdapter);
                 }
                 return true;
             }
@@ -190,7 +194,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    private void updateAulas(List<ClassObject> classes, String input) {
+  /*  private void updateAulas(List<ClassObject> classes, String input) {
         List<ClassObject> copia = new ArrayList<>();
         copia.addAll(classes);
 
@@ -204,9 +208,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 }
             }
         } else {
-            classAdapter.setClasses(dao.getmClasses());
+            classAdapter.setClasses(dao.getClasses());
         }
-    }
+    }*/
 
     private void updateProfs(List<User> usuarios, String input) {
         List<User> copia = new ArrayList<User>();
@@ -292,5 +296,10 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void execute(Object param) {
+
     }
 }
