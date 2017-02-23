@@ -21,7 +21,9 @@ import java.util.Random;
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
+import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
@@ -45,7 +47,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     }
 
     @Override
-    public void onBindViewHolder(ClassViewHolder holder, final int position) {
+    public void onBindViewHolder(final ClassViewHolder holder, final int position) {
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +60,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         });
 
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
-        holder.aula_prof_name.setText(classes.get(position).getTeacherId());
+        dao.findUserById(classes.get(position).getTeacherId(), new ICallback() {
+            @Override
+            public void execute(Object param) {
+                User user = (User) param;
+                holder.aula_prof_name.setText(user.getName());
+            }
+        });
+
         holder.aula_desc.setText(classes.get(position).getName());
 
 
