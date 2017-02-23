@@ -24,9 +24,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/aula_portugues"
-                android:id="@+id/imageView4"
+                android:id="@+id/aula_img"
                 android:layout_weight="1"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -82,7 +83,7 @@
             android:text="Valor:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/card_aula_valor"
+            android:id="@+id/aula_valor"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -110,14 +111,16 @@
             android:id="@+id/aula_conteudo_title"
             android:textAlignment="center"
             android:textStyle="normal|bold"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
 
         <TextView
             android:text="Preposições\nUso de Crase\nVerbos Irregulares"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/aula_conteudo_body"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp" />
 
         <Space
             android:layout_width="match_parent"
@@ -130,7 +133,8 @@
             android:id="@+id/aula_local_title"
             android:textAlignment="center"
             android:textStyle="normal|bold"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
 
         <TextView
             android:text="Avenida Marechal Floriano Peixoto, S/N - Centro, Campina Grande - PB, 58400-165"

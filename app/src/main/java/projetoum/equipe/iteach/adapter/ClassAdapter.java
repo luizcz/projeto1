@@ -64,16 +64,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
         holder.aula_prof_name.setText(classes.get(position).getTeacherId());
-        holder.aula_desc.setText(classes.get(position).getName());
+        holder.aula_desc.setText(classes.get(position).getDescription());
 
-
-        Double valor = classes.get(position).getValue();
-        if (valor==null || valor == 0){
+        String valor = classes.get(position).getValorFormatado();
+        if (valor.equals("0")){
             holder.aula_valor.setText(R.string.free);
         } else {
-            DecimalFormat df = new DecimalFormat("##.##");
-            df.setRoundingMode(RoundingMode.DOWN);
-            holder.aula_valor.setText("R$ " + df.format(valor));
+            holder.aula_valor.setText(valor);
         }
     }
 
@@ -111,8 +108,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
             aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView)itemView.findViewById(R.id.card_aula_valor);
-
-
         }
     }
 

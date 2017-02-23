@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +50,9 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private GoogleMap mMap;
     private TextView aula_nome_professor;
     private RatingBar aula_rating;
+    private ImageView aula_img;
     private TextView aula_vagas;
-    private TextView card_aula_valor;
+    private TextView aula_valor;
     private TextView aula_data;
     private TextView aula_horario;
     private TextView aula_conteudo_body;
@@ -98,11 +101,11 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-
+        aula_img = (ImageView) findViewById(R.id.aula_img);
         aula_nome_professor = (TextView) findViewById(R.id.aula_nome_professor);
         aula_rating = (RatingBar) findViewById(R.id.aula_rating);
         aula_vagas = (TextView) findViewById(R.id.aula_vagas);
-        card_aula_valor = (TextView) findViewById(R.id.card_aula_valor);
+        aula_valor = (TextView) findViewById(R.id.aula_valor);
         aula_data = (TextView) findViewById(R.id.aula_data);
         aula_horario = (TextView) findViewById(R.id.aula_horario);
         aula_conteudo_body = (TextView) findViewById(R.id.aula_conteudo_body);
@@ -137,13 +140,28 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 //            }
 //
 //
+
         aula_nome_professor.setText(mClass.getName());
 //        aula_rating.setRating(aulaSelecionada.getRating());
         aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
-        card_aula_valor.setText("R$ " + String.valueOf(mClass.getValue()) + ",00");
-        aula_data.setText("Data: " + "Terças e Quintas");
-        aula_horario.setText("Horario: " + String.valueOf(mClass.getTime()));
-        aula_conteudo_body.setText(mClass.getData());
+
+        String valor = mClass.getValorFormatado();
+        if (valor.equals("0")){
+            aula_valor.setText("Valor: " + R.string.free);
+        } else {
+            aula_valor.setText("Valor: " + valor);
+        }
+
+        if (mClass.getDiasSemana() != null){
+            aula_data.setText("Data: " + mClass.getDiasSemana().toString());
+        } else {
+            aula_data.setText("Data: Não informado");
+        }
+
+
+
+        aula_horario.setText("Horario: " + String.valueOf(mClass.getHoraInicio()));
+        aula_conteudo_body.setText(mClass.getDescription());
         aula_endereco.setText(mClass.getAddress());
         aula_mapa_dist.setText(String.valueOf(10) + " Km");
     }

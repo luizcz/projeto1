@@ -1,13 +1,18 @@
 package projetoum.equipe.iteach.models;
 
+import android.content.res.Resources;
 import android.net.Uri;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import projetoum.equipe.iteach.R;
 
 @IgnoreExtraProperties
 
@@ -16,6 +21,7 @@ public class ClassObject {
     private String address;
     private String data;
     private String dataFim;
+    private String description;
     private List<String> diasSemana;
     private String horaInicio;
     private String horaFim;
@@ -68,6 +74,7 @@ public class ClassObject {
         result.put("name", name);
         result.put("id", id);
         result.put("data", data);
+        result.put("description", description);
         result.put("image", imagem);
         result.put("subject", subject);
         result.put("diasSemana", diasSemana);
@@ -182,6 +189,14 @@ public class ClassObject {
         this.subject = subject;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<String> getDiasSemana() {
         return diasSemana;
     }
@@ -212,6 +227,16 @@ public class ClassObject {
 
     public void setHoraFim(String horaFim) {
         this.horaFim = horaFim;
+    }
+
+    public String getValorFormatado(){
+        if (value == null){
+            return "0";
+        } else {
+            DecimalFormat df = new DecimalFormat("##.##");
+            df.setRoundingMode(RoundingMode.DOWN);
+            return "R$ " + df.format(value);
+        }
     }
 
     @Override
