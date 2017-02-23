@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity
             if (result.isSuccess()) {
                 final GoogleSignInAccount acct = result.getSignInAccount();
                 // Get account information
-                
+
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {

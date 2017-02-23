@@ -76,6 +76,8 @@ public class PerfilActivity extends AppCompatActivity
 
         if (getIntent().hasExtra("id")) {
 
+
+
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
                 @Override
                 public void execute(User param) {
@@ -111,6 +113,11 @@ public class PerfilActivity extends AppCompatActivity
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_perfil, menu);
+
+        if (!getIntent().getStringExtra("id").equals(dao.getFireBaseUser().getUid())) {
+            menu.findItem(R.id.edit).setVisible(false);
+        }
+
 
         return true;
     }
