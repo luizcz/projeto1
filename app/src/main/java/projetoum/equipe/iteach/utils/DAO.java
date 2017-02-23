@@ -81,7 +81,7 @@ public class DAO implements IRemote {
                                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                                 String formatted = format.format(cal.getTime());
 
-                                createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(),user.getPhotoUrl().toString(),formatted, true), new ICallback() {
+                                createUser(new User(user.getUid(), user.getDisplayName(), user.getEmail(), user.getPhotoUrl().toString(), formatted, true), new ICallback() {
                                     @Override
                                     public void execute(Object param) {
 
@@ -723,6 +723,24 @@ public class DAO implements IRemote {
             }
         });
 
+    }
+
+    @Override
+    public void findUserById(String id, final ICallback callback) {
+        FirebaseDatabase database = getFirebaseInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + id);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                callback.execute(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(null);
+            }
+        });
     }
 
 

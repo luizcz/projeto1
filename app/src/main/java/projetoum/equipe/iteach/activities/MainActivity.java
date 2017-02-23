@@ -35,6 +35,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -43,19 +44,18 @@ import java.util.Locale;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-
-    private static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
     private DAO dao;
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private NavigationView navigationView;
-    private EditText edtt;
+    private String googleHighResPhotoUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,53 +78,6 @@ public class MainActivity extends AppCompatActivity
         updateUI = new MainActivity.UpdateUI();
         dao = DAO.getInstace(updateUI, this);
 
-
-
-        mCallbackManager = CallbackManager.Factory.create();
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-// options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
-
-    /*    dao.getCurrentUser(new ICallback<User>() {
-            @Override
-            public void execute(User param) {
-                User usuarioAtual = param;
-                if(usuarioAtual.getName() != null){
-                    ((TextView)findViewById(R.id.label_name)).setText(usuarioAtual.getName());
-                }
-                if(usuarioAtual.getEmail() != null){
-                    ((TextView)findViewById(R.id.label_email)).setText(usuarioAtual.getEmail());
-                }
-            }
-        });*/
-
-
-
-       /* edtt = (EditText) findViewById(R.id.edt_date);
-        edtt.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                System.out.println("aaaaaaaaaaaaaaa");
-                new DatePickerDialog(MainActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });*/
 
     }
 
@@ -149,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_feed) {
             //startActivity(new Intent(this,MainActivity.class));
         } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this, PerfilActivity.class));
+            startActivity(new Intent(this, PerfilActivity.class).putExtra("id", dao.getFireBaseUser().getUid()));
 
         } else if (id == R.id.nav_my_class) {
             //startActivity(new Intent(this,CourseActivity.class));
@@ -159,16 +112,15 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_class) {
             Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca","aula");
+            intent.putExtra("busca", "aula");
             startActivity(intent);
 
         } else if (id == R.id.nav_teacher) {
             Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca","user");
+            intent.putExtra("busca", "user");
             startActivity(intent);
 
-        }
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             dao.signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -206,7 +158,7 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floatingActionButton:
-                startActivity(new Intent(this,CadastroAulaActivity.class));
+                startActivity(new Intent(this, CadastroAulaActivity.class));
                 break;
           /*  case R.id.sign_in_button:
                 signIn();
@@ -225,92 +177,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    Calendar myCalendar = Calendar.getInstance();
-
-    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-
-    };
-
-
-
-    private void updateLabel() {
-
-        String myFormat = "dd/MM/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        ((EditText)findViewById(R.id.edt_date)).setText(sdf.format(myCalendar.getTime()));
-    }
-
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-
-        // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("Login Google", "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            dao.firebaseAuthWithGoogle(acct);
-            //updateUI.execute(true);
-        } else {
-            // Signed out, show unauthenticated UI.
-            //updateUI.execute(false);
-        }
-    }
-
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("FaceFirebase", "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        dao.firebaseAuthWithFacebook(credential);
-    }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        updateUI.execute(false);
-                        if (dao.getAuthListener() != null) {
-                            dao.signOut();
-                            disconnectFromFacebook();
-                            // dao.removeAuthStateListener();
-                        }
-                    }
-                });
     }
 
     public void disconnectFromFacebook() {
@@ -337,8 +207,101 @@ public class MainActivity extends AppCompatActivity
                 ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
                 ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
                 Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
+                dao.getCurrentUser(new ICallback<User>() {
+                    @Override
+                    public void execute(User param) {
+                        User update = param;
+                        update.setLowResURI(dao.getFireBaseUser().getPhotoUrl().toString());
+
+
+                        for (UserInfo profile : dao.getFireBaseUser().getProviderData()) {
+                            String firstProvider = profile.getProviderId();
+
+
+                            if (firstProvider.equals("facebook.com")) {
+                                String facebookUserId = profile.getUid();
+                                String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
+                                update.highResURI = photoUrl;
+                                dao.updateUser(param, new ICallback() {
+                                    @Override
+                                    public void execute(Object param) {
+
+                                    }
+                                });
+                            } else if (firstProvider.equals("google.com")) {
+                                loadGoogleUserDetails();
+                                /*if (googleHighResPhotoUrl != null && !googleHighResPhotoUrl.isEmpty()) {
+                                    update.setHighResURI(googleHighResPhotoUrl);
+                                }*/
+                            }
+                        }
+
+
+                    }
+                });
+
             } else {
             }
         }
     }
+
+    private static final int RC_SIGN_IN = 8888;
+
+    public void loadGoogleUserDetails() {
+        try {
+            // Configure sign-in to request the user's ID, email address, and basic profile. ID and
+            // basic profile are included in DEFAULT_SIGN_IN.
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+
+            // Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            System.out.println("onConnectionFailed");
+                        }
+                    })
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from
+        //   GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                final GoogleSignInAccount acct = result.getSignInAccount();
+                // Get account information
+                
+                dao.getCurrentUser(new ICallback<User>() {
+                    @Override
+                    public void execute(User param) {
+                        param.highResURI = acct.getPhotoUrl().toString();
+                        dao.updateUser(param, new ICallback() {
+                            @Override
+                            public void execute(Object param) {
+
+                            }
+                        });
+
+                    }
+                });
+
+            }
+        }
+    }
+
 }

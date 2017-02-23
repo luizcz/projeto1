@@ -22,6 +22,7 @@ public interface IRemote {
     public void updateUser(User user, ICallback callback);
     public void deleteUser(String userID, ICallback callback);
     public void searchUser(String anything,UserAdapter adapter);
+    public void findUserById(String id,ICallback callback);
 
 
     public void rateUser(Rating rating, User user, ICallback callback);

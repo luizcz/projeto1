@@ -170,13 +170,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("Login Google", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
+            final GoogleSignInAccount acct = result.getSignInAccount();
             //Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
             Log.i("Login",acct.getDisplayName());
             dao.firebaseAuthWithGoogle(acct);
             dao.getCurrentUser(new ICallback<User>() {
                 @Override
                 public void execute(User param) {
+                    param.highResURI = acct.getPhotoUrl().toString();
+                    dao.updateUser(param, new ICallback() {
+                        @Override
+                        public void execute(Object param) {
+
+                        }
+                    });
                     if (param.getFirstTime() == null || param.getFirstTime()) {
                         startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
                     } else
@@ -249,15 +256,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             if (param) {
-//                findViewById(R.id.bt_login_google).setVisibility(View.GONE);
-//                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-                // Toast.makeText(mContext, dao.getFireBaseUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-//                dao.getFeed(new ICallback<String>() {
-//                    @Override
-//                    public void execute(String param) {
-//                        feed.setText(param);
-//                    }
-//                });
                 Log.i("Login", "status: signed_in");
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
@@ -270,15 +268,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
             } else {
-                // Toast.makeText(mContext, "status: signed_out", Toast.LENGTH_SHORT).show();
                 Log.i("Login", "status: signed_out");
                 btGoogle.setVisibility(View.VISIBLE);
                 btFb.setVisibility(View.VISIBLE);
                 signinLabel.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
-
-//                findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-//                findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
             }
         }
     }

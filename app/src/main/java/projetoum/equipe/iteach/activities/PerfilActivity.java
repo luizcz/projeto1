@@ -35,6 +35,8 @@ public class PerfilActivity extends AppCompatActivity
 
     private DAO dao;
     private GoogleApiClient mGoogleApiClient;
+    private TextView name, local, bio;
+    private ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,63 +65,42 @@ public class PerfilActivity extends AppCompatActivity
         Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
 
 
-        TextView name = (TextView) findViewById(R.id.label_name);
+        name = (TextView) findViewById(R.id.label_name);
+        local = ((TextView) findViewById(R.id.label_local));
+        bio = ((TextView) findViewById(R.id.label_info));
+        img = (ImageView) findViewById(R.id.card_aula_img);
 
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
 
         name.setTypeface(giz);
-        name.setText(pattern(dao.getFireBaseUser().getDisplayName()));
 
-        dao.getCurrentUser(new ICallback<User>() {
-            @Override
-            public void execute(User param) {
-                User usuarioAtual = param;
-                /*if(usuarioAtual.getRating() != null){
-                    ((RatingBar)findViewById(R.id.ratingBar)).setRating(usuarioAtual.getRating().getGrade());
-                    usuarioAtual.getRating()
-                    edtNome.setText(usuarioAtual.getName());
-                }*/
-                if (usuarioAtual.getLocal() != null) {
-                    ((TextView) findViewById(R.id.label_local)).setText(usuarioAtual.getLocal());
+        if (getIntent().hasExtra("id")) {
+
+            dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
+                @Override
+                public void execute(User param) {
+                    name.setText(pattern(param.name));
+                    local.setText(param.getLocal());
+                    bio.setText(param.getBio());
+                    if (param.highResURI != null && !param.highResURI.isEmpty())
+                        Picasso.with(getBaseContext()).load(param.highResURI).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                    else
+                        Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                 }
-                if (usuarioAtual.getBio() != null) {
-                    ((TextView) findViewById(R.id.label_info)).setText(usuarioAtual.getBio());
-                }
-            }
-        });
+            });
 
-
-        for (UserInfo profile : dao.getFireBaseUser().getProviderData()) {
-            String firstProvider = profile.getProviderId();
-
-
-            if (firstProvider.equals("facebook.com")) {
-
-                String facebookUserId = profile.getUid();
-
-                String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
-                System.out.println(photoUrl);
-                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
-
-
-            } else if (firstProvider.equals("google.com")) {
-
-
-                loadGoogleUserDetails();
-            }
         }
-
     }
 
     private String pattern(String displayName) {
         String pattern = "";
         String[] split = displayName.split(" ");
-        pattern += " "+ split[0];
+        pattern += " " + split[0];
         if (split.length > 1 && pattern.length() < 16) {
             if (pattern.length() + split[1].length() <= 16) {
-                pattern += " "+ split[split.length - 1];
+                pattern += " " + split[split.length - 1];
             } else {
-                pattern += " "+ split[split.length - 1].substring(0, 1) + ".";
+                pattern += " " + split[split.length - 1].substring(0, 1) + ".";
             }
         }
         return pattern;
@@ -176,55 +157,6 @@ public class PerfilActivity extends AppCompatActivity
         return true;
     }
 
-
-    private static final int RC_SIGN_IN = 8888;
-
-    public void loadGoogleUserDetails() {
-        try {
-            // Configure sign-in to request the user's ID, email address, and basic profile. ID and
-            // basic profile are included in DEFAULT_SIGN_IN.
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
-
-            // Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                            System.out.println("onConnectionFailed");
-                        }
-                    })
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from
-        //   GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                // Get account information
-                String photoUrl = acct.getPhotoUrl().toString();
-
-                Picasso.with(getBaseContext()).load(photoUrl).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
-
-
-            }
-        }
-    }
 
     public void action(MenuItem item) {
         switch (item.getItemId()) {

@@ -5,6 +5,7 @@ package projetoum.equipe.iteach.adapter;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -23,6 +24,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.activities.PerfilActivity;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
@@ -50,7 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     @Override
-    public void onBindViewHolder(UserViewHolder holder, int position) {
+    public void onBindViewHolder(UserViewHolder holder, final int position) {
 
         holder.nomeUser.setText(usuarios.get(position).getName());
         holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
@@ -59,6 +61,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.membroSince.setText(usuarios.get(position).getCreationDate());
         if (usuarios.get(position).getLowResURI() != null && !usuarios.get(position).getLowResURI().isEmpty())
             Picasso.with(mContext).load(usuarios.get(position).getLowResURI()).fit().centerCrop().into(holder.img);
+
+
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, PerfilActivity.class).putExtra("id",usuarios.get(position).getUserId()));
+            }
+        });
+
     }
 
 
@@ -99,6 +110,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             bio = (TextView) itemView.findViewById(R.id.card_aula_desc);
             membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
             img = (CircleImageView) itemView.findViewById(R.id.img);
+
+
+
         }
     }
 

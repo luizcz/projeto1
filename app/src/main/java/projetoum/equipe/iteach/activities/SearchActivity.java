@@ -211,7 +211,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 finish();
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(this, PerfilActivity.class));
+                startActivity(new Intent(this, PerfilActivity.class).putExtra("id",dao.getFireBaseUser().getUid()));
                 finish();
             case R.id.nav_my_class:
                 //startActivity(new Intent(this,CourseActivity.class));
