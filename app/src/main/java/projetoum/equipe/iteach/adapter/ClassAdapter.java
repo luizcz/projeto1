@@ -12,14 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
 import com.squareup.picasso.Picasso;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
@@ -59,7 +64,18 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             }
         });
 
-        holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
+        if (classes.get(position).getImagem() != null && !classes.get(position).getImagem().isEmpty())
+            Picasso.with(mContext).load(classes.get(position).getImagem()).fit().centerCrop().into(holder.card_aula_img);
+
+        if (MainActivity.mLastLocation != null &&classes.get(position).getLat() != null &&classes.get(position).getLon() != null) {
+            LatLng myPosition = new LatLng(classes.get(position).getLat(), classes.get(position).getLon());
+            LatLng placePosition = new LatLng(MainActivity.mLastLocation.getLatitude(), MainActivity.mLastLocation.getLongitude());
+            double distance = SphericalUtil.computeDistanceBetween(myPosition, placePosition);
+            DecimalFormat df = new DecimalFormat("#0.0");
+            holder.aula_dist.setText( String.valueOf(df.format(distance/1000)) + "Km");
+        }else {
+            holder.aula_dist.setText("?");
+        }
         dao.findUserById(classes.get(position).getTeacherId(), new ICallback() {
             @Override
             public void execute(Object param) {
@@ -68,14 +84,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             }
         });
 
-        holder.aula_desc.setText(classes.get(position).getName());
+        holder.aula_desc.setText(classes.get(position).getDescription());
 
-
-        Double valor = classes.get(position).getValue();
-        if (valor==null){
-            holder.aula_valor.setText("R$ 00,00");
+        String valor = classes.get(position).getValorFormatado();
+        if (valor.equals("0")){
+            holder.aula_valor.setText(R.string.free);
         } else {
-            holder.aula_valor.setText("R$ " + String.valueOf(valor));
+            holder.aula_valor.setText(valor);
         }
 
     }
@@ -93,6 +108,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
+        ImageView card_aula_img;
         TextView aula_dist;
         TextView aula_prof_name;
         TextView aula_desc;
@@ -108,6 +124,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
             }
+            card_aula_img = (ImageView) itemView.findViewById(R.id.card_aula_img);
             aula_dist = (TextView)itemView.findViewById(R.id.card_aula_dist);
             aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
             aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);

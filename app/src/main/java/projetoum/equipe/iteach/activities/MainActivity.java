@@ -1,10 +1,15 @@
 package projetoum.equipe.iteach.activities;
 
-import android.app.DatePickerDialog;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
+
+import com.google.android.gms.location.LocationServices;
+
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,16 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -48,7 +43,7 @@ import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.ConnectionCallbacks, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private DAO dao;
@@ -56,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private CallbackManager mCallbackManager;
     private NavigationView navigationView;
     private String googleHighResPhotoUrl;
+    public static Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +74,8 @@ public class MainActivity extends AppCompatActivity
         updateUI = new MainActivity.UpdateUI();
         dao = DAO.getInstace(updateUI, this);
 
-
+        buildGoogleApiClient();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -137,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
         dao.addAuthStateListener();
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -151,6 +147,9 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
         if (dao.getAuthListener() != null) {
             dao.removeAuthStateListener();
+        }
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
         }
     }
 
@@ -194,6 +193,35 @@ public class MainActivity extends AppCompatActivity
                 LoginManager.getInstance().logOut();
             }
         }).executeAsync();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 
     public class UpdateUI implements ICallback<Boolean> {
