@@ -62,6 +62,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         });
 
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
+
+        if (classes.get(position).getImagem() != null && !classes.get(position).getImagem().isEmpty())
+            Picasso.with(mContext).load(classes.get(position).getImagem()).fit().centerCrop().into(holder.card_aula_img);
+
         dao.findUserById(classes.get(position).getTeacherId(), new ICallback() {
             @Override
             public void execute(Object param) {

@@ -62,17 +62,27 @@
 
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:text="Sobre a Classe:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/aula_sobre"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"/>
+
         <TextView
             android:text="Vagas ocupadas:"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/aula_vagas"
             android:textColor="@android:color/white"
-            android:paddingTop="10dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:paddingTop="5dp" />
 
         <TextView
             android:text="Valor:"
