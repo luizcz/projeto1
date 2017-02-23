@@ -28,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/card_aula_img"
-
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
@@ -39,17 +38,16 @@
                 android:textColor="@android:color/white"
                 android:textStyle="normal|bold" />
 
-
             <ImageView
                 android:id="@+id/card_aula_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="3dp"
+                android:layout_margin="5dp"
                 android:src="@drawable/ic_professor"
-                android:tint="@android:color/white"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:padding="3dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -106,24 +104,28 @@
 
                 <TextView
                     android:id="@+id/card_aula_prof_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="Prof Pasquale Neto"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:fadingEdge="horizontal"
+                    android:ellipsize="end"
+                    android:fadingEdgeLength="10dp"
+                    android:layout_width="80dp" />
 
                 <TextView
                     android:id="@+id/card_aula_valor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="1"
                     android:gravity="end"
 
                     android:text="R$ 20,00"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:maxLines="1" />
             </LinearLayout>
         </RelativeLayout>
 

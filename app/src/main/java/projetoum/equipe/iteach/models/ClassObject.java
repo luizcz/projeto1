@@ -13,23 +13,23 @@ import java.util.Map;
 
 public class ClassObject {
 
+    private String address;
+    private String data;
+    private String dataFim;
+    private List<String> diasSemana;
+    private String horaInicio;
+    private String horaFim;
+    private String imagem;
+    private String id;
+    private Double lat;
+    private Double lon;
+    private String name;
+    private Double slots;
+    private String subject;
+    private List<String> tags;
     private String teacherId;
     private Long time;
     private Double value;
-    private String address;
-    private Double lat;
-    private Double lon;
-    private Double slots;
-    private List<String> tags;
-    private String name;
-    private String id;
-    private String imagem;
-    private String data;
-    private String subject;
-    private List<String> diasSemana;
-    private String dataFim;
-    private String horaInicio;
-    private String horaFim;
 
     public ClassObject(String name) {
         this.name = name;

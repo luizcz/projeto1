@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -57,18 +59,22 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             }
         });
 
+        if (classes.get(position).getImagem() != null && !classes.get(position).getImagem().isEmpty())
+            Picasso.with(mContext).load(classes.get(position).getImagem()).fit().centerCrop().into(holder.card_aula_img);
+
         holder.aula_dist.setText(String.valueOf((new Random()).nextInt(500)));
         holder.aula_prof_name.setText(classes.get(position).getTeacherId());
         holder.aula_desc.setText(classes.get(position).getName());
 
 
         Double valor = classes.get(position).getValue();
-        if (valor==null){
-            holder.aula_valor.setText("R$ 00,00");
+        if (valor==null || valor == 0){
+            holder.aula_valor.setText(R.string.free);
         } else {
-            holder.aula_valor.setText("R$ " + String.valueOf(valor) + ",00");
+            DecimalFormat df = new DecimalFormat("##.##");
+            df.setRoundingMode(RoundingMode.DOWN);
+            holder.aula_valor.setText("R$ " + df.format(valor));
         }
-
     }
 
     @Override
@@ -84,6 +90,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
+        ImageView card_aula_img;
         TextView aula_dist;
         TextView aula_prof_name;
         TextView aula_desc;
@@ -99,6 +106,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
             }
+            card_aula_img = (ImageView) itemView.findViewById(R.id.card_aula_img);
             aula_dist = (TextView)itemView.findViewById(R.id.card_aula_dist);
             aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
             aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
