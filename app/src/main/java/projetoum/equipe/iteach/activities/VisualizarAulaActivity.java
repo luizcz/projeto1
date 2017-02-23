@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.maps.android.SphericalUtil;
 
 import java.net.URL;
 
@@ -109,6 +110,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
 
 
+
     }
 
     private void preencherDados() {
@@ -142,13 +144,18 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             public void execute(Object param) {
                 User user = (User) param;
                 getImage(teacher_image, user.getHighResURI());
+                aula_nome_professor.setText(user.getName());
             }
         });
-        aula_nome_professor.setText(mClass.getName());
-//        aula_rating.setRating(aulaSelecionada.getRating());
-        aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
-        card_aula_valor.setText("R$ " + String.valueOf(mClass.getValue()) + ",00");
-        aula_data.setText("Data: " + "Terças e Quintas");
+
+        //LatLng myPosition = new LatLng(mClass.getLat(), mClass.getLon());
+        //LatLng placePosition = new LatLng(Double.parseDouble(user.get("lat")), Double.parseDouble(user.get("lng")));
+        //double distance = SphericalUtil.computeDistanceBetween(myPosition, placePosition);
+
+        // aula_rating.setRating(aulaSelecionada.getRating());
+        aula_vagas.setText("Vagas: " + mClass.getSlots());
+        card_aula_valor.setText("Valor: R$ " + String.valueOf(mClass.getValue()));
+        aula_data.setText("Data: " + String.valueOf(mClass.getData()));
         aula_horario.setText("Horario: " + String.valueOf(mClass.getTime()));
         aula_conteudo_body.setText(mClass.getData());
         aula_endereco.setText(mClass.getAddress());

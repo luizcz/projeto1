@@ -19,7 +19,7 @@ public class ClassObject {
     private String address;
     private Double lat;
     private Double lon;
-    private Double slots;
+    private int slots;
     private List<String> tags;
     private String name;
     private String id;
@@ -41,7 +41,7 @@ public class ClassObject {
 
     public ClassObject(String teacherId, Long time,
                        Double value, String address, Double lat, Double lon,
-                       Double slots, List<String> tags, String name, String id) {
+                       int slots, List<String> tags, String name, String id) {
         this.teacherId = teacherId;
         this.time = time;
         this.value = value;
@@ -126,11 +126,11 @@ public class ClassObject {
         this.lon = lon;
     }
 
-    public Double getSlots() {
+    public int getSlots() {
         return slots;
     }
 
-    public void setSlots(Double slots) {
+    public void setSlots(int slots) {
         this.slots = slots;
     }
 
@@ -220,7 +220,37 @@ public class ClassObject {
         if (!(o instanceof ClassObject)) return false;
 
         ClassObject that = (ClassObject) o;
-        return getId().equals(that.getId());
+
+        if (getSlots() != that.getSlots()) return false;
+        if (!getTeacherId().equals(that.getTeacherId())) return false;
+        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
+            return false;
+        if (getValue() != null ? !getValue().equals(that.getValue()) : that.getValue() != null)
+            return false;
+        if (getAddress() != null ? !getAddress().equals(that.getAddress()) : that.getAddress() != null)
+            return false;
+        if (getLat() != null ? !getLat().equals(that.getLat()) : that.getLat() != null)
+            return false;
+        if (getLon() != null ? !getLon().equals(that.getLon()) : that.getLon() != null)
+            return false;
+        if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null)
+            return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        if (!getId().equals(that.getId())) return false;
+        if (getImagem() != null ? !getImagem().equals(that.getImagem()) : that.getImagem() != null)
+            return false;
+        if (getData() != null ? !getData().equals(that.getData()) : that.getData() != null)
+            return false;
+        if (getSubject() != null ? !getSubject().equals(that.getSubject()) : that.getSubject() != null)
+            return false;
+        if (getDiasSemana() != null ? !getDiasSemana().equals(that.getDiasSemana()) : that.getDiasSemana() != null)
+            return false;
+        if (getDataFim() != null ? !getDataFim().equals(that.getDataFim()) : that.getDataFim() != null)
+            return false;
+        if (getHoraInicio() != null ? !getHoraInicio().equals(that.getHoraInicio()) : that.getHoraInicio() != null)
+            return false;
+        return getHoraFim() != null ? getHoraFim().equals(that.getHoraFim()) : that.getHoraFim() == null;
 
     }
 
@@ -232,10 +262,17 @@ public class ClassObject {
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getLat() != null ? getLat().hashCode() : 0);
         result = 31 * result + (getLon() != null ? getLon().hashCode() : 0);
-        result = 31 * result + (getSlots() != null ? getSlots().hashCode() : 0);
+        result = 31 * result + getSlots();
         result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + getId().hashCode();
+        result = 31 * result + (getImagem() != null ? getImagem().hashCode() : 0);
+        result = 31 * result + (getData() != null ? getData().hashCode() : 0);
+        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
+        result = 31 * result + (getDiasSemana() != null ? getDiasSemana().hashCode() : 0);
+        result = 31 * result + (getDataFim() != null ? getDataFim().hashCode() : 0);
+        result = 31 * result + (getHoraInicio() != null ? getHoraInicio().hashCode() : 0);
+        result = 31 * result + (getHoraFim() != null ? getHoraFim().hashCode() : 0);
         return result;
     }
 }

@@ -227,7 +227,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             classe.setName(tituloEd.getText().toString());
         }
         if(numVagasEd.getText() != null){
-            classe.setSlots(Double.parseDouble(numVagasEd.getText().toString()));
+            classe.setSlots(Integer.parseInt(numVagasEd.getText().toString()));
         }
         if(dataEd.getText() != null){
             classe.setData(dataEd.getText().toString());
@@ -333,7 +333,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             //TODO decidir erro
         }else if(classe.getAddress() == null || classe.getAddress().isEmpty()){
 
-        }else if(classe.getSlots() == null || classe.getSlots() <= 0){
+        }else if(classe.getSlots() <= 0){
 
         }
 

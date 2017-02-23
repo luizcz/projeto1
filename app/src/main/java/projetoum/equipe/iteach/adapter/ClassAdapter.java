@@ -75,7 +75,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         if (valor==null){
             holder.aula_valor.setText("R$ 00,00");
         } else {
-            holder.aula_valor.setText("R$ " + String.valueOf(valor) + ",00");
+            holder.aula_valor.setText("R$ " + String.valueOf(valor));
         }
 
     }
