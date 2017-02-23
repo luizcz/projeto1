@@ -111,7 +111,6 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         aula_endereco = (TextView) findViewById(R.id.aula_endereco);
         aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
 
-
     }
 
     private void preencherDados() {

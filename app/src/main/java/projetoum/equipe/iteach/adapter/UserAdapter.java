@@ -18,14 +18,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.PerfilActivity;
-import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -107,7 +105,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
             nomeUser = (TextView) itemView.findViewById(R.id.prof_name);
             numAulas = (TextView) itemView.findViewById(R.id.num_aulas);
-            bio = (TextView) itemView.findViewById(R.id.card_aula_desc);
+            bio = (TextView) itemView.findViewById(R.id.card_aula_name);
             membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
             img = (CircleImageView) itemView.findViewById(R.id.img);
 
