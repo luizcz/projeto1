@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
