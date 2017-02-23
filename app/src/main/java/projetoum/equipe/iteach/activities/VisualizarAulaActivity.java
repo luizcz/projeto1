@@ -2,13 +2,13 @@ package projetoum.equipe.iteach.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,17 +21,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
-import java.util.List;
+import java.net.URL;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -58,6 +53,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private TextView aula_conteudo_body;
     private TextView aula_endereco;
     private TextView aula_mapa_dist;
+    private ImageView class_image;
+    private ImageView teacher_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +98,9 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        aula_img = (ImageView) findViewById(R.id.aula_img);
+
+        teacher_image = (ImageView) findViewById(R.id.profile_image);
+        class_image = (ImageView) findViewById(R.id.class_image_detail);
         aula_nome_professor = (TextView) findViewById(R.id.aula_nome_professor);
         aula_rating = (RatingBar) findViewById(R.id.aula_rating);
         aula_vagas = (TextView) findViewById(R.id.aula_vagas);
@@ -140,7 +139,14 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 //            }
 //
 //
-
+        getImage(class_image,mClass.getImagem());
+        dao.findUserById(mClass.getTeacherId(), new ICallback() {
+            @Override
+            public void execute(Object param) {
+                User user = (User) param;
+                getImage(teacher_image, user.getHighResURI());
+            }
+        });
         aula_nome_professor.setText(mClass.getName());
 //        aula_rating.setRating(aulaSelecionada.getRating());
         aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
@@ -205,5 +211,28 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    private void getImage(final ImageView img, final String imgUrl){
+        new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                try {
+                    URL url = new URL(imgUrl);
+                    Bitmap classImg = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    return classImg;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap !=  null){
+                    img.setImageBitmap(bitmap);
+                }
+            }
+        }.execute();
     }
 }
