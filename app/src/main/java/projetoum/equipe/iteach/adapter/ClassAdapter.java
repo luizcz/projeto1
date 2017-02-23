@@ -16,13 +16,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import com.squareup.picasso.Picasso;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
@@ -84,6 +81,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             }
         });
 
+        holder.aula_name.setText(classes.get(position).getName());
         holder.aula_desc.setText(classes.get(position).getDescription());
 
         String valor = classes.get(position).getValorFormatado();
@@ -111,6 +109,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         ImageView card_aula_img;
         TextView aula_dist;
         TextView aula_prof_name;
+        TextView aula_name;
         TextView aula_desc;
         TextView aula_valor;
 
@@ -127,6 +126,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             card_aula_img = (ImageView) itemView.findViewById(R.id.card_aula_img);
             aula_dist = (TextView)itemView.findViewById(R.id.card_aula_dist);
             aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
+            aula_name = (TextView) itemView.findViewById(R.id.card_aula_name);
             aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView)itemView.findViewById(R.id.card_aula_valor);
 

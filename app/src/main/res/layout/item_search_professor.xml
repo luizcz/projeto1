@@ -36,7 +36,7 @@
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:id="@+id/card_aula_desc"
+                android:id="@+id/card_aula_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/card_aula_img"
@@ -58,7 +58,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/card_aula_desc"
+                android:layout_below="@+id/card_aula_name"
                 android:layout_alignParentBottom="false"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
