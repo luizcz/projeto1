@@ -124,6 +124,8 @@
     <string name="sabado">Sábado</string>
     <string name="domingo">Domingo</string>
     <string name="free">Grátis</string>
+    <string name="campo_nao_pode_ser_vazio">Campo não pode ser vazio.</string>
+
 
 
 

@@ -18,15 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/img_propaganda"
-            android:background="@drawable/border"
 
-            />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/img_propaganda"
+                android:background="@drawable/border"/>
             <TextView
-                android:id="@+id/myImageViewText"
+                android:id="@+id/selecione_uma_imagem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/img_propaganda"
@@ -38,316 +39,315 @@
                 android:text="Selecione uma imagem sobre o assunto "
                 android:textColor="#ffffff" />
 
+            <TextView
+                android:id="@+id/titulo_aula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/selecione_uma_imagem"
+                android:layout_marginTop="5dp"
+                android:text="@string/titulo_aula"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titulo_aula"
+                android:background="@drawable/border"
+                android:padding="10dp"
+                android:maxLength="30"
+                android:textColor="@color/cardview_light_background" />
+
+            <EditText
+                android:id="@+id/edt_local_aula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="10dp"
+                android:maxLines="3"
+                android:textColor="@color/cardview_light_background"
+                android:layout_below="@+id/st_local_aula"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <TextView
+                    android:id="@+id/st_num_vagas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edt_local_aula"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/num_vagas"
+                    android:textColor="@color/cardview_light_background"
+                    android:textSize="18sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_num_vagas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_num_vagas"
+                android:background="@drawable/border"
+                android:inputType="number"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
+
+            <TextView
+                android:id="@+id/st_valor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_num_vagas"
+                android:layout_marginTop="5dp"
+                android:text="@string/preco"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_valor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_valor"
+                android:background="@drawable/border"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
+
+            <TextView
+                android:id="@+id/st_week_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_valor"
+                android:layout_marginTop="5dp"
+                android:text="@string/dias_semana"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/st_week_day"
+                android:id="@+id/ll_week_days">
+
+                <CheckBox android:id="@+id/checkbox_domingo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/domingo"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_segunda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:text="@string/segunda"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_terca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/terca"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_quarta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:text="@string/quarta"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_quinta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quinta"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_sexta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:text="@string/sexta"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox android:id="@+id/checkbox_sabado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sabado"
+                    android:textColor="@color/cardview_light_background"
+                    android:buttonTint="@color/cardview_light_background"
+                    android:onClick="onCheckboxClicked"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/st_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_week_days"
+                android:layout_marginTop="5dp"
+                android:text="@string/data"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/edt_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_date"
+                android:background="@drawable/border"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
+
+            <TextView
+                android:id="@+id/st_date_fim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_date"
+                android:layout_marginTop="5dp"
+                android:text="@string/data"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/edt_date_fim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_date_fim"
+                android:background="@drawable/border"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
+
+            <TextView
+                android:id="@+id/st_horario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_date_fim"
+                android:layout_marginTop="5dp"
+                android:text="@string/horario"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_horario"
+                android:layout_below="@id/st_horario"
+                android:weightSum="2.5">
+
+                <TextView
+                    android:id="@+id/edt_horario_inicio"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.15"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/cardview_light_background" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.20"
+                    android:layout_height="wrap_content"
+                    android:text="até"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/cardview_light_background"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/edt_horario_fim"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.15"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:textColor="@color/cardview_light_background" />
+
+            </LinearLayout>
 
 
 
+            <TextView
+                android:id="@+id/st_assunto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_horario"
+                android:layout_marginTop="5dp"
+                android:text="@string/assunto"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
 
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_assunto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_assunto"
+                android:background="@drawable/border"
+                android:lines="7"
+                android:gravity="top"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
 
-        <TextView
-            android:id="@+id/st_titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_propaganda"
-            android:layout_marginTop="5dp"
-            android:text="@string/titulo_aula"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/st_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_assunto"
+                android:layout_marginTop="5dp"
+                android:text="@string/tags"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edt_titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_titulo"
-            android:background="@drawable/border"
-            android:padding="10dp"
-            android:maxLength="30"
-            android:textColor="@color/cardview_light_background" />
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/st_tags"
+                android:background="@drawable/border"
+                android:lines="3"
+                android:gravity="top"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background" />
 
-
-
-
+            <Button
+                android:id="@+id/bt_salvar_aula"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edt_tags"
+                android:background="@drawable/border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_margin="10dp"
+                android:text="@string/botao_criar_aula"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/cardview_light_background" />
 
         <TextView
             android:id="@+id/st_local_aula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edt_titulo"
-            android:layout_marginTop="5dp"
             android:text="@string/local_aula"
             android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_local_aula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_local_aula"
-            android:background="@drawable/border"
-            android:padding="10dp"
-            android:maxLines="3"
-            android:textColor="@color/cardview_light_background" />
-
-
-        <TextView
-            android:id="@+id/st_num_vagas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_local_aula"
-            android:layout_marginTop="5dp"
-            android:text="@string/num_vagas"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_num_vagas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_num_vagas"
-            android:background="@drawable/border"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <TextView
-            android:id="@+id/st_valor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_num_vagas"
-            android:layout_marginTop="5dp"
-            android:text="@string/preco"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_valor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_valor"
-            android:background="@drawable/border"
-            android:inputType="numberDecimal"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <TextView
-            android:id="@+id/st_week_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_valor"
-            android:layout_marginTop="5dp"
-            android:text="@string/dias_semana"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/st_week_day"
-            android:id="@+id/ll_week_days">
-
-            <CheckBox android:id="@+id/checkbox_domingo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/domingo"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_segunda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:text="@string/segunda"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_terca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terca"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_quarta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:text="@string/quarta"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_quinta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/quinta"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_sexta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:text="@string/sexta"
-                android:onClick="onCheckboxClicked"/>
-
-            <CheckBox android:id="@+id/checkbox_sabado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sabado"
-                android:textColor="@color/cardview_light_background"
-                android:buttonTint="@color/cardview_light_background"
-                android:onClick="onCheckboxClicked"/>
-
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/st_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_week_days"
-            android:layout_marginTop="5dp"
-            android:text="@string/data"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/edt_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_date"
-            android:background="@drawable/border"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <TextView
-            android:id="@+id/st_date_fim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_date"
-            android:layout_marginTop="5dp"
-            android:text="@string/data"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/edt_date_fim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_date_fim"
-            android:background="@drawable/border"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <TextView
-            android:id="@+id/st_horario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_date_fim"
-            android:layout_marginTop="5dp"
-            android:text="@string/horario"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ll_horario"
-            android:layout_below="@id/st_horario"
-            android:weightSum="2.5">
-
-            <TextView
-                android:id="@+id/edt_horario_inicio"
-                android:layout_width="0dp"
-                android:layout_weight="1.15"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:padding="10dp"
-                android:textSize="20sp"
-                android:textColor="@color/cardview_light_background" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.20"
-                android:layout_height="wrap_content"
-                android:text="até"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textColor="@color/cardview_light_background"
-                android:textSize="18sp" />
-            <TextView
-                android:id="@+id/edt_horario_fim"
-                android:layout_width="0dp"
-                android:layout_weight="1.15"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:textSize="20sp"
-                android:padding="10dp"
-                android:textColor="@color/cardview_light_background" />
-
-        </LinearLayout>
+            android:textSize="18sp"
+            android:layout_below="@+id/edt_titulo"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp" />
 
 
 
-        <TextView
-            android:id="@+id/st_assunto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_horario"
-            android:layout_marginTop="5dp"
-            android:text="@string/assunto"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edt_assunto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_assunto"
-            android:background="@drawable/border"
-            android:lines="7"
-            android:gravity="top"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <TextView
-            android:id="@+id/st_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_assunto"
-            android:layout_marginTop="5dp"
-            android:text="@string/tags"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/edt_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/st_tags"
-            android:background="@drawable/border"
-            android:lines="3"
-            android:gravity="top"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
-
-        <Button
-            android:id="@+id/bt_salvar_aula"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edt_tags"
-            android:background="@drawable/border"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_margin="10dp"
-            android:text="@string/botao_criar_aula"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/cardview_light_background" />
     </RelativeLayout>
 
 </ScrollView>

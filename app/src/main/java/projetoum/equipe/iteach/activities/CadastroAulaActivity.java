@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -69,6 +71,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_aula);
+        getWindow().setBackgroundDrawableResource(R.drawable.background);
 
         diasSemana = new ArrayList<String>();
 
@@ -112,9 +115,174 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         dataEd.setOnClickListener(this);
         dataFimEd.setOnClickListener(this);
 
-
+        setTextListeners();
         imagePropaganda.setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+
+    }
+
+    private void setTextListeners() {
+
+        tituloEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (tituloEd.getText().toString().trim().length() <= 0) {
+                    tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    tituloEd.setError(null);
+                }
+            }
+        });
+        numVagasEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (numVagasEd.getText().toString().trim().length() <= 0) {
+                    numVagasEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    numVagasEd.setError(null);
+                }
+            }
+        });
+        valorEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (valorEd.getText().toString().trim().length() <= 0) {
+                    valorEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    valorEd.setError(null);
+                }
+            }
+        });
+        dataEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (dataEd.getText().toString().trim().length() <= 0) {
+                    dataEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    dataEd.setError(null);
+                }
+            }
+        });
+        dataFimEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (dataFimEd.getText().toString().trim().length() <= 0) {
+                    dataFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    dataFimEd.setError(null);
+                }
+            }
+        });
+        horarioInicioEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (horarioInicioEd.getText().toString().trim().length() <= 0) {
+                    horarioInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    horarioInicioEd.setError(null);
+                }
+            }
+        });
+        horarioFimEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (horarioFimEd.getText().toString().trim().length() <= 0) {
+                    horarioFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    horarioFimEd.setError(null);
+                }
+            }
+        });
+        assuntoEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (assuntoEd.getText().toString().trim().length() <= 0) {
+                    assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    assuntoEd.setError(null);
+                }
+            }
+        });
+        tagsEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (tagsEd.getText().toString().trim().length() <= 0) {
+                    tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    tagsEd.setError(null);
+                }
+            }
+        });
+        localEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (localEd.getText().toString().trim().length() <= 0) {
+                    localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    localEd.setError(null);
+                }
+            }
+        });
 
     }
 
@@ -151,7 +319,10 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     public void onClick(View v) {
         switch (v.getId()){
         case R.id.bt_salvar_aula:
-            enviarAula();
+            
+            if (checkDataForm()){
+                enviarAula();
+            }
             break;
         case R.id.edt_horario_inicio:
             inicio = true;
@@ -179,6 +350,46 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         }
     }
 
+    private boolean checkDataForm() {
+//        if(tituloEd.getText() != null && tituloEd.getText().toString().trim().equalsIgnoreCase("")){
+//            if(numVagasEd.getText() != null && numVagasEd.getText().toString().trim().equalsIgnoreCase("")){
+//                if(dataEd.getText() != null && dataEd.getText().toString().trim().equalsIgnoreCase("")){
+//                    if(dataFimEd.getText() != null && dataFimEd.getText().toString().trim().equalsIgnoreCase("")){
+//                        if(horarioInicioEd.getText() != null && horarioInicioEd.getText().toString().trim().equalsIgnoreCase("")){
+//                            if(horarioFimEd.getText() != null && horarioFimEd.getText().toString().trim().equalsIgnoreCase("")){
+//                                if(assuntoEd.getText() != null && assuntoEd.getText().toString().trim().equalsIgnoreCase("")){
+//                                    if(tagsEd.getText() != null && tagsEd.getText().toString().trim().equalsIgnoreCase("")){
+//                                        if(localEd.getText() != null && localEd.getText().toString().trim().equalsIgnoreCase("")){
+//                                            return true;
+//                                        } else {
+//                                            localEd.setError("This field can not be blank");
+//                                        }
+//                                    } else {
+//                                        tagsEd.setError("This field can not be blank");
+//                                    }
+//                                } else {
+//                                    assuntoEd.setError("This field can not be blank");
+//                                }
+//                            } else {
+//                                horarioFimEd.setError("This field can not be blank");
+//                            }
+//                        } else {
+//                            horarioInicioEd.setError("This field can not be blank");
+//                        }
+//                    } else {
+//                        dataFimEd.setError("This field can not be blank");
+//                    }
+//                } else {
+//                    numVagasEd.setError("This field can not be blank");
+//                }
+//            } else {
+//                tituloEd.setError("This field can not be blank");
+//            }
+//        }
+
+        return false;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,7 +403,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 // Log.d(TAG, String.valueOf(bitmap));
 
                 imagePropaganda.setImageBitmap(bitmap);
-                findViewById(R.id.myImageViewText).setVisibility(View.GONE);
+                findViewById(R.id.selecione_uma_imagem).setVisibility(View.GONE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -221,32 +432,20 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
 
     private void enviarAulaComFoto(String imagem){
+
+
         final ClassObject classe = new ClassObject();
         classe.setImagem(imagem);
-        if(tituloEd.getText() != null){
-            classe.setName(tituloEd.getText().toString());
-        }
-        if(numVagasEd.getText() != null){
-            classe.setSlots(Integer.parseInt(numVagasEd.getText().toString()));
-        }
-        if(dataEd.getText() != null){
-            classe.setData(dataEd.getText().toString());
-        }
-        if(dataFimEd.getText() != null){
-            classe.setDataFim(dataFimEd.getText().toString());
-        }
-        if(horarioInicioEd.getText() != null){classe.setHoraInicio(horarioInicioEd.getText().toString());}
-        if(horarioFimEd.getText() != null){classe.setHoraFim(horarioFimEd.getText().toString());}
-        if(assuntoEd.getText() != null){
-            classe.setSubject(assuntoEd.getText().toString());
-        }
-        if(tagsEd.getText() != null){
-            List<String> lista = Arrays.asList(tagsEd.getText().toString().split(","));
-            classe.setTags(lista);
-        }
-        if(localEd.getText() != null){
-            classe.setAddress(localEd.getText().toString());
-        }
+        classe.setName(tituloEd.getText().toString());
+        classe.setSlots(Integer.parseInt(numVagasEd.getText().toString()));
+        classe.setData(dataEd.getText().toString());
+        classe.setDataFim(dataFimEd.getText().toString());
+        classe.setHoraInicio(horarioInicioEd.getText().toString());
+        classe.setHoraFim(horarioFimEd.getText().toString());
+        classe.setSubject(assuntoEd.getText().toString());
+        List<String> lista = Arrays.asList(tagsEd.getText().toString().split(","));
+        classe.setTags(lista);
+        classe.setAddress(localEd.getText().toString());
         classe.setDiasSemana(diasSemana);
 
         dao.getCurrentUser(new ICallback<User>() {
@@ -256,7 +455,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 criarClasse(classe);
             }
         });
-
     }
 
     public void showTimePickerDialog() {
