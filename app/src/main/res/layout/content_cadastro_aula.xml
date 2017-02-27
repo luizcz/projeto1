@@ -43,7 +43,7 @@
                 android:id="@+id/titulo_aula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/selecione_uma_imagem"
+                android:layout_below="@+id/img_propaganda"
                 android:layout_marginTop="5dp"
                 android:text="@string/titulo_aula"
                 android:textColor="@color/cardview_light_background"
@@ -82,7 +82,7 @@
                     android:textColor="@color/cardview_light_background"
                     android:textSize="18sp" />
 
-            <android.support.design.widget.TextInputEditText
+            <EditText
                 android:id="@+id/edt_num_vagas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
 
-            <android.support.design.widget.TextInputEditText
+            <EditText
                 android:id="@+id/edt_valor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/edt_valor"
                 android:layout_marginTop="5dp"
+                style="@android:style/Widget.EditText"
                 android:text="@string/dias_semana"
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
@@ -199,11 +200,12 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/edt_date"
+                android:id="@+id/edt_date_inicio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/st_date"
                 android:background="@drawable/border"
+                style="@android:style/Widget.EditText"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:textColor="@color/cardview_light_background" />
@@ -212,7 +214,7 @@
                 android:id="@+id/st_date_fim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edt_date"
+                android:layout_below="@id/edt_date_inicio"
                 android:layout_marginTop="5dp"
                 android:text="@string/data"
                 android:textColor="@color/cardview_light_background"
@@ -224,6 +226,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/st_date_fim"
                 android:background="@drawable/border"
+                style="@android:style/Widget.EditText"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:textColor="@color/cardview_light_background" />
@@ -251,6 +254,7 @@
                     android:layout_weight="1.15"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
+                    style="@android:style/Widget.EditText"
                     android:padding="10dp"
                     android:textSize="20sp"
                     android:textColor="@color/cardview_light_background" />
@@ -270,6 +274,7 @@
                     android:layout_weight="1.15"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
+                    style="@android:style/Widget.EditText"
                     android:textSize="20sp"
                     android:padding="10dp"
                     android:textColor="@color/cardview_light_background" />
@@ -288,7 +293,7 @@
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
 
-            <android.support.design.widget.TextInputEditText
+            <EditText
                 android:id="@+id/edt_assunto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -309,7 +314,7 @@
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
 
-            <android.support.design.widget.TextInputEditText
+            <EditText
                 android:id="@+id/edt_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

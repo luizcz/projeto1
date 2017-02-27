@@ -52,10 +52,11 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText tituloEd;
     private EditText numVagasEd;
     private EditText valorEd;
-    private TextView dataEd;
+    private TextView dataInicioEd;
     private TextView dataFimEd;
     private TextView horarioInicioEd;
     private TextView horarioFimEd;
+    private TextView title_dias_semana;
     private EditText assuntoEd;
     private EditText tagsEd;
     private EditText localEd;
@@ -101,7 +102,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
         valorEd = (EditText) findViewById(R.id.edt_valor);
-        dataEd = (TextView) findViewById(R.id.edt_date);
+        dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
         dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
         horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
         horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
@@ -109,10 +110,11 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         tagsEd = (EditText) findViewById(R.id.edt_tags);
         localEd = (EditText) findViewById(R.id.edt_local_aula);
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
+        title_dias_semana = (TextView) findViewById(R.id.st_week_day);
 
         horarioInicioEd.setOnClickListener(this);
         horarioFimEd.setOnClickListener(this);
-        dataEd.setOnClickListener(this);
+        dataInicioEd.setOnClickListener(this);
         dataFimEd.setOnClickListener(this);
 
         setTextListeners();
@@ -136,6 +138,22 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                     tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
                     tituloEd.setError(null);
+                }
+            }
+        });
+        localEd.addTextChangedListener(new TextWatcher()  {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (localEd.getText().toString().trim().length() <= 0) {
+                    localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    localEd.setError(null);
                 }
             }
         });
@@ -171,7 +189,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 }
             }
         });
-        dataEd.addTextChangedListener(new TextWatcher()  {
+        dataInicioEd.addTextChangedListener(new TextWatcher()  {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -180,10 +198,10 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             }
             @Override
             public void afterTextChanged(Editable s)  {
-                if (dataEd.getText().toString().trim().length() <= 0) {
-                    dataEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                if (dataInicioEd.getText().toString().trim().length() <= 0) {
+                    dataInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
-                    dataEd.setError(null);
+                    dataInicioEd.setError(null);
                 }
             }
         });
@@ -267,22 +285,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 }
             }
         });
-        localEd.addTextChangedListener(new TextWatcher()  {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void afterTextChanged(Editable s)  {
-                if (localEd.getText().toString().trim().length() <= 0) {
-                    localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                } else {
-                    localEd.setError(null);
-                }
-            }
-        });
 
     }
 
@@ -319,7 +321,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     public void onClick(View v) {
         switch (v.getId()){
         case R.id.bt_salvar_aula:
-            
             if (checkDataForm()){
                 enviarAula();
             }
@@ -332,12 +333,12 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             inicio = false;
             showTimePickerDialog();
             break;
-        case R.id.edt_date_fim:
-            inicioDate = false;
+        case R.id.edt_date_inicio:
+            inicioDate = true;
             showDateDialog();
             break;
-        case R.id.edt_date:
-            inicioDate = true;
+        case R.id.edt_date_fim:
+            inicioDate = false;
             showDateDialog();
             break;
 
@@ -351,42 +352,73 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     }
 
     private boolean checkDataForm() {
-//        if(tituloEd.getText() != null && tituloEd.getText().toString().trim().equalsIgnoreCase("")){
-//            if(numVagasEd.getText() != null && numVagasEd.getText().toString().trim().equalsIgnoreCase("")){
-//                if(dataEd.getText() != null && dataEd.getText().toString().trim().equalsIgnoreCase("")){
-//                    if(dataFimEd.getText() != null && dataFimEd.getText().toString().trim().equalsIgnoreCase("")){
-//                        if(horarioInicioEd.getText() != null && horarioInicioEd.getText().toString().trim().equalsIgnoreCase("")){
-//                            if(horarioFimEd.getText() != null && horarioFimEd.getText().toString().trim().equalsIgnoreCase("")){
-//                                if(assuntoEd.getText() != null && assuntoEd.getText().toString().trim().equalsIgnoreCase("")){
-//                                    if(tagsEd.getText() != null && tagsEd.getText().toString().trim().equalsIgnoreCase("")){
-//                                        if(localEd.getText() != null && localEd.getText().toString().trim().equalsIgnoreCase("")){
-//                                            return true;
-//                                        } else {
-//                                            localEd.setError("This field can not be blank");
-//                                        }
-//                                    } else {
-//                                        tagsEd.setError("This field can not be blank");
-//                                    }
-//                                } else {
-//                                    assuntoEd.setError("This field can not be blank");
-//                                }
-//                            } else {
-//                                horarioFimEd.setError("This field can not be blank");
-//                            }
-//                        } else {
-//                            horarioInicioEd.setError("This field can not be blank");
-//                        }
-//                    } else {
-//                        dataFimEd.setError("This field can not be blank");
-//                    }
-//                } else {
-//                    numVagasEd.setError("This field can not be blank");
-//                }
-//            } else {
-//                tituloEd.setError("This field can not be blank");
-//            }
-//        }
-
+        if(tituloEd.getText() != null && !tituloEd.getText().toString().trim().equals("")){
+            tituloEd.setError(null);
+            if(localEd.getText() != null && !localEd.getText().toString().trim().equals("")) {
+                localEd.setError(null);
+                if (numVagasEd.getText() != null && !numVagasEd.getText().toString().trim().equals("")) {
+                    numVagasEd.setError(null);
+                    if (valorEd.getText() != null && !valorEd.getText().toString().trim().equals("")) {
+                        valorEd.setError(null);
+                        if (!diasSemana.isEmpty()) {
+                            title_dias_semana.setError(null);
+                            if (dataInicioEd.getText() != null && !dataInicioEd.getText().toString().trim().equals("")) {
+                                dataInicioEd.setError(null);
+                                if (dataFimEd.getText() != null && !dataFimEd.getText().toString().trim().equals("")) {
+                                    dataFimEd.setError(null);
+                                    if (horarioInicioEd.getText() != null && !horarioInicioEd.getText().toString().trim().equals("")) {
+                                        horarioInicioEd.setError(null);
+                                        if (horarioFimEd.getText() != null && !horarioFimEd.getText().toString().trim().equals("")) {
+                                            horarioFimEd.setError(null);
+                                            if (assuntoEd.getText() != null && !assuntoEd.getText().toString().trim().equals("")) {
+                                                assuntoEd.setError(null);
+                                                if (tagsEd.getText() != null && !tagsEd.getText().toString().trim().equals("")) {
+                                                    tagsEd.setError(null);
+                                                    return true;
+                                                } else {
+                                                    tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                                    tagsEd.requestFocus();
+                                                }
+                                            } else {
+                                                assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                                assuntoEd.requestFocus();
+                                            }
+                                        } else {
+                                            horarioFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                            horarioFimEd.requestFocus();
+                                        }
+                                    } else {
+                                        horarioInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                        horarioInicioEd.requestFocus();
+                                    }
+                                } else {
+                                    dataFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                    dataFimEd.requestFocus();
+                                }
+                            } else {
+                                dataInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                                dataInicioEd.requestFocus();
+                            }
+                        } else {
+                            title_dias_semana.setError(getString(R.string.escolha_um_dia));
+                            title_dias_semana.requestFocus();
+                        }
+                    } else {
+                        valorEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                        valorEd.requestFocus();
+                    }
+                } else {
+                    numVagasEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                    numVagasEd.requestFocus();
+                }
+            } else {
+                localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                localEd.requestFocus();
+            }
+        } else {
+            tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            tituloEd.requestFocus();
+        }
         return false;
     }
 
@@ -438,7 +470,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         classe.setImagem(imagem);
         classe.setName(tituloEd.getText().toString());
         classe.setSlots(Integer.parseInt(numVagasEd.getText().toString()));
-        classe.setData(dataEd.getText().toString());
+        classe.setData(dataInicioEd.getText().toString());
         classe.setDataFim(dataFimEd.getText().toString());
         classe.setHoraInicio(horarioInicioEd.getText().toString());
         classe.setHoraFim(horarioFimEd.getText().toString());
@@ -495,7 +527,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                                       int monthOfYear, int dayOfMonth) {
 
                     if(inicioDate)
-                        dataEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        dataInicioEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     else
                         dataFimEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                 }
