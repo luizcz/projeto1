@@ -111,7 +111,8 @@
     <string name="preco">Valor</string>
     <string name="assunto">Assunto</string>
     <string name="horario">Horário</string>
-    <string name="data">Data de início das aulas</string>
+    <string name="data_inicio">Data de início das aulas</string>
+    <string name="data_fim">Data de fim das aulas</string>
     <string name="tags">Tags (ex: artes, desenho,pintura)</string>
     <string name="botao_criar_aula">Criar Aula</string>
     <string name="local_aula">Endereço da aula</string>
@@ -126,6 +127,9 @@
     <string name="free">Grátis</string>
     <string name="campo_nao_pode_ser_vazio">Campo não pode ser vazio.</string>
     <string name="escolha_um_dia">Escolha pelo menos um dia da semana.</string>
+    <string name="data_final_apos_inicio">Data final deve ocorrer depois da data de início.</string>
+    <string name="horario_final_apos_inicio">Horario final deve ocorrer após o horário de início.</string>
+    <string name="data_inicio_futuro">Data de início deve ser numa data futura.</string>
 
 
 

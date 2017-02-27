@@ -54,6 +54,10 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private EditText valorEd;
     private TextView dataInicioEd;
     private TextView dataFimEd;
+    private Calendar calDataInicio;
+    private Calendar calDataFim;
+    private Calendar calHorarioInicio;
+    private Calendar calHorarioFim;
     private TextView horarioInicioEd;
     private TextView horarioFimEd;
     private TextView title_dias_semana;
@@ -111,6 +115,12 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         localEd = (EditText) findViewById(R.id.edt_local_aula);
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
         title_dias_semana = (TextView) findViewById(R.id.st_week_day);
+
+        calDataInicio = Calendar.getInstance();
+        calDataFim = Calendar.getInstance();
+
+        calHorarioInicio = Calendar.getInstance();
+        calHorarioFim = Calendar.getInstance();
 
         horarioInicioEd.setOnClickListener(this);
         horarioFimEd.setOnClickListener(this);
@@ -341,7 +351,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             inicioDate = false;
             showDateDialog();
             break;
-
         case R.id.img_propaganda:
             Intent intent = new Intent();
             intent.setType("image/*");
@@ -352,74 +361,119 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     }
 
     private boolean checkDataForm() {
-        if(tituloEd.getText() != null && !tituloEd.getText().toString().trim().equals("")){
-            tituloEd.setError(null);
-            if(localEd.getText() != null && !localEd.getText().toString().trim().equals("")) {
-                localEd.setError(null);
-                if (numVagasEd.getText() != null && !numVagasEd.getText().toString().trim().equals("")) {
-                    numVagasEd.setError(null);
-                    if (valorEd.getText() != null && !valorEd.getText().toString().trim().equals("")) {
-                        valorEd.setError(null);
-                        if (!diasSemana.isEmpty()) {
-                            title_dias_semana.setError(null);
-                            if (dataInicioEd.getText() != null && !dataInicioEd.getText().toString().trim().equals("")) {
-                                dataInicioEd.setError(null);
-                                if (dataFimEd.getText() != null && !dataFimEd.getText().toString().trim().equals("")) {
-                                    dataFimEd.setError(null);
-                                    if (horarioInicioEd.getText() != null && !horarioInicioEd.getText().toString().trim().equals("")) {
-                                        horarioInicioEd.setError(null);
-                                        if (horarioFimEd.getText() != null && !horarioFimEd.getText().toString().trim().equals("")) {
-                                            horarioFimEd.setError(null);
-                                            if (assuntoEd.getText() != null && !assuntoEd.getText().toString().trim().equals("")) {
-                                                assuntoEd.setError(null);
-                                                if (tagsEd.getText() != null && !tagsEd.getText().toString().trim().equals("")) {
-                                                    tagsEd.setError(null);
-                                                    return true;
-                                                } else {
-                                                    tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                                    tagsEd.requestFocus();
-                                                }
-                                            } else {
-                                                assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                                assuntoEd.requestFocus();
-                                            }
-                                        } else {
-                                            horarioFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                            horarioFimEd.requestFocus();
-                                        }
-                                    } else {
-                                        horarioInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                        horarioInicioEd.requestFocus();
-                                    }
-                                } else {
-                                    dataFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                    dataFimEd.requestFocus();
-                                }
-                            } else {
-                                dataInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                                dataInicioEd.requestFocus();
-                            }
-                        } else {
-                            title_dias_semana.setError(getString(R.string.escolha_um_dia));
-                            title_dias_semana.requestFocus();
-                        }
-                    } else {
-                        valorEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                        valorEd.requestFocus();
-                    }
-                } else {
-                    numVagasEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                    numVagasEd.requestFocus();
-                }
-            } else {
-                localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                localEd.requestFocus();
-            }
-        } else {
+        if(tituloEd.getText() == null || tituloEd.getText().toString().trim().equals("")){
             tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
             tituloEd.requestFocus();
+            return false;
+        } else {
+            tituloEd.setError(null);
         }
-        return false;
+
+        if(localEd.getText() == null || localEd.getText().toString().trim().equals("")) {
+            localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            localEd.requestFocus();
+            return false;
+        } else {
+            localEd.setError(null);
+        }
+
+        if (numVagasEd.getText() == null || numVagasEd.getText().toString().trim().equals("")) {
+            numVagasEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            numVagasEd.requestFocus();
+            return false;
+        } else {
+            numVagasEd.setError(null);
+        }
+
+        if (valorEd.getText() == null || valorEd.getText().toString().trim().equals("")) {
+            valorEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            valorEd.requestFocus();
+            return false;
+        } else {
+            valorEd.setError(null);
+        }
+
+        if (diasSemana.isEmpty()) {
+            title_dias_semana.setError(getString(R.string.escolha_um_dia));
+            title_dias_semana.requestFocus();
+            return false;
+        } else {
+            title_dias_semana.setError(null);
+        }
+
+        if (dataInicioEd.getText() == null || dataInicioEd.getText().toString().trim().equals("")) {
+            dataInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            dataInicioEd.requestFocus();
+            return false;
+        } else {
+            dataInicioEd.setError(null);
+        }
+
+        if (dataFimEd.getText() == null || dataFimEd.getText().toString().trim().equals("")) {
+            dataFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            dataFimEd.requestFocus();
+            return false;
+        } else {
+            dataFimEd.setError(null);
+        }
+
+        if (Calendar.getInstance().compareTo(calDataInicio) >0 ) {
+            dataInicioEd.setError(getString(R.string.data_inicio_futuro));
+            dataInicioEd.requestFocus();
+            return false;
+        } else {
+            dataInicioEd.setError(null);
+        }
+
+        if (calDataInicio.compareTo(calDataFim) > 0) {
+            dataFimEd.setError(getString(R.string.data_final_apos_inicio));
+            dataFimEd.requestFocus();
+            return false;
+        } else {
+            dataFimEd.setError(null);
+        }
+
+        if (horarioInicioEd.getText() == null || horarioInicioEd.getText().toString().trim().equals("")) {
+            horarioInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            horarioInicioEd.requestFocus();
+            return false;
+        } else {
+            horarioInicioEd.setError(null);
+        }
+
+        if (horarioFimEd.getText() == null || horarioFimEd.getText().toString().trim().equals("")) {
+            horarioFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            horarioFimEd.requestFocus();
+            return false;
+        } else {
+            horarioFimEd.setError(null);
+        }
+
+        if (calHorarioFim.getTime().getTime() - calHorarioInicio.getTime().getTime()  <= 0) {
+            horarioFimEd.setError(getString(R.string.data_final_apos_inicio));
+            horarioFimEd.requestFocus();
+            return false;
+        } else {
+            horarioFimEd.setError(null);
+        }
+
+        if (assuntoEd.getText() == null || assuntoEd.getText().toString().trim().equals("")) {
+            assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            assuntoEd.requestFocus();
+            return false;
+        } else {
+            assuntoEd.setError(null);
+        }
+
+        if (tagsEd.getText() == null || tagsEd.getText().toString().trim().equals("")) {
+            tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            tagsEd.requestFocus();
+            return false;
+        } else {
+            tagsEd.setError(null);
+        }
+
+        return true;
     }
 
     @Override
@@ -465,7 +519,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
     private void enviarAulaComFoto(String imagem){
 
-
         final ClassObject classe = new ClassObject();
         classe.setImagem(imagem);
         classe.setName(tituloEd.getText().toString());
@@ -502,10 +555,15 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        if(inicio)
+                        if(inicio) {
                             horarioInicioEd.setText(hourOfDay + ":" + minute);
-                        else
+                            calHorarioInicio.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            calHorarioInicio.set(Calendar.MINUTE, minute);
+                        } else {
                             horarioFimEd.setText(hourOfDay + ":" + minute);
+                            calHorarioFim.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            calHorarioFim.set(Calendar.MINUTE, minute);
+                        }
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
@@ -526,10 +584,13 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
 
-                    if(inicioDate)
+                    if(inicioDate) {
+                        calDataInicio.set(year, monthOfYear, dayOfMonth);
                         dataInicioEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    else
+                    } else {
+                        calDataFim.set(year, monthOfYear, dayOfMonth);
                         dataFimEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    }
                 }
             }, mYear, mMonth, mDay);
     datePickerDialog.show();
