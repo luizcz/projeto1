@@ -5,7 +5,6 @@
     android:id="@+id/activity_perfil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,32 +17,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:id="@+id/image_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:id="@+id/img_propaganda"
-                android:background="@drawable/border"/>
-            <TextView
-                android:id="@+id/selecione_uma_imagem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/img_propaganda"
-                android:layout_alignTop="@id/img_propaganda"
-                android:layout_alignRight="@id/img_propaganda"
-                android:layout_alignBottom="@id/img_propaganda"
-                android:layout_margin="1dp"
-                android:gravity="center"
-                android:text="Selecione uma imagem sobre o assunto "
-                android:textColor="#ffffff" />
+                android:background="@drawable/border"
+                android:layout_weight="1" />
 
             <TextView
+                    android:id="@+id/selecione_uma_imagem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/img_propaganda"
+                    android:layout_alignTop="@id/img_propaganda"
+                    android:layout_alignRight="@id/img_propaganda"
+                    android:layout_alignBottom="@id/img_propaganda"
+                    android:layout_margin="1dp"
+                    android:gravity="center"
+                    android:text="Selecione uma imagem sobre o assunto "
+                    android:textColor="#ffffff"
+                android:layout_weight="1" />
+        </RelativeLayout>
+
+        <TextView
                 android:id="@+id/titulo_aula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_propaganda"
+                android:layout_below="@+id/image_header"
                 android:layout_marginTop="5dp"
                 android:text="@string/titulo_aula"
                 android:textColor="@color/cardview_light_background"

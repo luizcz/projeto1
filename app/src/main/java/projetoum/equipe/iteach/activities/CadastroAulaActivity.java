@@ -61,10 +61,12 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     private TextView horarioInicioEd;
     private TextView horarioFimEd;
     private TextView title_dias_semana;
+    private TextView selecioneUmaImagem;
     private EditText assuntoEd;
     private EditText tagsEd;
     private EditText localEd;
     private ImageView imagePropaganda;
+    private Boolean fotoSelecionada;
     private StorageReference mReference;
     private int mDay, mYear, mMonth, mHour, mMinute;
     private boolean inicio;
@@ -116,9 +118,11 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
         title_dias_semana = (TextView) findViewById(R.id.st_week_day);
 
+        selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
+        fotoSelecionada = false;
+
         calDataInicio = Calendar.getInstance();
         calDataFim = Calendar.getInstance();
-
         calHorarioInicio = Calendar.getInstance();
         calHorarioFim = Calendar.getInstance();
 
@@ -361,6 +365,15 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
     }
 
     private boolean checkDataForm() {
+
+        if (!fotoSelecionada){
+            selecioneUmaImagem.setError(getString(R.string.escolha_uma_imagem));
+            selecioneUmaImagem.requestFocus();
+            return false;
+        } else {
+            selecioneUmaImagem.setError(null);
+        }
+
         if(tituloEd.getText() == null || tituloEd.getText().toString().trim().equals("")){
             tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
             tituloEd.requestFocus();
@@ -450,7 +463,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         }
 
         if (calHorarioFim.getTime().getTime() - calHorarioInicio.getTime().getTime()  <= 0) {
-            horarioFimEd.setError(getString(R.string.data_final_apos_inicio));
+            horarioFimEd.setError(getString(R.string.horario_final_apos_inicio));
             horarioFimEd.requestFocus();
             return false;
         } else {
@@ -511,6 +524,7 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         filepath.putBytes(byteArray).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fotoSelecionada = true;
                 enviarAulaComFoto(taskSnapshot.getDownloadUrl().toString());
             }
         });
@@ -619,14 +633,4 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
 
     }
 
-    private void validarClasse(ClassObject classe){
-        if(classe.getName() == null || classe.getName().isEmpty()){
-            //TODO decidir erro
-        }else if(classe.getAddress() == null || classe.getAddress().isEmpty()){
-
-        }else if(classe.getSlots() <= 0){
-
-        }
-
-    }
 }

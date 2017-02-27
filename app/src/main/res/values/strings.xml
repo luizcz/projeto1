@@ -126,6 +126,7 @@
     <string name="domingo">Domingo</string>
     <string name="free">Grátis</string>
     <string name="campo_nao_pode_ser_vazio">Campo não pode ser vazio.</string>
+    <string name="escolha_uma_imagem">Escolha uma imagem.</string>
     <string name="escolha_um_dia">Escolha pelo menos um dia da semana.</string>
     <string name="data_final_apos_inicio">Data final deve ocorrer depois da data de início.</string>
     <string name="horario_final_apos_inicio">Horario final deve ocorrer após o horário de início.</string>
