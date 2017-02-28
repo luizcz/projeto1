@@ -54,10 +54,13 @@
         <activity
             android:name=".activities.VisualizarAulaActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"></activity>
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CadastroAulaActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.PreferenciasActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

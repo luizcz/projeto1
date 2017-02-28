@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
             //startActivity(new Intent(this,CourseActivity.class));
 
         } else if (id == R.id.nav_options) {
-            // startActivity(new Intent(this,OptionsActivity.class));
+            startActivity(new Intent(this,PreferenciasActivity.class));
 
         } else if (id == R.id.nav_class) {
             Intent intent = new Intent(this, SearchActivity.class);

@@ -310,13 +310,13 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         if (id == R.id.nav_feed) {
             startActivity(new Intent(this,MainActivity.class));
         } else if (id == R.id.nav_profile) {
-            //startActivity(new Intent(this,CadastroActivity.class));
+            startActivity(new Intent(this,PerfilActivity.class));
 
         } else if (id == R.id.nav_my_class) {
             //startActivity(new Intent(this,CourseActivity.class));
 
         } else if (id == R.id.nav_options) {
-            // startActivity(new Intent(this,OptionsActivity.class));
+            startActivity(new Intent(this,PreferenciasActivity.class));
 
         } else if (id == R.id.nav_class) {
             startActivity(new Intent(this,SearchActivity.class));
