@@ -46,7 +46,7 @@ import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class CadastroAulaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener{
 
     private DAO dao;
     private EditText tituloEd;
@@ -80,30 +80,10 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_cadastro_aula);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
 
+        init(R.id.nav_feed);
         diasSemana = new ArrayList<String>();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
-
-        dao = DAO.getInstace(this);
-
         mReference = FirebaseStorage.getInstance().getReference();
 
-        ((TextView)header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-        ((TextView)header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView)header.findViewById(R.id.card_aula_img)));
 
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
@@ -300,35 +280,6 @@ public class CadastroAulaActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_feed) {
-            startActivity(new Intent(this,MainActivity.class));
-        } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this,PerfilActivity.class));
-
-        } else if (id == R.id.nav_my_class) {
-            //startActivity(new Intent(this,CourseActivity.class));
-
-        } else if (id == R.id.nav_options) {
-            startActivity(new Intent(this,PreferenciasActivity.class));
-
-        } else if (id == R.id.nav_class) {
-            startActivity(new Intent(this,SearchActivity.class));
-
-        } else if (id == R.id.nav_teacher) {
-            startActivity(new Intent(this,SearchActivity.class));
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override

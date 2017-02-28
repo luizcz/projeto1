@@ -217,7 +217,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 //startActivity(new Intent(this,CourseActivity.class));
                 break;
             case R.id.nav_options:
-                startActivity(new Intent(this,PreferenciasActivity.class));
+                // startActivity(new Intent(this,OptionsActivity.class));
                 break;
             case R.id.nav_logout:
                 dao.signOut();

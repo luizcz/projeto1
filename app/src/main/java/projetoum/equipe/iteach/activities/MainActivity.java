@@ -42,8 +42,8 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends DrawerActivity
+        implements GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private DAO dao;
@@ -57,18 +57,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_feed);
+        init(R.id.nav_feed);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();
@@ -85,46 +75,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_feed) {
-            //startActivity(new Intent(this,MainActivity.class));
-        } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this, PerfilActivity.class).putExtra("id", dao.getFireBaseUser().getUid()));
-
-        } else if (id == R.id.nav_my_class) {
-            //startActivity(new Intent(this,CourseActivity.class));
-
-        } else if (id == R.id.nav_options) {
-            startActivity(new Intent(this,PreferenciasActivity.class));
-
-        } else if (id == R.id.nav_class) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca", "aula");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_teacher) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca", "user");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_logout) {
-            dao.signOut();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
 
