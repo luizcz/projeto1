@@ -131,6 +131,7 @@
     <string name="data_final_apos_inicio">Data final deve ocorrer depois da data de início.</string>
     <string name="horario_final_apos_inicio">Horario final deve ocorrer após o horário de início.</string>
     <string name="data_inicio_futuro">Data de início deve ser numa data futura.</string>
+    <string name="nova_tag">Nova Tag</string>
 
 
 </resources>

@@ -22,7 +22,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class CadastroActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class CadastroActivity extends DrawerActivity implements View.OnClickListener {
 
     private DAO dao;
     User usuarioAtual;
@@ -39,36 +39,9 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         //supportRequestWindowFeature(AppCompatDelegate.FEATURE_SUPPORT_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_cadastro);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+        init(R.id.nav_feed);
 
 
-        mContext = this;
-
-        edtNome = (EditText) findViewById(R.id.edt_nome);
-        edtTelefone = (EditText) findViewById(R.id.edt_telefone);
-        edtLocal = (EditText) findViewById(R.id.edt_local);
-        edtBio = (EditText) findViewById(R.id.edt_bio);
-
-
-        dao = DAO.getInstace(mContext);
-
-
-        ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-        ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
@@ -103,7 +76,7 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
             dao.updateUser(usuarioAtual, new ICallback() {
                 @Override
                 public void execute(Object param) {
-                    startActivity(new Intent(CadastroActivity.this, MainActivity.class));
+                    startActivity(new Intent(CadastroActivity.this, PreferenciasActivity.class));
                     finish();
                 }
             });
@@ -125,44 +98,6 @@ public class CadastroActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_feed) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.nav_profile) {
-            //startActivity(new Intent(this,CadastroActivity.class));
-
-        } else if (id == R.id.nav_my_class) {
-            //startActivity(new Intent(this,CourseActivity.class));
-
-        } else if (id == R.id.nav_options) {
-            // startActivity(new Intent(this,OptionsActivity.class));
-
-        } else if (id == R.id.nav_class) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca", "aula");
-            startActivity(intent);
-
-        } else if (id == R.id.nav_teacher) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            intent.putExtra("busca", "user");
-            startActivity(intent);
-        } else if (id == R.id.nav_logout) {
-            dao.signOut();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 
 }

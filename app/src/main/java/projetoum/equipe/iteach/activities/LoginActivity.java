@@ -30,7 +30,7 @@ import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-    private static final int RC_SIGN_IN = 0;
+    public static final int RC_SIGN_IN = 0;
 
     private GoogleApiClient mGoogleApiClient;
     private DAO dao;
