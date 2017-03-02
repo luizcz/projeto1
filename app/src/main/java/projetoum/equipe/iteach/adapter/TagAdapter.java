@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.activities.PreferenciasActivity;
+import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder> {
@@ -98,6 +102,10 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
                 }
             });
         }
+
+        /*if(mDataset.size()-1 == position && !mDataset.contains(newtag)){
+            add(newtag);
+        }*/
     }
 
 
@@ -144,30 +152,85 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
 
     public void setDataset(List<String> mDataset) {
         this.mDataset.addAll(mDataset);
+        mDataset.add(newtag);
     }
 
     public void add(String item) {
-        mDataset.remove(newtag);
-        mDataset.add(item);
-        mDataset.add(newtag);
-        //notifyItemInserted(mDataset.size() - 2);
-        notifyDataSetChanged();
+
+        mDataset.add(0,item);
+        notifyItemInserted(0);
+        //notifyDataSetChanged();
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                param.tags = mDataset;
+                param.tags.remove(newtag);
+                dao.updateUser(param, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+
+                       // mDataset.add(newtag);
+                    }
+                });
+            }
+        });
     }
 
     public void remove(String item) {
-       // int position = mDataset.indexOf(item);
+        int position = mDataset.indexOf(item);
         mDataset.remove(item);
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
+        notifyItemRemoved(position);
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                param.tags = mDataset;
+                param.tags.remove(newtag);
+                dao.updateUser(param, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+
+                    }
+                });
+            }
+        });
     }
 
     public void removeAll() {
         mDataset.clear();
         notifyDataSetChanged();
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                param.tags = mDataset;
+                param.tags.remove(newtag);
+                dao.updateUser(param, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+
+                    }
+                });
+            }
+        });
     }
 
     public void update(String item) {
         int position = mDataset.indexOf(item);
         mDataset.set(position, item);
         notifyDataSetChanged();
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                param.tags = mDataset;
+                param.tags.remove(newtag);
+                dao.updateUser(param, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+
+                    }
+                });
+            }
+        });
     }
+
 }
