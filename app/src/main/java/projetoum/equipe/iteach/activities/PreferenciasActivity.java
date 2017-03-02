@@ -68,10 +68,10 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
 
-        List<String> rowListItem = new ArrayList<String>(Arrays.asList("Ingles","Portugues","Espanhol","StarCraftII","Voley"));
+        List<String> rowListItem = new ArrayList<String>();
         GridLayoutManager layoutManager = new GridLayoutManager(PreferenciasActivity.this, 3);
 
-        recycler.setHasFixedSize(true);
+        recycler.setHasFixedSize(false);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(new TagAdapter(this,rowListItem));
 
@@ -96,7 +96,19 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(final SeekBar seekBar) {
+                dao.getCurrentUser(new ICallback<User>() {
+                    @Override
+                    public void execute(User param) {
+                        param.classRange = seekBar.getProgress();
+                        dao.updateUser(param, new ICallback() {
+                            @Override
+                            public void execute(Object param) {
+
+                            }
+                        });
+                    }
+                });
 
             }
         });
@@ -150,6 +162,20 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
             switchg.setClickable(false);
             labelEmailF.setText("");
         }
+
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                if(param != null ) {
+                    seekBar.setProgress(param.classRange);
+                    if(param.tags != null){
+                        ((TagAdapter)recycler.getAdapter()).setDataset(param.tags);
+                        recycler.getAdapter().notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
 
 
     }
