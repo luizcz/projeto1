@@ -29,6 +29,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -79,6 +80,20 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
                 newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
+                dao.findClassById(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
+                    @Override
+                    public void execute(ClassObject param) {
+                        if(param.getAlunos() == null)
+                            param.setAlunos(new ArrayList<String>());
+                        param.getAlunos().add(dao.getFireBaseUser().getUid());
+                        dao.updateClass(param, new ICallback() {
+                            @Override
+                            public void execute(Object param) {
+                                // fazer nada
+                            }
+                        });
+                    }
+                });
                 dialog.dismiss();
             }
         });

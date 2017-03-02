@@ -36,6 +36,7 @@ public class ClassObject {
     private String teacherId;
     private Long time;
     private Double value;
+    private List<String> alunos;
 
     public ClassObject(String name) {
         this.name = name;
@@ -47,7 +48,7 @@ public class ClassObject {
 
     public ClassObject(String teacherId, Long time,
                        Double value, String address, Double lat, Double lon,
-                       int slots, List<String> tags, String name, String id) {
+                       int slots, List<String> tags, String name, String id, List<String> alunos) {
         this.teacherId = teacherId;
         this.time = time;
         this.value = value;
@@ -58,6 +59,7 @@ public class ClassObject {
         this.tags = tags;
         this.name = name;
         this.id = id;
+        this.alunos = alunos;
     }
 
     @Exclude
@@ -81,6 +83,7 @@ public class ClassObject {
         result.put("dataFim", dataFim);
         result.put("horaInicio", horaInicio);
         result.put("horaFim", horaFim);
+        result.put("alunos", alunos);
 
         return result;
     }
@@ -227,6 +230,14 @@ public class ClassObject {
 
     public void setHoraFim(String horaFim) {
         this.horaFim = horaFim;
+    }
+
+    public List<String> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<String> alunos) {
+        this.alunos = alunos;
     }
 
     public String getValorFormatado(){
