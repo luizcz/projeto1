@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_perfil"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -104,7 +104,7 @@
                 android:gravity="left" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/label_major_method"
                 android:text="Paypal - joao@gmail.com"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/bt_add_payment"
                 android:text="Adicionar outro meio de pagamento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                 android:layout_marginBottom="10dp" />
 
             <TextView
-                android:text="Principal tags de aula"
+                android:text="Principais tags de aula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -146,7 +146,10 @@
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="150dp"
+                android:layout_marginTop="5dp"
+                android:id="@+id/recycler"
+                />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -169,10 +172,10 @@
 
             <SeekBar
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:id="@+id/seekBar"
                 android:progressTint="@color/colorPrimaryDark"
-                android:thumb="@drawable/ic_pin_small"
+                android:thumb="@drawable/ic_pin"
                 android:thumbTint="@android:color/white"
                 android:progress="50"
                 android:progressBackgroundTint="@android:color/white"
@@ -180,9 +183,9 @@
             <TextView
                 android:text="300m"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:textColor="@android:color/white"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:id="@+id/label_distance" />

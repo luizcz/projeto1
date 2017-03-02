@@ -25,6 +25,8 @@ public class User {
     public Boolean firstTime;
     public String local;
     public String telefone;
+    public int classRange = 0;
+    public List<String> tags;
     public String highResURI;
     private String lowResURI;
 
