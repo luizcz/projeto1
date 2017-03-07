@@ -64,6 +64,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private boolean inicio;
     private boolean inicioDate;
     private List<String> diasSemana;
+    private User professor;
     private int PICK_IMAGE_REQUEST = 1;
 
     @Override
@@ -106,6 +107,8 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         setTextListeners();
         imagePropaganda.setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+
+        dao = DAO.getInstace(getApplicationContext());
 
     }
 
@@ -493,6 +496,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
+                professor = param;
                 classe.setTeacherId(param.getUserId());
                 criarClasse(classe);
             }
@@ -558,7 +562,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         dao.createClass(classe, new ICallback() {
             @Override
             public void execute(Object param) {
-                Toast.makeText(CadastroAulaActivity.this, param.toString(), Toast.LENGTH_LONG).show();
+                if(param != null)
+                    Toast.makeText(CadastroAulaActivity.this, "Aula cadastrada com sucesso", Toast.LENGTH_LONG).show();
+                if(professor.getMyClasses() == null)
+                    professor.setMyClasses(new ArrayList<String>());
+                professor.getMyClasses().add(param.toString());
+                dao.updateUser(professor, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+                        // faz nada
+                    }
+                });
                 startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
                 finish();
             }
