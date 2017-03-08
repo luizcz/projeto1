@@ -491,6 +491,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
         final ClassObject classe = new ClassObject();
         classe.setImagem(imagem);
+        classe.setValue(Double.parseDouble(valorEd.getText().toString()));
         classe.setName(tituloEd.getText().toString());
         classe.setSlots(Integer.parseInt(numVagasEd.getText().toString()));
         classe.setData(dataInicioEd.getText().toString());
