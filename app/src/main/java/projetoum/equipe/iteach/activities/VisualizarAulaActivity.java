@@ -59,6 +59,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private TextView aula_mapa_dist;
     private ImageView class_image;
     private ImageView teacher_image;
+    private Button participar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         });
 
         final AlertDialog alert = builder.create();
-        Button participar = (Button) findViewById(R.id.aula_botao_participar);
+        participar = (Button) findViewById(R.id.aula_botao_participar);
         participar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +169,14 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 User user = (User) param;
                 getImage(teacher_image, user.getHighResURI());
                 aula_nome_professor.setText(user.getName());
+            }
+        });
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                if(((User)param).getUserId().equals(mClass.getTeacherId())){
+                    participar.setVisibility(View.GONE);
+                }
             }
         });
         if (MainActivity.mLastLocation != null && mClass.getLat() != null && mClass.getLon() != null) {

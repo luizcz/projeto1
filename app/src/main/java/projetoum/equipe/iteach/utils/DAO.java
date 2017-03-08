@@ -419,7 +419,7 @@ public class DAO implements IRemote {
         DatabaseReference freeRef = myRef.push();
 
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 callback.execute(classObject.getId());
