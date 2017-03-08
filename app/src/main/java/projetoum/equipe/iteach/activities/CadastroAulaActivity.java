@@ -111,6 +111,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         setTextListeners();
         imagePropaganda.setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+        findViewById(R.id.bt_salvar_aula).setEnabled(true);
 
         dao = DAO.getInstace(getApplicationContext());
 
@@ -285,9 +286,12 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
         case R.id.bt_salvar_aula:
-            progressBar.setVisibility(View.VISIBLE);
+            findViewById(R.id.bt_salvar_aula).setEnabled(false);
             if (checkDataForm()){
+                progressBar.setVisibility(View.VISIBLE);
                 enviarAula();
+            }else{
+                findViewById(R.id.bt_salvar_aula).setEnabled(true);
             }
             break;
         case R.id.edt_horario_inicio:
