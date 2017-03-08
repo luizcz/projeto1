@@ -446,10 +446,11 @@ public class DAO implements IRemote {
             if (address == null) {
                 return;
             }
-            Address location = address.get(0);
-            classe.setLat(location.getLatitude());
-            classe.setLon(location.getLongitude());
-
+            if(address.size() > 0) {
+                Address location = address.get(0);
+                classe.setLat(location.getLatitude());
+                classe.setLon(location.getLongitude());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

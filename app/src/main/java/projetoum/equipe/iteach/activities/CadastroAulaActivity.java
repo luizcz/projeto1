@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -66,6 +67,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private List<String> diasSemana;
     private User professor;
     private int PICK_IMAGE_REQUEST = 1;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,11 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         setContentView(R.layout.activity_cadastro_aula);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar_cd_aula);
         init(R.id.nav_feed);
         diasSemana = new ArrayList<String>();
         mReference = FirebaseStorage.getInstance().getReference();
+
 
 
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
@@ -281,6 +285,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
         case R.id.bt_salvar_aula:
+            progressBar.setVisibility(View.VISIBLE);
             if (checkDataForm()){
                 enviarAula();
             }
@@ -468,6 +473,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         byte[] byteArray = stream.toByteArray();
 
         filepath.putBytes(byteArray).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @SuppressWarnings("VisibleForTests")
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fotoSelecionada = true;
@@ -562,18 +568,26 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         dao.createClass(classe, new ICallback() {
             @Override
             public void execute(Object param) {
-                if(param != null)
-                    Toast.makeText(CadastroAulaActivity.this, "Aula cadastrada com sucesso", Toast.LENGTH_LONG).show();
+
                 if(professor.getMyClasses() == null)
                     professor.setMyClasses(new ArrayList<String>());
-                professor.getMyClasses().add(param.toString());
-                dao.updateUser(professor, new ICallback() {
-                    @Override
-                    public void execute(Object param) {
-                        // faz nada
-                    }
-                });
-                startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
+                if (!professor.getMyClasses().contains(param.toString())) {
+                    professor.getMyClasses().add(param.toString());
+                    dao.updateUser(professor, new ICallback() {
+                        @Override
+                        public void execute(Object param) {
+                            // faz nada
+                        }
+                    });
+                }
+                progressBar.setVisibility(View.GONE);
+                //startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
+                if(param != null){
+                    Toast.makeText(CadastroAulaActivity.this, "Aula cadastrada com sucesso", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(CadastroAulaActivity.this, VisualizarAulaActivity.class);
+                    intent.putExtra("aula_id", param.toString());
+                    startActivity(intent);
+                }
                 finish();
             }
         });
