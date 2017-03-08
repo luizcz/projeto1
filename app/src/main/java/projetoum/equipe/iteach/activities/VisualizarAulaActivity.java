@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +30,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -79,6 +81,25 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
                 newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
+                dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
+                    @Override
+                    public void execute(ClassObject param) {
+                        if(param.getAlunos() == null)
+                            param.setAlunos(new ArrayList<String>());
+                        if(param.getAlunos().contains(dao.getFireBaseUser().getUid())){
+                            Toast.makeText(getApplicationContext(), "Usuario ja foi matriculado", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        param.getAlunos().add(dao.getFireBaseUser().getUid());
+                        param.setId(getIntent().getExtras().getString("aula_id"));
+                        dao.updateClass(param, new ICallback() {
+                            @Override
+                            public void execute(Object param) {
+                                // fazer nada
+                            }
+                        });
+                    }
+                });
                 dialog.dismiss();
             }
         });

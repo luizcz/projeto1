@@ -24,6 +24,14 @@
     <include layout="@layout/content_cadastro_aula"
         android:id="@+id/include" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar_cd_aula"
+        android:visibility="gone"></ProgressBar>
 
 
 </android.support.design.widget.CoordinatorLayout>

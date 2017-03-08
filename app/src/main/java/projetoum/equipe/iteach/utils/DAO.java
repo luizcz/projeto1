@@ -412,7 +412,7 @@ public class DAO implements IRemote {
     }
 
     @Override
-    public void createClass(ClassObject classObject, final ICallback callback) {
+    public void createClass(final ClassObject classObject, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS);
 
@@ -422,7 +422,7 @@ public class DAO implements IRemote {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                callback.execute(Constants.REQUEST_OK);
+                callback.execute(classObject.getId());
             }
 
             @Override
@@ -446,10 +446,11 @@ public class DAO implements IRemote {
             if (address == null) {
                 return;
             }
-            Address location = address.get(0);
-            classe.setLat(location.getLatitude());
-            classe.setLon(location.getLongitude());
-
+            if(address.size() > 0) {
+                Address location = address.get(0);
+                classe.setLat(location.getLatitude());
+                classe.setLon(location.getLongitude());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -593,6 +594,23 @@ public class DAO implements IRemote {
         FirebaseDatabase database = getFirebaseInstance();
         DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + id);
         myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                callback.execute(classObject);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(null);
+            }
+        });
+    }
+
+    public void findClassByIdOnce(String id, final ICallback<ClassObject> callback) {
+        FirebaseDatabase database = getFirebaseInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + id);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);

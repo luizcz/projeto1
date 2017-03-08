@@ -36,6 +36,7 @@ public class ClassObject {
     private String teacherId;
     private Long time;
     private Double value;
+    private List<String> alunos;
 
     public ClassObject(String name) {
         this.name = name;
@@ -47,7 +48,7 @@ public class ClassObject {
 
     public ClassObject(String teacherId, Long time,
                        Double value, String address, Double lat, Double lon,
-                       int slots, List<String> tags, String name, String id) {
+                       int slots, List<String> tags, String name, String id, List<String> alunos) {
         this.teacherId = teacherId;
         this.time = time;
         this.value = value;
@@ -58,6 +59,7 @@ public class ClassObject {
         this.tags = tags;
         this.name = name;
         this.id = id;
+        this.alunos = alunos;
     }
 
     @Exclude
@@ -81,6 +83,7 @@ public class ClassObject {
         result.put("dataFim", dataFim);
         result.put("horaInicio", horaInicio);
         result.put("horaFim", horaFim);
+        result.put("alunos", alunos);
 
         return result;
     }
@@ -229,6 +232,14 @@ public class ClassObject {
         this.horaFim = horaFim;
     }
 
+    public List<String> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<String> alunos) {
+        this.alunos = alunos;
+    }
+
     public String getValorFormatado(){
         if (value == null){
             return "0";
@@ -242,62 +253,56 @@ public class ClassObject {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ClassObject)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ClassObject that = (ClassObject) o;
 
-        if (getSlots() != that.getSlots()) return false;
-        if (!getTeacherId().equals(that.getTeacherId())) return false;
-        if (getTime() != null ? !getTime().equals(that.getTime()) : that.getTime() != null)
+        if (slots != that.slots) return false;
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
+        if (data != null ? !data.equals(that.data) : that.data != null) return false;
+        if (dataFim != null ? !dataFim.equals(that.dataFim) : that.dataFim != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
             return false;
-        if (getValue() != null ? !getValue().equals(that.getValue()) : that.getValue() != null)
+        if (diasSemana != null ? !diasSemana.equals(that.diasSemana) : that.diasSemana != null)
             return false;
-        if (getAddress() != null ? !getAddress().equals(that.getAddress()) : that.getAddress() != null)
+        if (horaInicio != null ? !horaInicio.equals(that.horaInicio) : that.horaInicio != null)
             return false;
-        if (getLat() != null ? !getLat().equals(that.getLat()) : that.getLat() != null)
+        if (horaFim != null ? !horaFim.equals(that.horaFim) : that.horaFim != null) return false;
+        if (imagem != null ? !imagem.equals(that.imagem) : that.imagem != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (lat != null ? !lat.equals(that.lat) : that.lat != null) return false;
+        if (lon != null ? !lon.equals(that.lon) : that.lon != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (subject != null ? !subject.equals(that.subject) : that.subject != null) return false;
+        if (tags != null ? !tags.equals(that.tags) : that.tags != null) return false;
+        if (teacherId != null ? !teacherId.equals(that.teacherId) : that.teacherId != null)
             return false;
-        if (getLon() != null ? !getLon().equals(that.getLon()) : that.getLon() != null)
-            return false;
-        if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null)
-            return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
-        if (!getId().equals(that.getId())) return false;
-        if (getImagem() != null ? !getImagem().equals(that.getImagem()) : that.getImagem() != null)
-            return false;
-        if (getData() != null ? !getData().equals(that.getData()) : that.getData() != null)
-            return false;
-        if (getSubject() != null ? !getSubject().equals(that.getSubject()) : that.getSubject() != null)
-            return false;
-        if (getDiasSemana() != null ? !getDiasSemana().equals(that.getDiasSemana()) : that.getDiasSemana() != null)
-            return false;
-        if (getDataFim() != null ? !getDataFim().equals(that.getDataFim()) : that.getDataFim() != null)
-            return false;
-        if (getHoraInicio() != null ? !getHoraInicio().equals(that.getHoraInicio()) : that.getHoraInicio() != null)
-            return false;
-        return getHoraFim() != null ? getHoraFim().equals(that.getHoraFim()) : that.getHoraFim() == null;
+        if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        return true;
 
     }
 
     @Override
     public int hashCode() {
-        int result = getTeacherId().hashCode();
-        result = 31 * result + (getTime() != null ? getTime().hashCode() : 0);
-        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
-        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
-        result = 31 * result + (getLat() != null ? getLat().hashCode() : 0);
-        result = 31 * result + (getLon() != null ? getLon().hashCode() : 0);
-        result = 31 * result + getSlots();
-        result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + getId().hashCode();
-        result = 31 * result + (getImagem() != null ? getImagem().hashCode() : 0);
-        result = 31 * result + (getData() != null ? getData().hashCode() : 0);
-        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
-        result = 31 * result + (getDiasSemana() != null ? getDiasSemana().hashCode() : 0);
-        result = 31 * result + (getDataFim() != null ? getDataFim().hashCode() : 0);
-        result = 31 * result + (getHoraInicio() != null ? getHoraInicio().hashCode() : 0);
-        result = 31 * result + (getHoraFim() != null ? getHoraFim().hashCode() : 0);
+        int result = address != null ? address.hashCode() : 0;
+        result = 31 * result + (data != null ? data.hashCode() : 0);
+        result = 31 * result + (dataFim != null ? dataFim.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (diasSemana != null ? diasSemana.hashCode() : 0);
+        result = 31 * result + (horaInicio != null ? horaInicio.hashCode() : 0);
+        result = 31 * result + (horaFim != null ? horaFim.hashCode() : 0);
+        result = 31 * result + (imagem != null ? imagem.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (lat != null ? lat.hashCode() : 0);
+        result = 31 * result + (lon != null ? lon.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + slots;
+        result = 31 * result + (subject != null ? subject.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (teacherId != null ? teacherId.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 }

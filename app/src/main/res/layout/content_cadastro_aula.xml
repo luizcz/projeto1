@@ -13,9 +13,6 @@
     tools:context="projetoum.equipe.iteach.activities.CadastroAulaActivity"
     tools:showIn="@layout/app_bar_cadastro_aula">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <RelativeLayout
             android:orientation="horizontal"
@@ -32,25 +29,26 @@
                 android:layout_weight="1" />
 
             <TextView
-                    android:id="@+id/selecione_uma_imagem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/img_propaganda"
-                    android:layout_alignTop="@id/img_propaganda"
-                    android:layout_alignRight="@id/img_propaganda"
-                    android:layout_alignBottom="@id/img_propaganda"
-                    android:layout_margin="1dp"
-                    android:gravity="center"
-                    android:text="Selecione uma imagem sobre o assunto "
-                    android:textColor="#ffffff"
+                android:text="Selecione uma imagem sobre o assunto "
+                android:id="@+id/selecione_uma_imagem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/img_propaganda"
+                android:layout_alignTop="@id/img_propaganda"
+                android:layout_alignRight="@id/img_propaganda"
+                android:layout_alignBottom="@id/img_propaganda"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textColor="#ffffff"
                 android:layout_weight="1" />
-        </RelativeLayout>
 
         <TextView
                 android:id="@+id/titulo_aula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image_header"
+                android:layout_below="@+id/img_propaganda"
                 android:layout_marginTop="5dp"
                 android:text="@string/titulo_aula"
                 android:textColor="@color/cardview_light_background"
@@ -356,8 +354,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="5dp" />
-
-
 
 
     </RelativeLayout>

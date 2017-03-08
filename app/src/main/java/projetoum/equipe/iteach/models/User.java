@@ -19,6 +19,7 @@ public class User {
     public Double lon;
     public List<String> favoriteClasses;
     public List<String> enrolledClasses;
+    public List<String> myClasses;
     public String bio;
     public String creationDate = "";
     public String accountId;
@@ -34,7 +35,7 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, String bio, String creationDate, String accountId, String local, String telefone) {
+    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses, String bio, String creationDate, String accountId, String local, String telefone) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -42,6 +43,7 @@ public class User {
         this.lon = lon;
         this.favoriteClasses = favoriteClasses;
         this.enrolledClasses = enrolledClasses;
+        this.myClasses = myClasses;
         this.bio = bio;
         this.creationDate = creationDate;
         this.accountId = accountId;
@@ -74,6 +76,7 @@ public class User {
         result.put("lon", lon);
         result.put("favoriteClasses", favoriteClasses);
         result.put("enrolledClasses", enrolledClasses);
+        result.put("myClasses", myClasses);
         result.put("bio", bio);
         result.put("creationDate", creationDate);
         result.put("accountId", accountId);
@@ -195,6 +198,14 @@ public class User {
 
     public void setHighResURI(String highResURI) {
         this.highResURI = highResURI;
+    }
+
+    public List<String> getMyClasses() {
+        return myClasses;
+    }
+
+    public void setMyClasses(List<String> myClasses) {
+        this.myClasses = myClasses;
     }
 
     @Override
