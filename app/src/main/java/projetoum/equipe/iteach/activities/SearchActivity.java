@@ -208,6 +208,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         switch (id) {
             case R.id.nav_feed:
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
             case R.id.nav_profile:
