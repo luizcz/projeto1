@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.MainActivity;
