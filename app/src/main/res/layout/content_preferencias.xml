@@ -46,6 +46,7 @@
                 android:id="@+id/switchg"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="10dp"
+                android:trackTint="@android:color/white"
                 android:thumbTint="@color/colorPrimary" />
             <TextView
                 android:id="@+id/label_email_google"
@@ -64,6 +65,7 @@
                 android:id="@+id/switchf"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="10dp"
+                android:trackTint="@android:color/white"
                 android:thumbTint="@color/colorPrimary" />
 
             <TextView

@@ -116,8 +116,8 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
         //switch
         switchg = (Switch) findViewById(R.id.switchg);
         switchf = (Switch) findViewById(R.id.switchf);
-        switchg.setOnCheckedChangeListener(checkListner);
-        switchf.setOnCheckedChangeListener(checkListner);
+        switchg.setChecked(false);
+        switchf.setChecked(false);
 
 
         // Configure Google Sign In
@@ -142,19 +142,17 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
 
 
             if (firstProvider.equals("facebook.com")) {
-                switchf.setActivated(true);
-                labelEmailF.setText(profile.getEmail());
-                System.out.println("facebook: " + profile.getEmail());
+                switchf.setChecked(true);
+                labelEmailF.setText(dao.getFireBaseUser().getEmail());
 
             } else if (firstProvider.equals("google.com")) {
-                switchg.setActivated(true);
-                labelEmailG.setText(profile.getEmail());
-                System.out.println("google: " + profile.getEmail());
+                switchg.setChecked(true);
+                labelEmailG.setText(dao.getFireBaseUser().getEmail());
             }
         }
 
 
-        if (!switchg.isActivated()) {
+      /*  if (!switchg.isActivated()) {
             switchf.setClickable(false);
             labelEmailG.setText("");
         }
@@ -162,7 +160,13 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
             switchg.setClickable(false);
             labelEmailF.setText("");
         }
+*/
 
+
+        switchg.setOnCheckedChangeListener(checkListner);
+        switchf.setOnCheckedChangeListener(checkListner);
+
+        //update from firebase
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
