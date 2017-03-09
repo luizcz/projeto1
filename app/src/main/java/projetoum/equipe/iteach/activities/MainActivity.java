@@ -267,15 +267,17 @@ public class MainActivity extends DrawerActivity
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {
-                        param.highResURI = acct.getPhotoUrl().toString();
-                        dao.updateUser(param, new ICallback() {
-                            @Override
-                            public void execute(Object param) {
+                        if (acct.getPhotoUrl() != null) {
+                            param.highResURI = acct.getPhotoUrl().toString();
+                            dao.updateUser(param, new ICallback() {
+                                @Override
+                                public void execute(Object param) {
 
-                            }
-                        });
-
+                                }
+                            });
+                        }
                     }
+
                 });
 
             }
