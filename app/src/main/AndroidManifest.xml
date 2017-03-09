@@ -64,7 +64,11 @@
             android:name=".activities.PreferenciasActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.DrawerActivity"></activity>
+        <activity android:name=".activities.DrawerActivity" />
+        <activity
+            android:name=".activities.MinhasAulasActivity"
+            android:label="@string/title_activity_minhas_aulas"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

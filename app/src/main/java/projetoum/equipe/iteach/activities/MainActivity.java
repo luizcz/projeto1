@@ -273,15 +273,12 @@ public class MainActivity extends DrawerActivity
                                 @Override
                                 public void execute(Object param) {
 
-                                }
-                            });
-                        }
+                            }
+                        });
                     }
-
-                });
-
-            }
+                }
+            });
         }
     }
 
-}
+}}

@@ -48,6 +48,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private ClassAdapter classAdapter;
     private DAO dao;
     private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private Fragment currentFragment;
     private int lastFragment;
     private SearchAulasFragment searchAulasFragment;
@@ -111,7 +112,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         firstLoad();
 
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
         fragmentTransaction.commit();
     }
@@ -130,6 +131,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -200,8 +202,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         if (id == 0) {
             id = lastFragment;
         }
@@ -224,34 +224,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 dao.signOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
-
                 break;
-
             case R.id.nav_class:
-                getSupportActionBar().setTitle("Busca Aulas");
-                if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
-                    fragmentTransaction.hide(currentFragment);
-                    fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
-                    fragmentTransaction.show(searchAulasFragment).commit();
-                } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
-                    fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
-                }
-                currentFragment = searchAulasFragment;
-                lastFragment = R.id.nav_class;
-                mRecyclerView.setAdapter(classAdapter);
+                setUpClassFragment();
                 break;
             case R.id.nav_teacher:
-                getSupportActionBar().setTitle("Busca Professores");
-                if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
-                    fragmentTransaction.hide(currentFragment);
-                    fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
-                    fragmentTransaction.show(searchProfsFragment).commit();
-                } else if (!fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG).isVisible()) {
-                    fragmentTransaction.hide(currentFragment).show(searchProfsFragment).commit();
-                }
-                currentFragment = searchProfsFragment;
-                lastFragment = R.id.nav_teacher;
-                mRecyclerView.setAdapter(userAdapter);
+                setUpProfFragment();
                 break;
             default:
                 break;
@@ -260,6 +238,36 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setUpClassFragment(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        getSupportActionBar().setTitle("Busca Aulas");
+        if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
+            fragmentTransaction.hide(currentFragment);
+            fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+            fragmentTransaction.show(searchAulasFragment).commit();
+        } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
+            fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
+        }
+        currentFragment = searchAulasFragment;
+        lastFragment = R.id.nav_class;
+        mRecyclerView.setAdapter(classAdapter);
+    }
+
+    private void setUpProfFragment(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        getSupportActionBar().setTitle("Busca Professores");
+        if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
+            fragmentTransaction.hide(currentFragment);
+            fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
+            fragmentTransaction.show(searchProfsFragment).commit();
+        } else if (!fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG).isVisible()) {
+            fragmentTransaction.hide(currentFragment).show(searchProfsFragment).commit();
+        }
+        currentFragment = searchProfsFragment;
+        lastFragment = R.id.nav_teacher;
+        mRecyclerView.setAdapter(userAdapter);
     }
 
     @Override

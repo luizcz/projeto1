@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_minhas_aulas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="projetoum.equipe.iteach.activities.MinhasAulasActivity"
+    tools:showIn="@layout/app_bar_minhas_aulas">
+
+
+    <TextView
+        android:text="Você não está matriculado em\n nenhuma aula no momento."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/nenhuma_aula"
+        android:textStyle="normal|bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:text="@string/aulas_cadastradas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tem_aulas"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
+
+
+        <android.support.v7.widget.RecyclerView
+        android:id="@+id/minhas_aulas_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

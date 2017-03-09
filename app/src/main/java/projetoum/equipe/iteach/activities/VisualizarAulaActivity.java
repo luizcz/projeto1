@@ -93,7 +93,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                         if(param.getAlunos() == null)
                             param.setAlunos(new ArrayList<String>());
                         if(param.getAlunos().contains(dao.getFireBaseUser().getUid())){
-                            Toast.makeText(getApplicationContext(), "Usuario ja foi matriculado", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
                             return;
                         }
                         param.getAlunos().add(dao.getFireBaseUser().getUid());

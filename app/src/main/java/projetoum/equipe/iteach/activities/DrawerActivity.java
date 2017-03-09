@@ -44,7 +44,7 @@ public class DrawerActivity extends AppCompatActivity
             startActivity(new Intent(this, PerfilActivity.class));
             finish();
         } else if (id == R.id.nav_my_class && id != navId) {
-            //startActivity(new Intent(this,CourseActivity.class));
+            startActivity(new Intent(this,MinhasAulasActivity.class));
 
         } else if (id == R.id.nav_options && id != navId) {
             startActivity(new Intent(this,PreferenciasActivity.class));
