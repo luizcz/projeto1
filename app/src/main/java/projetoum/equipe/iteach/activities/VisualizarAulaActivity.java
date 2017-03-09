@@ -82,6 +82,10 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
                 newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
+                DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+                DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
+                newClassUser.child(dao.getFireBaseUser().getUid()).setValue(true);
+
                 dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
                     @Override
                     public void execute(ClassObject param) {
