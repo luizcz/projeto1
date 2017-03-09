@@ -194,7 +194,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
         String valor = mClass.getValorFormatado();
         if (valor.equals("0")){
-            aula_valor.setText("Valor: " + R.string.free);
+            aula_valor.setText("Valor: " + getResources().getString(R.string.free));
         } else {
             aula_valor.setText("Valor: " + valor);
         }
@@ -207,8 +207,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
 
 
-        aula_horario.setText("Horario: " + String.valueOf(mClass.getHoraInicio()));
-        aula_conteudo_body.setText(mClass.getDescription());
+        aula_horario.setText("Horario: " + String.valueOf(mClass.getHoraInicio()) + " - " + String.valueOf(mClass.getHoraFim()));
+        aula_conteudo_body.setText(mClass.getSubject());
         aula_endereco.setText(mClass.getAddress());
 
     }
