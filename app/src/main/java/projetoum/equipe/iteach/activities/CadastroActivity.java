@@ -23,10 +23,7 @@ import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class CadastroActivity extends DrawerActivity implements View.OnClickListener {
-
-    private DAO dao;
     User usuarioAtual;
-    private CadastroActivity mContext;
     private EditText edtNome;
     private EditText edtTelefone;
     private EditText edtLocal;
@@ -41,7 +38,10 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
 
         init(R.id.nav_feed);
 
-
+        edtNome = (EditText) findViewById(R.id.edt_nome);
+        edtTelefone = (EditText) findViewById(R.id.edt_telefone);
+        edtLocal = (EditText) findViewById(R.id.edt_local);
+        edtBio = (EditText) findViewById(R.id.edt_bio);
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
@@ -92,6 +92,7 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
         }
         if (edtLocal.getText() != null) {
             usuarioAtual.setLocal(edtLocal.getText().toString());
+            dao.getLocationFromAddress(usuarioAtual);
         }
         if (edtBio.getText() != null) {
             usuarioAtual.setBio(edtBio.getText().toString());

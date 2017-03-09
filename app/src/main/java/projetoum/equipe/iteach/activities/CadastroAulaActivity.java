@@ -5,8 +5,11 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.adapter.TagAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
@@ -41,7 +45,6 @@ import projetoum.equipe.iteach.utils.DAO;
 
 public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener{
 
-    private DAO dao;
     private EditText tituloEd;
     private EditText numVagasEd;
     private EditText valorEd;
@@ -56,7 +59,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private TextView title_dias_semana;
     private TextView selecioneUmaImagem;
     private EditText assuntoEd;
-    private EditText tagsEd;
     private EditText localEd;
     private ImageView imagePropaganda;
     private Boolean fotoSelecionada;
@@ -68,6 +70,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private User professor;
     private int PICK_IMAGE_REQUEST = 1;
     private ProgressBar progressBar;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
         horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
         assuntoEd = (EditText) findViewById(R.id.edt_assunto);
-        tagsEd = (EditText) findViewById(R.id.edt_tags);
         localEd = (EditText) findViewById(R.id.edt_local_aula);
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
         title_dias_semana = (TextView) findViewById(R.id.st_week_day);
@@ -113,7 +115,16 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
         findViewById(R.id.bt_salvar_aula).setEnabled(true);
 
-        dao = DAO.getInstace(getApplicationContext());
+
+        recycler = (RecyclerView) findViewById(R.id.recycler);
+
+        List<String> rowListItem = new ArrayList<String>();
+        GridLayoutManager layoutManager = new GridLayoutManager(CadastroAulaActivity.this, 3);
+
+        recycler.setHasFixedSize(false);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(new TagAdapter(this,rowListItem,true));
+
 
     }
 
@@ -260,22 +271,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
                     assuntoEd.setError(null);
-                }
-            }
-        });
-        tagsEd.addTextChangedListener(new TextWatcher()  {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void afterTextChanged(Editable s)  {
-                if (tagsEd.getText().toString().trim().length() <= 0) {
-                    tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-                } else {
-                    tagsEd.setError(null);
                 }
             }
         });
@@ -432,15 +427,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         } else {
             assuntoEd.setError(null);
         }
-
-        if (tagsEd.getText() == null || tagsEd.getText().toString().trim().equals("")) {
-            tagsEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
-            tagsEd.requestFocus();
-            return false;
-        } else {
-            tagsEd.setError(null);
-        }
-
         return true;
     }
 
@@ -499,10 +485,9 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         classe.setHoraInicio(horarioInicioEd.getText().toString());
         classe.setHoraFim(horarioFimEd.getText().toString());
         classe.setSubject(assuntoEd.getText().toString());
-        List<String> lista = Arrays.asList(tagsEd.getText().toString().split(","));
-        classe.setTags(lista);
         classe.setAddress(localEd.getText().toString());
         classe.setDiasSemana(diasSemana);
+        classe.setTags(((TagAdapter)recycler.getAdapter()).getDataset());
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override

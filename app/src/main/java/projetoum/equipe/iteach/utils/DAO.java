@@ -457,6 +457,28 @@ public class DAO implements IRemote {
         }
     }
 
+    public void getLocationFromAddress(User user) {
+
+        Geocoder coder = new Geocoder(ctx);
+        List<Address> address;
+
+
+        try {
+            address = coder.getFromLocationName(user.local, 5);
+            if (address == null) {
+                return;
+            }
+            if(address.size() > 0) {
+                Address location = address.get(0);
+                user.lat = (location.getLatitude());
+                user.lon = (location.getLongitude());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void deleteClass(ClassObject classObject, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();

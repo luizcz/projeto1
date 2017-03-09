@@ -21,7 +21,6 @@ public class ClassObject {
     private String address;
     private String data;
     private String dataFim;
-    private String description;
     private List<String> diasSemana;
     private String horaInicio;
     private String horaFim;
@@ -76,7 +75,7 @@ public class ClassObject {
         result.put("name", name);
         result.put("id", id);
         result.put("data", data);
-        result.put("description", description);
+        result.put("subject", subject);
         result.put("image", imagem);
         result.put("subject", subject);
         result.put("diasSemana", diasSemana);
@@ -193,11 +192,11 @@ public class ClassObject {
     }
 
     public String getDescription() {
-        return description;
+        return subject;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.subject = description;
     }
 
     public List<String> getDiasSemana() {
@@ -261,8 +260,6 @@ public class ClassObject {
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (data != null ? !data.equals(that.data) : that.data != null) return false;
         if (dataFim != null ? !dataFim.equals(that.dataFim) : that.dataFim != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null)
-            return false;
         if (diasSemana != null ? !diasSemana.equals(that.diasSemana) : that.diasSemana != null)
             return false;
         if (horaInicio != null ? !horaInicio.equals(that.horaInicio) : that.horaInicio != null)
@@ -288,7 +285,6 @@ public class ClassObject {
         int result = address != null ? address.hashCode() : 0;
         result = 31 * result + (data != null ? data.hashCode() : 0);
         result = 31 * result + (dataFim != null ? dataFim.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (diasSemana != null ? diasSemana.hashCode() : 0);
         result = 31 * result + (horaInicio != null ? horaInicio.hashCode() : 0);
         result = 31 * result + (horaFim != null ? horaFim.hashCode() : 0);

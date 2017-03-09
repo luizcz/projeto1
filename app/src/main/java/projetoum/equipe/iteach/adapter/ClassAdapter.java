@@ -2,6 +2,7 @@ package projetoum.equipe.iteach.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -64,15 +65,29 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         if (classes.get(position).getImagem() != null && !classes.get(position).getImagem().isEmpty())
             Picasso.with(mContext).load(classes.get(position).getImagem()).fit().centerCrop().into(holder.card_aula_img);
 
-        if (MainActivity.mLastLocation != null &&classes.get(position).getLat() != null &&classes.get(position).getLon() != null) {
-            LatLng myPosition = new LatLng(classes.get(position).getLat(), classes.get(position).getLon());
-            LatLng placePosition = new LatLng(MainActivity.mLastLocation.getLatitude(), MainActivity.mLastLocation.getLongitude());
-            double distance = SphericalUtil.computeDistanceBetween(myPosition, placePosition);
-            DecimalFormat df = new DecimalFormat("#0.0");
-            holder.aula_dist.setText( String.valueOf(df.format(distance/1000)) + "Km");
-        }else {
-            holder.aula_dist.setText("?");
-        }
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                if (param.getLat() != null && param.getLon() != null && classes.get(position).getLat() != null && classes.get(position).getLon() != null) {
+                    Location startPoint = new Location("user");
+                    startPoint.setLatitude(param.getLat());
+                    startPoint.setLongitude(param.getLon());
+
+                    Location endPoint = new Location("class");
+                    endPoint.setLatitude(classes.get(position).getLat());
+                    endPoint.setLongitude(classes.get(position).getLon());
+
+                    double distance = startPoint.distanceTo(endPoint);
+
+                    DecimalFormat df = new DecimalFormat("#0.0");
+                    holder.aula_dist.setText(String.valueOf(df.format(distance / 1000)) + "Km");
+
+                } else {
+                    holder.aula_dist.setText("?");
+                }
+            }
+        });
+
         dao.findUserById(classes.get(position).getTeacherId(), new ICallback() {
             @Override
             public void execute(Object param) {
@@ -85,7 +100,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         holder.aula_desc.setText(classes.get(position).getDescription());
 
         String valor = classes.get(position).getValorFormatado();
-        if (valor.equals("0")){
+        if (valor.equals("0")) {
             holder.aula_valor.setText(R.string.free);
         } else {
             holder.aula_valor.setText(valor);
@@ -119,22 +134,22 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
             cv = (CardView) itemView.findViewById(R.id.card_aula);
 
-            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.transparent));
+            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.transparent));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.cardback));
+                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.cardback));
             }
             card_aula_img = (ImageView) itemView.findViewById(R.id.card_aula_img);
-            aula_dist = (TextView)itemView.findViewById(R.id.card_aula_dist);
-            aula_prof_name = (TextView)itemView.findViewById(R.id.card_aula_prof_name);
+            aula_dist = (TextView) itemView.findViewById(R.id.card_aula_dist);
+            aula_prof_name = (TextView) itemView.findViewById(R.id.card_aula_prof_name);
             aula_name = (TextView) itemView.findViewById(R.id.card_aula_name);
-            aula_desc = (TextView)itemView.findViewById(R.id.card_aula_desc);
-            aula_valor = (TextView)itemView.findViewById(R.id.card_aula_valor);
+            aula_desc = (TextView) itemView.findViewById(R.id.card_aula_desc);
+            aula_valor = (TextView) itemView.findViewById(R.id.card_aula_valor);
 
 
         }
     }
 
-    public void setClasses(List<ClassObject> classes){
+    public void setClasses(List<ClassObject> classes) {
         removeAll();
         this.classes.addAll(classes);
         notifyDataSetChanged();
@@ -142,7 +157,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     public void add(ClassObject item) {
         classes.add(item);
-        notifyItemInserted(classes.size()-1);
+        notifyItemInserted(classes.size() - 1);
         //notifyDataSetChanged();
     }
 
@@ -152,14 +167,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         notifyItemRemoved(position);
     }
 
-    public void removeAll(){
+    public void removeAll() {
         classes.clear();
         notifyDataSetChanged();
     }
 
-    public void update(ClassObject item){
+    public void update(ClassObject item) {
         int position = classes.indexOf(item);
-        classes.set(position,item);
+        classes.set(position, item);
         notifyDataSetChanged();
     }
 }

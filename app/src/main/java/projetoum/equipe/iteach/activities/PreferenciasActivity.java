@@ -291,6 +291,10 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
