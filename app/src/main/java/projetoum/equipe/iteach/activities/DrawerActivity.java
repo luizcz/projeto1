@@ -37,16 +37,18 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_feed && id != navId) {
+            startActivity(new Intent(this, MainActivity.class));
+
             finish();
         } else if (id == R.id.nav_profile && id != navId) {
             startActivity(new Intent(this, PerfilActivity.class));
-
+            finish();
         } else if (id == R.id.nav_my_class && id != navId) {
             //startActivity(new Intent(this,CourseActivity.class));
 
         } else if (id == R.id.nav_options && id != navId) {
             startActivity(new Intent(this,PreferenciasActivity.class));
-
+            finish();
         } else if (id == R.id.nav_class && id != navId) {
             Intent intent = new Intent(this, SearchActivity.class);
             intent.putExtra("busca", "aula");
