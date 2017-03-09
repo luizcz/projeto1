@@ -820,6 +820,24 @@ public class DAO implements IRemote {
         });
     }
 
+    public void countVagaOcupadasClass(String classId, final ICallback<Long> callback){
+        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+        DatabaseReference newClassUser = refClass.child(classId);
+        newClassUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+    }
+
     public FirebaseAuth getAuth() {
         return mAuth;
     }

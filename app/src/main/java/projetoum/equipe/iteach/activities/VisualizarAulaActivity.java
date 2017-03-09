@@ -61,6 +61,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private ImageView teacher_image;
     private Button participar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,6 +196,15 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         aula_nome_professor.setText(mClass.getName());
 //        aula_rating.setRating(aulaSelecionada.getRating());
         aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
+
+        dao.countVagaOcupadasClass(getIntent().getExtras().getString("aula_id"), new ICallback<Long>() {
+            @Override
+            public void execute(Long param) {
+                String total = "";
+                total =  param.toString() + "/" + String.valueOf(mClass.getSlots());
+                aula_vagas.setText("Vagas ocupadas: " + total);
+            }
+        });
 
         String valor = mClass.getValorFormatado();
         if (valor.equals("0")){
