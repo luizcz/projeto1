@@ -81,7 +81,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
                     DecimalFormat df = new DecimalFormat("#0.0");
                     holder.aula_dist.setText(String.valueOf(df.format(distance / 1000)) + "Km");
-                    
+
                 } else {
                     holder.aula_dist.setText("?");
                 }

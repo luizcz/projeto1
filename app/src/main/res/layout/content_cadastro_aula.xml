@@ -327,22 +327,21 @@
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edt_tags"
+            <android.support.v7.widget.RecyclerView
+                android:background="@drawable/cardback"
+                android:padding="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginTop="5dp"
                 android:layout_below="@id/st_tags"
-                android:background="@drawable/border"
-                android:lines="3"
-                android:gravity="top"
-                android:padding="10dp"
-                android:textColor="@color/cardview_light_background" />
+                android:id="@+id/recycler"
+                />
 
             <Button
                 android:id="@+id/bt_salvar_aula"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edt_tags"
+                android:layout_below="@id/recycler"
                 android:background="@drawable/border"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

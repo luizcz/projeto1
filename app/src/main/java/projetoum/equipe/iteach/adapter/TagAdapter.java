@@ -28,9 +28,22 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
     private DAO dao;
     private Context mContext;
     private String newtag;
+    private Boolean isClass = false;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public TagAdapter(Context ctx, List<String> mDataset) {
+        init(ctx, mDataset);
+    }
+
+    public TagAdapter(Context ctx, List<String> mDataset, boolean isClass) {
+        init(ctx, mDataset);
+        this.isClass = isClass;
+
+
+    }
+
+
+    private void init(Context ctx, List<String> mDataset) {
         dao = DAO.getInstace(ctx);
         mContext = ctx;
         this.mDataset = mDataset;
@@ -95,8 +108,11 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
                 @Override
                 public void onClick(View v) {
                     try {
-                        remove(mDataset.get(position));
-                    }catch (IndexOutOfBoundsException e){
+                        int pos = holder.getAdapterPosition();
+                        remove(mDataset.get(pos));
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, mDataset.size());
+                    } catch (IndexOutOfBoundsException e) {
 
                     }
                 }
@@ -157,9 +173,11 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
 
     public void add(String item) {
 
-        mDataset.add(0,item);
+        mDataset.add(0, item);
         notifyItemInserted(0);
         //notifyDataSetChanged();
+        if(isClass){}
+        else{
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
@@ -169,18 +187,22 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
                     @Override
                     public void execute(Object param) {
 
-                       // mDataset.add(newtag);
+                        // mDataset.add(newtag);
                     }
                 });
             }
         });
+    }
     }
 
     public void remove(String item) {
         int position = mDataset.indexOf(item);
         mDataset.remove(item);
+
         //notifyDataSetChanged();
-        notifyItemRemoved(position);
+        //notifyItemRemoved(position);
+        if(isClass){}
+        else{
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
@@ -195,10 +217,13 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
             }
         });
     }
+    }
 
     public void removeAll() {
         mDataset.clear();
         notifyDataSetChanged();
+        if(isClass){}
+        else{
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
@@ -212,25 +237,30 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
                 });
             }
         });
+    }
     }
 
     public void update(String item) {
         int position = mDataset.indexOf(item);
         mDataset.set(position, item);
         notifyDataSetChanged();
-        dao.getCurrentUser(new ICallback<User>() {
-            @Override
-            public void execute(User param) {
-                param.tags = mDataset;
-                param.tags.remove(newtag);
-                dao.updateUser(param, new ICallback() {
-                    @Override
-                    public void execute(Object param) {
+        if(isClass){
+        }
+        else {
+            dao.getCurrentUser(new ICallback<User>() {
+                @Override
+                public void execute(User param) {
+                    param.tags = mDataset;
+                    param.tags.remove(newtag);
+                    dao.updateUser(param, new ICallback() {
+                        @Override
+                        public void execute(Object param) {
 
-                    }
-                });
-            }
-        });
+                        }
+                    });
+                }
+            });
+        }
     }
 
 }

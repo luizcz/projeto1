@@ -37,6 +37,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:gravity="left"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
             <Switch
@@ -46,6 +47,7 @@
                 android:id="@+id/switchg"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:trackTint="@android:color/white"
                 android:thumbTint="@color/colorPrimary" />
             <TextView
@@ -56,6 +58,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:gravity="left"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp" />
 
             <Switch
@@ -66,6 +69,7 @@
                 android:textColor="@android:color/white"
                 android:layout_marginTop="10dp"
                 android:trackTint="@android:color/white"
+                android:visibility="gone"
                 android:thumbTint="@color/colorPrimary" />
 
             <TextView
@@ -76,6 +80,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:gravity="left"
+                android:visibility="gone"
                 android:layout_marginBottom="20dp" />
 
             <ImageView
@@ -85,6 +90,7 @@
                 android:id="@+id/imageView7"
                 android:scaleType="fitXY"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp" />
 
             <TextView
