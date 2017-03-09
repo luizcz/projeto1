@@ -3,38 +3,27 @@ package projetoum.equipe.iteach.activities;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
-import projetoum.equipe.iteach.utils.DAO;
 
 public class PerfilActivity extends DrawerActivity {
 
     private GoogleApiClient mGoogleApiClient;
     private TextView name, local, bio;
     private ImageView img;
+    private ProgressBar spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +32,13 @@ public class PerfilActivity extends DrawerActivity {
 
         init(R.id.nav_profile);
 
+        spinner = (ProgressBar) findViewById(R.id.progressBar3);
 
         name = (TextView) findViewById(R.id.label_name);
         local = ((TextView) findViewById(R.id.label_local));
         bio = ((TextView) findViewById(R.id.label_info));
         img = (ImageView) findViewById(R.id.card_aula_img);
+
 
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
 
@@ -60,12 +51,13 @@ public class PerfilActivity extends DrawerActivity {
                 @Override
                 public void execute(User param) {
                     name.setText(pattern(param.name));
-                    local.setText(param.getLocal());
-                    bio.setText(param.getBio());
+                    local.setText("Endereço: " + param.getLocal());
+                    bio.setText("Bio: " + param.getBio());
                     if (param.highResURI != null && !param.highResURI.isEmpty())
                         Picasso.with(getBaseContext()).load(param.highResURI).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     else
                         Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                    spinner.setVisibility(View.GONE);
                 }
             });
 
@@ -74,12 +66,13 @@ public class PerfilActivity extends DrawerActivity {
                 @Override
                 public void execute(User param) {
                     name.setText(pattern(param.name));
-                    local.setText(param.getLocal());
-                    bio.setText(param.getBio());
+                    local.setText("Endereço: " + param.getLocal());
+                    bio.setText("Bio: " + param.getBio());
                     if (param.highResURI != null && !param.highResURI.isEmpty())
                         Picasso.with(getBaseContext()).load(param.highResURI).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     else
                         Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                    spinner.setVisibility(View.GONE);
                 }
             });
         }
