@@ -175,6 +175,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.StringViewHolder
 
         mDataset.add(0, item);
         notifyItemInserted(0);
+        notifyItemRangeChanged(0, mDataset.size());
         //notifyDataSetChanged();
         if(isClass){}
         else{

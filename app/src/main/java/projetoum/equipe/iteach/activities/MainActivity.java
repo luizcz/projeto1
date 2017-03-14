@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.location.LocationServices;
 
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -52,6 +54,7 @@ public class MainActivity extends DrawerActivity
     private NavigationView navigationView;
     private String googleHighResPhotoUrl;
     public static Location mLastLocation;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,12 @@ public class MainActivity extends DrawerActivity
         setContentView(R.layout.activity_main);
 
         init(R.id.nav_feed);
+
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recycler.setLayoutManager(mLayoutManager);
+
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();
