@@ -38,17 +38,20 @@ public class DrawerActivity extends AppCompatActivity
 
         if (id == R.id.nav_feed && id != navId) {
             startActivity(new Intent(this, MainActivity.class));
-
             finish();
+
         } else if (id == R.id.nav_profile && id != navId) {
             startActivity(new Intent(this, PerfilActivity.class));
             finish();
+
         } else if (id == R.id.nav_my_class && id != navId) {
             startActivity(new Intent(this,MinhasAulasActivity.class));
+            finish();
 
         } else if (id == R.id.nav_options && id != navId) {
             startActivity(new Intent(this,PreferenciasActivity.class));
             finish();
+
         } else if (id == R.id.nav_class && id != navId) {
             Intent intent = new Intent(this, SearchActivity.class);
             intent.putExtra("busca", "aula");
@@ -75,6 +78,7 @@ public class DrawerActivity extends AppCompatActivity
 
     public void init(int navId){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -91,7 +95,6 @@ public class DrawerActivity extends AppCompatActivity
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
         dao = DAO.getInstace(this);
-
 
         ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
         ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());

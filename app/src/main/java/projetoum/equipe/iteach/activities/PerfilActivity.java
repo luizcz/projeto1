@@ -39,13 +39,10 @@ public class PerfilActivity extends DrawerActivity {
         bio = ((TextView) findViewById(R.id.label_info));
         img = (ImageView) findViewById(R.id.card_aula_img);
 
-
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
-
         name.setTypeface(giz);
 
         if (getIntent().hasExtra("id")) {
-
 
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
                 @Override
@@ -54,9 +51,11 @@ public class PerfilActivity extends DrawerActivity {
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
                     if (param.highResURI != null && !param.highResURI.isEmpty())
-                        Picasso.with(getBaseContext()).load(param.highResURI).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                        Picasso.with(getBaseContext()).load(param.highResURI).fit().
+                                centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     else
-                        Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                        Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().
+                                centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     spinner.setVisibility(View.GONE);
                 }
             });
@@ -69,9 +68,11 @@ public class PerfilActivity extends DrawerActivity {
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
                     if (param.highResURI != null && !param.highResURI.isEmpty())
-                        Picasso.with(getBaseContext()).load(param.highResURI).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                        Picasso.with(getBaseContext()).load(param.highResURI).fit().
+                                centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     else
-                        Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
+                        Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().
+                                centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
                     spinner.setVisibility(View.GONE);
                 }
             });
@@ -98,11 +99,10 @@ public class PerfilActivity extends DrawerActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_perfil, menu);
 
-        if (getIntent().getStringExtra("id") != null && !getIntent().getStringExtra("id").equals(dao.getFireBaseUser().getUid())) {
+        if (getIntent().getStringExtra("id") != null && !getIntent().getStringExtra("id").
+                equals(dao.getFireBaseUser().getUid())) {
             menu.findItem(R.id.edit).setVisible(false);
         }
-
-
         return true;
     }
 

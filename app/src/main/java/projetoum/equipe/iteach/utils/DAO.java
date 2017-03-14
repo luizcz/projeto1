@@ -687,8 +687,14 @@ public class DAO implements IRemote {
         return null;
     }
 
+
+    /**
+     * Retorna uma lista com os IDs das classes que o usuário passado como parâmetro está matriculado
+     * @param userID - ID do Usuário
+     * @param callback - Callback
+     */
     @Override
-    public void findClassByTeacher(final String userID, final ICallback<List<String>> callback) {
+    public void findClassesByUser(final String userID, final ICallback<List<String>> callback) {
         DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("user-class");
         DatabaseReference newClassUser = refClass.child(userID);
         newClassUser.addValueEventListener(new ValueEventListener() {
@@ -696,12 +702,9 @@ public class DAO implements IRemote {
             List<String> classes = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()  ) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
                     classes.add(data.getKey());
                  }
-                Log.i("calback de aulas","executado");
-                Log.i("classes antes do call",classes.toString());
                 callback.execute(classes);
             }
 
@@ -709,7 +712,6 @@ public class DAO implements IRemote {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
     }
 

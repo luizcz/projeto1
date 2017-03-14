@@ -1,10 +1,8 @@
 package projetoum.equipe.iteach.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,13 +16,13 @@ import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class MinhasAulasActivity extends AppCompatActivity {
+public class MinhasAulasActivity extends DrawerActivity {
 
     private RecyclerView mainListView;
     private ClassAdapter listAdapter;
     private DAO dao;
     private List<ClassObject> classes;
-    private TextView nenhuma_aula;
+    private TextView nao_tem_aulas;
     private TextView tem_aulas;
 
     /** Called when the activity is first created. */
@@ -32,15 +30,17 @@ public class MinhasAulasActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_aulas);
+
+        init(R.id.nav_my_class);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
 
         mainListView = (RecyclerView) findViewById( R.id.minhas_aulas_list );
-        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
+        nao_tem_aulas = (TextView) findViewById(R.id.nenhuma_aula);
         tem_aulas = (TextView) findViewById(R.id.tem_aulas);
 
         listAdapter = new ClassAdapter(this);
         mainListView.setHasFixedSize(true);
-        mainListView.setNestedScrollingEnabled(false);
+        mainListView.setNestedScrollingEnabled(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -48,18 +48,18 @@ public class MinhasAulasActivity extends AppCompatActivity {
 
         dao = DAO.getInstace(this);
 
-        classes = new ArrayList<>();
         carregarClasses();
 
         mainListView.setAdapter(listAdapter);
     }
 
     private void carregarClasses() {
+        classes = new ArrayList<>();
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                dao.findClassByTeacher(param.getUserId(), new ICallback<List<String>>() {
+                dao.findClassesByUser(param.getUserId(), new ICallback<List<String>>() {
                     @Override
                     public void execute(List<String> param) {
                         for (String classId: param){
@@ -70,13 +70,8 @@ public class MinhasAulasActivity extends AppCompatActivity {
                                     listAdapter.setClasses(classes);
                                     listAdapter.notifyItemInserted(classes.size()-1);
 
-                                    if (classes.size() == 0){
-                                        tem_aulas.setVisibility(View.INVISIBLE);
-                                        nenhuma_aula.setVisibility(View.VISIBLE);
-                                    } else {
-                                        tem_aulas.setVisibility(View.VISIBLE);
-                                        nenhuma_aula.setVisibility(View.INVISIBLE);
-                                    }
+                                    tem_aulas.setVisibility(View.VISIBLE);
+                                    nao_tem_aulas.setVisibility(View.INVISIBLE);
                                 }
                             });
                         }
@@ -85,6 +80,7 @@ public class MinhasAulasActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

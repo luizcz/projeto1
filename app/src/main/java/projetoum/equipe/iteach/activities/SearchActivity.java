@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +65,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_search);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
         setSupportActionBar(toolbar);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
 
@@ -104,30 +104,27 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         setUpFragments();
     }
 
-
     private void setUpFragments() {
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
-        firstLoad();
+        dao.loadFirstClasses(classAdapter);
+        dao.loadFirstTeachers(userAdapter);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+
+        if (getIntent().getStringExtra("busca").equals("aula")) {
+            fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+            currentFragment = searchAulasFragment;
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
+            currentFragment = searchProfsFragment;
+        }
+
         fragmentTransaction.commit();
     }
 
-    private void firstLoad() {
-        if (getIntent().getStringExtra("busca").equals("aula")) {
-            currentFragment = searchAulasFragment;
-            if (classAdapter.getItemCount() == 0)
-                dao.loadFirstClasses(classAdapter);
-        } else {
-            currentFragment = searchProfsFragment;
-            if (userAdapter.getItemCount() == 0)
-                dao.loadFirstTeachers(userAdapter);
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -146,8 +143,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-
-        menuSearch = menu.findItem(R.id.search);
+//        menuSearch = menu.findItem(R.id.menu_filtros);
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
@@ -215,7 +211,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 startActivity(new Intent(this, PerfilActivity.class).putExtra("id",dao.getFireBaseUser().getUid()));
                 finish();
             case R.id.nav_my_class:
-                //startActivity(new Intent(this,CourseActivity.class));
+                startActivity(new Intent(this,MinhasAulasActivity.class));
+                finish();
                 break;
             case R.id.nav_options:
                  startActivity(new Intent(this,PreferenciasActivity.class));
@@ -231,6 +228,18 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_teacher:
                 setUpProfFragment();
                 break;
+            case R.id.alfa:
+                sortByAlpha();
+                break;
+            case R.id.rating:
+                sortByRating();
+                break;
+            case R.id.price:
+                sortByPrice();
+                break;
+            case R.id.dist:
+                sortByDistance();
+                break;
             default:
                 break;
         }
@@ -238,6 +247,22 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void sortByAlpha() {
+        Toast.makeText(this,"click em alfa", Toast.LENGTH_SHORT).show();
+    }
+
+    private void sortByRating() {
+
+    }
+
+    private void sortByPrice() {
+
+    }
+
+    private void sortByDistance() {
+
     }
 
     private void setUpClassFragment(){

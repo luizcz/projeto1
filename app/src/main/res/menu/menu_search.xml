@@ -15,7 +15,7 @@
         All4One:showAsAction="always"
         android:icon="@android:drawable/ic_menu_sort_by_size">
 
-        <menu android:id="@+id/menu_filtros">
+        <menu>
             <item
                 android:id="@+id/alfa"
                 android:title="Alfabeticamente"

@@ -134,6 +134,7 @@
     <string name="nova_tag">Nova Tag</string>
     <string name="title_activity_minhas_aulas">MinhasAulasActivity</string>
     <string name="aulas_cadastradas">Essas são as aulas em que você \nestá cadastrado no momento:</string>
+    <string name="nenhuma_aula">Você não está matriculado em\n nenhuma aula no momento.</string>
     <string name="feed_card_class_sub">Nova matrícula em aula</string>
     <string name="feed_card_class_alert">Esta aula sofreu mudanças</string>
     <string name="feed_card_class_announce">Nova aula de seu interesse</string>

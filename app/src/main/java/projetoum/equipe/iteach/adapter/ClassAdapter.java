@@ -149,6 +149,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         }
     }
 
+
+    public List<ClassObject> getClasses() {
+        return classes;
+    }
+
     public void setClasses(List<ClassObject> classes) {
         removeAll();
         this.classes.addAll(classes);

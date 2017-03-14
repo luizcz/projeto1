@@ -16,14 +16,12 @@ import projetoum.equipe.iteach.models.User;
 
 public interface IRemote {
 
-
     public void createUser(User user, ICallback callback);
     public void deleteUser(User user, ICallback callback);
     public void updateUser(User user, ICallback callback);
     public void deleteUser(String userID, ICallback callback);
     public void searchUser(String anything,UserAdapter adapter);
     public void findUserById(String id,ICallback callback);
-
 
     public void rateUser(Rating rating, User user, ICallback callback);
     public void rateUser(Rating rating, String userID, ICallback callback);
@@ -38,10 +36,9 @@ public interface IRemote {
     public List<ClassObject> findClassByTag(String tag);
     public void findClassById(String id,ICallback<ClassObject> callback);
     public List<ClassObject> findClassByLocation(Location loc);
-    public void findClassByTeacher(String userID, ICallback<List<String>> callback);
+    public void findClassesByUser(String userID, ICallback<List<String>> callback);
     public List<ClassObject> findClassByAttendee(String userID);
     public void searchClass(String anything,ClassAdapter adapter);
-
 
     public void loadFirstTeachers(UserAdapter adapter);
 }
