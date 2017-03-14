@@ -158,7 +158,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         return mDataset.size();
     }
 
-    @Override
+    /*@Override
     public void onViewRecycled(ViewHolder holder) {
         switch (holder.getItemViewType()) {
             case FeedItem.TYPE_CLASS:
@@ -172,7 +172,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
             case FeedItem.TYPE_FRIEND:
                 break;
         }
-    }
+    }*/
 
     @Override
     public int getItemViewType(int position) {

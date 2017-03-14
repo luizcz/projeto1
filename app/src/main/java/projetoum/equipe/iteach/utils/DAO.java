@@ -189,7 +189,43 @@ public class DAO implements IRemote {
 //        }
         return user;
     }
+    public void getFirstClasses(final ICallback callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
+        Query q = ref.limitToFirst(30);
 
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+               callback.execute(classObject);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+                //adapter.update(classObject);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+                //adapter.remove(classObject);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void loadFirstClasses(final ClassAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);

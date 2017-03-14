@@ -39,8 +39,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.adapter.FeedAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -48,7 +55,6 @@ public class MainActivity extends DrawerActivity
         implements GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
-    private DAO dao;
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private NavigationView navigationView;
@@ -64,9 +70,21 @@ public class MainActivity extends DrawerActivity
         init(R.id.nav_feed);
 
 
+        recycler = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(mLayoutManager);
+        List<FeedItem> dataset = new ArrayList<>();
+        recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
+        dao.getFirstClasses(new ICallback<ClassObject>() {
+            @Override
+            public void execute(ClassObject param) {
+                ((FeedAdapter) recycler.getAdapter()).add(new FeedItem(param, new Random().nextInt(4)), 0);
+                findViewById(R.id.feed_empty_img).setVisibility(View.GONE);
+                findViewById(R.id.feed_empty_label).setVisibility(View.GONE);
+            }
+        });
+        //dataset.add(new FeedItem(,FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
 
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -282,12 +300,13 @@ public class MainActivity extends DrawerActivity
                                 @Override
                                 public void execute(Object param) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         }
-    }
 
-}}
+    }
+}

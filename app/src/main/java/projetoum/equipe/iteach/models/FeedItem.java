@@ -18,11 +18,11 @@ public class FeedItem {
     public int type;
     public int subtype;
 
-    public void FeedItem() {
+    public FeedItem() {
 
     }
 
-    public void FeedItem(ClassObject aula, int subtype) {
+    public  FeedItem(ClassObject aula, int subtype) {
         this.aula = aula;
         type = TYPE_CLASS;
         this.subtype = subtype;
