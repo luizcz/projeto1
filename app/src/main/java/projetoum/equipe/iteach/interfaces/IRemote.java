@@ -38,7 +38,7 @@ public interface IRemote {
     public List<ClassObject> findClassByTag(String tag);
     public void findClassById(String id,ICallback<ClassObject> callback);
     public List<ClassObject> findClassByLocation(Location loc);
-    public void findClassByTeacher(String userID, ICallback<List<ClassObject>> callback);
+    public void findClassByTeacher(String userID, ICallback<List<String>> callback);
     public List<ClassObject> findClassByAttendee(String userID);
     public void searchClass(String anything,ClassAdapter adapter);
 

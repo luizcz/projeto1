@@ -2,7 +2,9 @@ package projetoum.equipe.iteach.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,8 +42,13 @@ public class MinhasAulasActivity extends AppCompatActivity {
         mainListView.setHasFixedSize(true);
         mainListView.setNestedScrollingEnabled(false);
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mainListView.setLayoutManager(mLayoutManager);
+
         dao = DAO.getInstace(this);
 
+        classes = new ArrayList<>();
         carregarClasses();
 
         mainListView.setAdapter(listAdapter);
@@ -52,23 +59,31 @@ public class MinhasAulasActivity extends AppCompatActivity {
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                dao.findClassByTeacher(param.getUserId(), new ICallback<List<ClassObject>>() {
+                dao.findClassByTeacher(param.getUserId(), new ICallback<List<String>>() {
                     @Override
-                    public void execute(List<ClassObject> param) {
-                        classes = param;
+                    public void execute(List<String> param) {
+                        for (String classId: param){
+                            dao.findClassById(classId, new ICallback<ClassObject>() {
+                                @Override
+                                public void execute(ClassObject param) {
+                                    classes.add(param);
+                                    listAdapter.setClasses(classes);
+                                    listAdapter.notifyItemInserted(classes.size()-1);
+
+                                    if (classes.size() == 0){
+                                        tem_aulas.setVisibility(View.INVISIBLE);
+                                        nenhuma_aula.setVisibility(View.VISIBLE);
+                                    } else {
+                                        tem_aulas.setVisibility(View.VISIBLE);
+                                        nenhuma_aula.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
             }
         });
-
-        if (classes == null) {
-            classes = new ArrayList<>();
-            nenhuma_aula.setVisibility(View.VISIBLE);
-            tem_aulas.setVisibility(View.INVISIBLE);
-
-        }
-        listAdapter.setClasses(classes);
-        listAdapter.notifyDataSetChanged();
     }
 
     @Override
