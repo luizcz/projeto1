@@ -163,7 +163,7 @@ public class PerfilActivity extends DrawerActivity {
     }
 
     private void carregarClassesParticipo(String id) {
-                dao.findClassByTeacher(id, new ICallback<List<String>>() {
+                dao.findClassesByUser(id, new ICallback<List<String>>() {
                     @Override
                     public void execute(List<String> param) {
                         for (String classId: param){
