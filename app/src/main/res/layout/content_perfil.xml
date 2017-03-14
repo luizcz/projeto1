@@ -110,10 +110,57 @@
                 android:gravity="left"
                 android:id="@+id/label_info" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_ministro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                    android:text="Aulas ministradas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="7dp"
+                    android:id="@+id/tv_aula_professor" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_ministro"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_aluno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                    android:text="Aulas que participa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="7dp"
+                    android:id="@+id/tv_aula_aluno" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_participo"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
 
 
         </LinearLayout>
