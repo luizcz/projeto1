@@ -6,20 +6,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-import com.google.android.gms.location.LocationServices;
-
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
@@ -75,13 +69,15 @@ public class MainActivity extends DrawerActivity
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(mLayoutManager);
         List<FeedItem> dataset = new ArrayList<>();
-        recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
+        recycler.setAdapter(new FeedAdapter(this, dataset));
         dao.getFirstClasses(new ICallback<ClassObject>() {
             @Override
             public void execute(ClassObject param) {
-                ((FeedAdapter) recycler.getAdapter()).add(new FeedItem(param, new Random().nextInt(4)), 0);
-                findViewById(R.id.feed_empty_img).setVisibility(View.GONE);
-                findViewById(R.id.feed_empty_label).setVisibility(View.GONE);
+                if(!param.getTeacherId().equals(dao.getFireBaseUser().getUid())) {
+                    ((FeedAdapter) recycler.getAdapter()).add(new FeedItem(param, new Random().nextInt(4)), 0);
+                    findViewById(R.id.feed_empty_img).setVisibility(View.GONE);
+                    findViewById(R.id.feed_empty_label).setVisibility(View.GONE);
+                }
             }
         });
         //dataset.add(new FeedItem(,FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
