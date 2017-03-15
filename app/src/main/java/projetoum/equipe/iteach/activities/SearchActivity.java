@@ -39,6 +39,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.Sort;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ICallback {
 
@@ -48,6 +49,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
     private DAO dao;
+    NavigationView navigationView;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment currentFragment;
@@ -74,7 +76,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
@@ -141,9 +143,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-//        menuSearch = menu.findItem(R.id.menu_filtros);
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
@@ -193,6 +193,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -228,18 +229,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_teacher:
                 setUpProfFragment();
                 break;
-            case R.id.alfa:
-                sortByAlpha();
-                break;
-            case R.id.rating:
-                sortByRating();
-                break;
-            case R.id.price:
-                sortByPrice();
-                break;
-            case R.id.dist:
-                sortByDistance();
-                break;
             default:
                 break;
         }
@@ -249,20 +238,62 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == 0) {
+            id = lastFragment;
+        }
+
+        switch (id) {
+            case R.id.alfa:
+                sortByAlpha();
+                break;
+            case R.id.rating:
+//                sortByRating();
+                break;
+            case R.id.price:
+                sortByPrice();
+                break;
+            case R.id.dist:
+//                sortByDistance();
+                break;
+        }
+
+        return true;
+    }
+
     private void sortByAlpha() {
-        Toast.makeText(this,"click em alfa", Toast.LENGTH_SHORT).show();
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.ALPHA);
+        } else {
+
+        }
     }
 
     private void sortByRating() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.RATING);
+        } else {
 
+        }
     }
 
     private void sortByPrice() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.PRICE);
+        } else {
 
+        }
     }
 
     private void sortByDistance() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.DISTANCE);
+        } else {
 
+        }
     }
 
     private void setUpClassFragment(){

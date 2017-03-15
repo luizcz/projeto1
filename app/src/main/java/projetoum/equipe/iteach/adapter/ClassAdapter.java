@@ -13,27 +13,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.SphericalUtil;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
-import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.Sort;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
 
     private List<ClassObject> classes = new ArrayList<>();
     private DAO dao;
     private Context mContext;
+    private Location mLocation = new Location("Me");
+
 
     public ClassAdapter(Context ctx) {
         mContext = ctx;
@@ -69,6 +71,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             @Override
             public void execute(User param) {
                 if (param.getLat() != null && param.getLon() != null && classes.get(position).getLat() != null && classes.get(position).getLon() != null) {
+                    mLocation.setLatitude(param.getLat());
+                    mLocation.setLongitude(param.getLon());
+
                     Location startPoint = new Location("user");
                     startPoint.setLatitude(param.getLat());
                     startPoint.setLongitude(param.getLon());
@@ -181,5 +186,89 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         int position = classes.indexOf(item);
         classes.set(position, item);
         notifyDataSetChanged();
+    }
+
+    public void sort(Sort type) {
+        switch (type) {
+            case ALPHA:
+                Collections.sort(classes, new SortByName());
+                notifyDataSetChanged();
+                break;
+//            case RATING:
+//                Collections.sort(classes, new SortByRating());
+//                notifyDataSetChanged();
+//                break;
+            case PRICE:
+                Collections.sort(classes, new SortByPrice());
+                notifyDataSetChanged();
+                break;
+            case DISTANCE:
+                Collections.sort(classes, new SortByDistance());
+                notifyDataSetChanged();
+                break;
+            default:
+
+        }
+    }
+
+    public class SortByName implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            ClassObject c1 = (ClassObject) o1;
+            ClassObject c2 = (ClassObject) o2;
+
+            return c1.getName().compareTo(c2.getName());
+        }
+    }
+
+//    public class SortByRating implements Comparator{
+//
+//        @Override
+//        public int compare(Object o1, Object o2) {
+//            ClassObject c1 = (ClassObject) o1;
+//            ClassObject c2 = (ClassObject) o2;
+//
+//            return c1.getName().compareTo(c2.getName());
+//        }
+//    }
+
+    public class SortByPrice implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            ClassObject c1 = (ClassObject) o1;
+            ClassObject c2 = (ClassObject) o2;
+
+            return c1.getValue().compareTo(c2.getValue());
+        }
+    }
+
+    public class SortByDistance implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            ClassObject c1 = (ClassObject) o1;
+            ClassObject c2 = (ClassObject) o2;
+
+            Location locationA = new Location("Me");
+            locationA.setLatitude(mLocation.getLatitude());
+            locationA.setLongitude(mLocation.getLongitude());
+
+            Location locationB = new Location("B");
+            locationB.setLatitude(c1.getLat());
+            locationB.setLongitude(c1.getLon());
+
+            Location locationC = new Location("C");
+            locationB.setLatitude(c2.getLat());
+            locationB.setLongitude(c2.getLon());
+
+
+            Double distanceMeToClass1 = Double.valueOf(locationA.distanceTo(locationB));
+            Double distanceMeToClass2 = Double.valueOf(locationA.distanceTo(locationC));
+
+            return distanceMeToClass1.compareTo(distanceMeToClass2);
+
+        }
     }
 }
