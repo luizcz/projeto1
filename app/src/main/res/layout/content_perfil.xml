@@ -110,6 +110,54 @@
                 android:gravity="left"
                 android:id="@+id/label_info" />
 
+            <FrameLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/cardview_light_background"
+                    android:alpha="0.5"
+                    android:layout_marginTop="35dp"
+                    android:layout_gravity="center_horizontal">
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avalie"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_margin="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+                <RatingBar
+                    style="@style/StarRatingBarSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:id="@+id/ratingBarSmal"
+                    android:stepSize="0.5"
+                    android:numStars="5"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imagem_usuario_avaliacao"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/logo"
+                    android:layout_gravity="center_horizontal"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FFFFFF"/>
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
