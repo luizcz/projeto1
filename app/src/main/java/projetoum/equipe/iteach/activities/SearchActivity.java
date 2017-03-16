@@ -268,7 +268,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         if (currentFragment == searchAulasFragment){
             classAdapter.sort(Sort.ALPHA);
         } else {
-
+            userAdapter.sort(Sort.ALPHA);
         }
     }
 

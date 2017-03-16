@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +29,7 @@ import projetoum.equipe.iteach.activities.PerfilActivity;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.Sort;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<User> usuarios;
@@ -147,6 +149,29 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    public void sort(Sort type) {
+        switch (type) {
+            case ALPHA:
+                Collections.sort(usuarios, new UserAdapter.SortByName());
+                notifyDataSetChanged();
+                break;
+//            case RATING:
+//                Collections.sort(classes, new SortByRating());
+//                notifyDataSetChanged();
+//                break;
+//            case PRICE:
+//                Collections.sort(classes, new ClassAdapter.SortByPrice());
+//                notifyDataSetChanged();
+//                break;
+//            case DISTANCE:
+//                Collections.sort(classes, new ClassAdapter.SortByDistance());
+//                notifyDataSetChanged();
+//                break;
+            default:
+
+        }
+    }
+
     public class SortByName implements Comparator {
 
         @Override
@@ -157,4 +182,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             return c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase());
         }
     }
+
+//    public class SortByCreationDate implements Comparator {
+//
+//        @Override
+//        public int compare(Object o1, Object o2) {
+//            User c1 = (User) o1;
+//            User c2 = (User) o2;
+//
+//            return c1.getCreationDate().compareTo(c2.getCreationDate());
+//        }
+//    }
 }
