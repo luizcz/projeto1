@@ -40,10 +40,11 @@ import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.TagAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener{
+public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener {
 
     private EditText tituloEd;
     private EditText numVagasEd;
@@ -84,7 +85,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         mReference = FirebaseStorage.getInstance().getReference();
 
 
-
         tituloEd = (EditText) findViewById(R.id.edt_titulo);
         numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
         valorEd = (EditText) findViewById(R.id.edt_valor);
@@ -123,22 +123,24 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
         recycler.setHasFixedSize(false);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new TagAdapter(this,rowListItem,true));
+        recycler.setAdapter(new TagAdapter(this, rowListItem, true));
 
 
     }
 
     private void setTextListeners() {
 
-        tituloEd.addTextChangedListener(new TextWatcher()  {
+        tituloEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (tituloEd.getText().toString().trim().length() <= 0) {
                     tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -146,15 +148,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        localEd.addTextChangedListener(new TextWatcher()  {
+        localEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (localEd.getText().toString().trim().length() <= 0) {
                     localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -162,15 +166,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        numVagasEd.addTextChangedListener(new TextWatcher()  {
+        numVagasEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (numVagasEd.getText().toString().trim().length() <= 0) {
                     numVagasEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -178,15 +184,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        valorEd.addTextChangedListener(new TextWatcher()  {
+        valorEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (valorEd.getText().toString().trim().length() <= 0) {
                     valorEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -194,15 +202,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        dataInicioEd.addTextChangedListener(new TextWatcher()  {
+        dataInicioEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (dataInicioEd.getText().toString().trim().length() <= 0) {
                     dataInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -210,15 +220,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        dataFimEd.addTextChangedListener(new TextWatcher()  {
+        dataFimEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (dataFimEd.getText().toString().trim().length() <= 0) {
                     dataFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -226,15 +238,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        horarioInicioEd.addTextChangedListener(new TextWatcher()  {
+        horarioInicioEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (horarioInicioEd.getText().toString().trim().length() <= 0) {
                     horarioInicioEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -242,15 +256,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        horarioFimEd.addTextChangedListener(new TextWatcher()  {
+        horarioFimEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (horarioFimEd.getText().toString().trim().length() <= 0) {
                     horarioFimEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -258,15 +274,17 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
             }
         });
-        assuntoEd.addTextChangedListener(new TextWatcher()  {
+        assuntoEd.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
-            public void afterTextChanged(Editable s)  {
+            public void afterTextChanged(Editable s) {
                 if (assuntoEd.getText().toString().trim().length() <= 0) {
                     assuntoEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
                 } else {
@@ -279,44 +297,44 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-        case R.id.bt_salvar_aula:
-            findViewById(R.id.bt_salvar_aula).setEnabled(false);
-            if (checkDataForm()){
-                progressBar.setVisibility(View.VISIBLE);
-                enviarAula();
-            }else{
-                findViewById(R.id.bt_salvar_aula).setEnabled(true);
-            }
-            break;
-        case R.id.edt_horario_inicio:
-            inicio = true;
-            showTimePickerDialog();
-            break;
-        case R.id.edt_horario_fim:
-            inicio = false;
-            showTimePickerDialog();
-            break;
-        case R.id.edt_date_inicio:
-            inicioDate = true;
-            showDateDialog();
-            break;
-        case R.id.edt_date_fim:
-            inicioDate = false;
-            showDateDialog();
-            break;
-        case R.id.img_propaganda:
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-            break;
+        switch (v.getId()) {
+            case R.id.bt_salvar_aula:
+                findViewById(R.id.bt_salvar_aula).setEnabled(false);
+                if (checkDataForm()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    enviarAula();
+                } else {
+                    findViewById(R.id.bt_salvar_aula).setEnabled(true);
+                }
+                break;
+            case R.id.edt_horario_inicio:
+                inicio = true;
+                showTimePickerDialog();
+                break;
+            case R.id.edt_horario_fim:
+                inicio = false;
+                showTimePickerDialog();
+                break;
+            case R.id.edt_date_inicio:
+                inicioDate = true;
+                showDateDialog();
+                break;
+            case R.id.edt_date_fim:
+                inicioDate = false;
+                showDateDialog();
+                break;
+            case R.id.img_propaganda:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                break;
         }
     }
 
     private boolean checkDataForm() {
 
-        if (imagePropaganda.getDrawable() == null){
+        if (imagePropaganda.getDrawable() == null) {
             selecioneUmaImagem.setError(getString(R.string.escolha_uma_imagem));
             selecioneUmaImagem.requestFocus();
             return false;
@@ -324,7 +342,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
             selecioneUmaImagem.setError(null);
         }
 
-        if(tituloEd.getText() == null || tituloEd.getText().toString().trim().equals("")){
+        if (tituloEd.getText() == null || tituloEd.getText().toString().trim().equals("")) {
             tituloEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
             tituloEd.requestFocus();
             return false;
@@ -332,7 +350,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
             tituloEd.setError(null);
         }
 
-        if(localEd.getText() == null || localEd.getText().toString().trim().equals("")) {
+        if (localEd.getText() == null || localEd.getText().toString().trim().equals("")) {
             localEd.setError(getString(R.string.campo_nao_pode_ser_vazio));
             localEd.requestFocus();
             return false;
@@ -380,7 +398,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
             dataFimEd.setError(null);
         }
 
-        if (Calendar.getInstance().compareTo(calDataInicio) >0 ) {
+        if (Calendar.getInstance().compareTo(calDataInicio) > 0) {
             dataInicioEd.setError(getString(R.string.data_inicio_futuro));
             dataInicioEd.requestFocus();
             return false;
@@ -412,7 +430,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
             horarioFimEd.setError(null);
         }
 
-        if (calHorarioFim.getTime().getTime() - calHorarioInicio.getTime().getTime()  <= 0) {
+        if (calHorarioFim.getTime().getTime() - calHorarioInicio.getTime().getTime() <= 0) {
             horarioFimEd.setError(getString(R.string.horario_final_apos_inicio));
             horarioFimEd.requestFocus();
             return false;
@@ -450,7 +468,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         }
     }
 
-    private void enviarAula(){
+    private void enviarAula() {
         String nome = String.valueOf(new Date().getTime()) + ".png";
         StorageReference filepath = mReference.child("imagens").child(nome);
         imagePropaganda.setDrawingCacheEnabled(true);
@@ -473,7 +491,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     }
 
 
-    private void enviarAulaComFoto(String imagem){
+    private void enviarAulaComFoto(String imagem) {
 
         final ClassObject classe = new ClassObject();
         classe.setImagem(imagem);
@@ -487,7 +505,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         classe.setSubject(assuntoEd.getText().toString());
         classe.setAddress(localEd.getText().toString());
         classe.setDiasSemana(diasSemana);
-        classe.setTags(((TagAdapter)recycler.getAdapter()).getDataset());
+        classe.setTags(((TagAdapter) recycler.getAdapter()).getDataset());
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
@@ -506,13 +524,13 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this,R.style.TimePickerTheme,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, R.style.TimePickerTheme,
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        if(inicio) {
+                        if (inicio) {
                             horarioInicioEd.setText(hourOfDay + ":" + minute);
                             calHorarioInicio.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             calHorarioInicio.set(Calendar.MINUTE, minute);
@@ -526,40 +544,40 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         timePickerDialog.show();
     }
 
-    public void showDateDialog(){
-    // Get Current Date
-    final Calendar c = Calendar.getInstance();
-    mYear = c.get(Calendar.YEAR);
-    mMonth = c.get(Calendar.MONTH);
-    mDay = c.get(Calendar.DAY_OF_MONTH);
+    public void showDateDialog() {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-    DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.TimePickerTheme,
-            new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.TimePickerTheme,
+                new DatePickerDialog.OnDateSetListener() {
 
-                @Override
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
 
-                    if(inicioDate) {
-                        calDataInicio.set(year, monthOfYear, dayOfMonth);
-                        dataInicioEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                    } else {
-                        calDataFim.set(year, monthOfYear, dayOfMonth);
-                        dataFimEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        if (inicioDate) {
+                            calDataInicio.set(year, monthOfYear, dayOfMonth);
+                            dataInicioEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        } else {
+                            calDataFim.set(year, monthOfYear, dayOfMonth);
+                            dataFimEd.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        }
                     }
-                }
-            }, mYear, mMonth, mDay);
-    datePickerDialog.show();
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
 
     }
 
-    private void criarClasse(ClassObject classe){
+    private void criarClasse(final ClassObject classe) {
         dao.createClass(classe, new ICallback() {
             @Override
             public void execute(Object param) {
 
-                if(professor.getMyClasses() == null)
+                if (professor.getMyClasses() == null)
                     professor.setMyClasses(new ArrayList<String>());
                 if (!professor.getMyClasses().contains(param.toString())) {
                     professor.getMyClasses().add(param.toString());
@@ -572,7 +590,23 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
                 progressBar.setVisibility(View.GONE);
                 //startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
-                if(param != null){
+                if (param != null) {
+                    System.out.println("aaaaaaaaaaaaaaaaaaaa");
+                    dao.findUserByTag(classe.getTags(), new ICallback<User>() {
+                        @Override
+                        public void execute(User param) {
+                            System.out.println("bbbbbbbbbbbbbbbbbbbbbb");
+                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_ANNOUNCE));
+                            dao.updateUser(param, new ICallback() {
+                                @Override
+                                public void execute(Object param) {
+                                    System.out.println("cccccccccccccccccccc");
+
+
+                                }
+                            });
+                        }
+                    });
                     Toast.makeText(CadastroAulaActivity.this, "Aula cadastrada com sucesso", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(CadastroAulaActivity.this, VisualizarAulaActivity.class);
                     intent.putExtra("aula_id", param.toString());
@@ -587,7 +621,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
 
-        if(checked)
+        if (checked)
             diasSemana.add(((CheckBox) view).getText().toString());
         else
             diasSemana.remove(((CheckBox) view).getText().toString());

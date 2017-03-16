@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="projetoum.equipe.iteach.activities.SearchActivity">
+    tools:context="projetoum.equipe.iteach.activities.MinhasAulasActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_search"
+        layout="@layout/content_minhas_aulas"
         android:id="@+id/include" />
 
 </android.support.design.widget.CoordinatorLayout>

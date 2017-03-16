@@ -3,6 +3,8 @@ package projetoum.equipe.iteach.models;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +22,14 @@ public class User {
     public List<String> favoriteClasses;
     public List<String> enrolledClasses;
     public List<String> myClasses;
+    public List<FeedItem> feed = new ArrayList<>();
     public String bio;
     public String creationDate = "";
     public String accountId;
     public Boolean firstTime;
     public String local;
     public String telefone;
-    public int classRange = 0;
+    public int classRange = 50;
     public List<String> tags;
     public String highResURI;
     private String lowResURI;
@@ -35,7 +38,7 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses, String bio, String creationDate, String accountId, String local, String telefone) {
+    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses,List<FeedItem> myFeed, String bio, String creationDate, String accountId, String local, String telefone) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -44,6 +47,7 @@ public class User {
         this.favoriteClasses = favoriteClasses;
         this.enrolledClasses = enrolledClasses;
         this.myClasses = myClasses;
+        this.feed = myFeed;
         this.bio = bio;
         this.creationDate = creationDate;
         this.accountId = accountId;

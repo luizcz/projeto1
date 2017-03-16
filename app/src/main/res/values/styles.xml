@@ -43,6 +43,19 @@
 
     </style>
 
+    <style name="StarRatingBarSmall" parent="@android:style/Widget.RatingBar">
+
+        <item name="android:progressDrawable">@drawable/ratingbar_star_small</item>
+
+        <item name="android:minHeight">21dip</item>
+
+        <item name="android:maxHeight">21dip</item>
+
+    </style>
+
+
+
+
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>

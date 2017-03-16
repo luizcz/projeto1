@@ -37,6 +37,7 @@ import java.util.List;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.TagAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.Constants;
 

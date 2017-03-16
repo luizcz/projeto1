@@ -32,12 +32,16 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
+import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
+import projetoum.equipe.iteach.adapter.FeedAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.interfaces.IRemote;
 import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.Rating;
 import projetoum.equipe.iteach.models.User;
 
@@ -190,6 +194,43 @@ public class DAO implements IRemote {
         return user;
     }
 
+    public void getFirstClasses(final ICallback callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
+        Query q = ref.limitToFirst(30);
+
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+                callback.execute(classObject);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+                //adapter.update(classObject);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
+                classObject.setId(dataSnapshot.getKey());
+                //adapter.remove(classObject);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void loadFirstClasses(final ClassAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
@@ -230,6 +271,82 @@ public class DAO implements IRemote {
     }
 
 
+    public void loadFeed(final FeedAdapter adapter) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER + "/" + getFireBaseUser().getUid() + "/feed");
+        System.out.println(ref.getKey());
+        System.out.println(Constants.FIREBASE_LOCATION_USER + getFireBaseUser().getUid() + "/feed");
+        Query q = ref.orderByKey();
+
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                final FeedItem item = dataSnapshot.getValue(FeedItem.class);
+                item.id = dataSnapshot.getKey();
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.add(item);
+                                ((MainActivity) ctx).refreshFeedCount();
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                final FeedItem item = dataSnapshot.getValue(FeedItem.class);
+                item.id = dataSnapshot.getKey();
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.update(item);
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                final FeedItem item = dataSnapshot.getValue(FeedItem.class);
+                item.id = dataSnapshot.getKey();
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.remove(item, -1);
+                                ((MainActivity) ctx).refreshFeedCount();
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
@@ -246,56 +363,23 @@ public class DAO implements IRemote {
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    userICallback.execute(dataSnapshot.getValue(User.class));
+                    try {
+                        userICallback.execute(dataSnapshot.getValue(User.class));
+                    } catch (Exception e) {
+                        userICallback.execute(null);
+                        e.printStackTrace();
+                    }
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    userICallback.execute(null);
                 }
             });
         }
 
     }
-
-    public void getFeed(final ICallback<String> feedUpdate) {
-        // Write a message to the database
-        mDatabase = getFirebaseInstance();
-        DatabaseReference myRef = mDatabase.getReference("message");
-
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d("Fire base event update", "Value is: " + value);
-                feedUpdate.execute(value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("Fire base event update", "Failed to read value.", error.toException());
-                feedUpdate.execute("Failed to get the feed");
-            }
-        });
-
-
-    }
-
-
-    public void fillFeed() {
-        if (mAuth.getCurrentUser() != null) {
-            FirebaseDatabase database = getFirebaseInstance();
-            DatabaseReference myRef = database.getReference("message");
-            myRef.setValue("Feed " + new Random().nextInt(999));
-        }
-    }
-
 
     @Override
     public void createUser(User user, final ICallback callback) {
@@ -446,7 +530,7 @@ public class DAO implements IRemote {
             if (address == null) {
                 return;
             }
-            if(address.size() > 0) {
+            if (address.size() > 0) {
                 Address location = address.get(0);
                 classe.setLat(location.getLatitude());
                 classe.setLon(location.getLongitude());
@@ -468,7 +552,7 @@ public class DAO implements IRemote {
             if (address == null) {
                 return;
             }
-            if(address.size() > 0) {
+            if (address.size() > 0) {
                 Address location = address.get(0);
                 user.lat = (location.getLatitude());
                 user.lon = (location.getLongitude());
@@ -605,6 +689,55 @@ public class DAO implements IRemote {
         return resultado;
     }
 
+    public void findUserByTag(final List<String> tags, final ICallback<User> callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+        Query q = ref.orderByKey();
+        System.out.println("dddddddddddddddddd");
+
+        q.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        System.out.println("eeeeeeeeeeeeeeeeeeeee");
+                                        User user = dataSnapshot.getValue(User.class);
+                                        for (String tag : tags) {
+                                            System.out.println("ffffffffffffffffff");
+
+                                            if (user.tags == null || user.tags.isEmpty()) break;
+                                            for (String utag : user.tags) {
+                                                if (utag.toLowerCase().equals(tag.toLowerCase())) {
+                                                    System.out.println("gggggggggggggggggg");
+                                                    callback.execute(user);
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                }
+
+        );
+    }
 
     @Override
     public List<ClassObject> findClassByTag(String tag) {
@@ -651,9 +784,34 @@ public class DAO implements IRemote {
         return null;
     }
 
+
+    /**
+     * Retorna uma lista com os IDs das classes que o usuário passado como parâmetro está matriculado
+     *
+     * @param userID   - ID do Usuário
+     * @param callback - Callback
+     */
     @Override
-    public List<ClassObject> findClassByTeacher(String userID) {
-        return null;
+    public void findClassesByUser(final String userID, final ICallback<List<String>> callback) {
+        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("user-class");
+        DatabaseReference newClassUser = refClass.child(userID);
+        newClassUser.addValueEventListener(new ValueEventListener() {
+
+            List<String> classes = new ArrayList<>();
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    classes.add(data.getKey());
+                }
+                callback.execute(classes);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -773,7 +931,11 @@ public class DAO implements IRemote {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                callback.execute(user);
+                try {
+                    callback.execute(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -818,6 +980,24 @@ public class DAO implements IRemote {
 
             }
         });
+    }
+
+    public void countVagaOcupadasClass(String classId, final ICallback<Long> callback) {
+        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+        DatabaseReference newClassUser = refClass.child(classId);
+        newClassUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
     }
 
     public FirebaseAuth getAuth() {

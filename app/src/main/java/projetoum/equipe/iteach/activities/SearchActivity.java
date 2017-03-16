@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -38,6 +39,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.Sort;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ICallback {
 
@@ -47,7 +49,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
     private DAO dao;
+    NavigationView navigationView;
     private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private Fragment currentFragment;
     private int lastFragment;
     private SearchAulasFragment searchAulasFragment;
@@ -63,7 +67,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_search);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.transparent));
         setSupportActionBar(toolbar);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
 
@@ -73,7 +76,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
@@ -103,33 +106,31 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         setUpFragments();
     }
 
-
     private void setUpFragments() {
         searchAulasFragment = new SearchAulasFragment();
         searchProfsFragment = new SearchProfsFragment();
 
-        firstLoad();
+        dao.loadFirstClasses(classAdapter);
+        dao.loadFirstTeachers(userAdapter);
 
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (getIntent().getStringExtra("busca").equals("aula")) {
+            fragmentTransaction.replace(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+            currentFragment = searchAulasFragment;
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
+            currentFragment = searchProfsFragment;
+        }
+
         fragmentTransaction.commit();
     }
 
-    private void firstLoad() {
-        if (getIntent().getStringExtra("busca").equals("aula")) {
-            currentFragment = searchAulasFragment;
-            if (classAdapter.getItemCount() == 0)
-                dao.loadFirstClasses(classAdapter);
-        } else {
-            currentFragment = searchProfsFragment;
-            if (userAdapter.getItemCount() == 0)
-                dao.loadFirstTeachers(userAdapter);
-        }
-    }
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -142,10 +143,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
-
-        menuSearch = menu.findItem(R.id.search);
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
@@ -195,12 +193,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         if (id == 0) {
             id = lastFragment;
@@ -215,7 +212,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 startActivity(new Intent(this, PerfilActivity.class).putExtra("id",dao.getFireBaseUser().getUid()));
                 finish();
             case R.id.nav_my_class:
-                //startActivity(new Intent(this,CourseActivity.class));
+                startActivity(new Intent(this,MinhasAulasActivity.class));
+                finish();
                 break;
             case R.id.nav_options:
                  startActivity(new Intent(this,PreferenciasActivity.class));
@@ -224,34 +222,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 dao.signOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
-
                 break;
-
             case R.id.nav_class:
-                getSupportActionBar().setTitle("Busca Aulas");
-                if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
-                    fragmentTransaction.hide(currentFragment);
-                    fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
-                    fragmentTransaction.show(searchAulasFragment).commit();
-                } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
-                    fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
-                }
-                currentFragment = searchAulasFragment;
-                lastFragment = R.id.nav_class;
-                mRecyclerView.setAdapter(classAdapter);
+                setUpClassFragment();
                 break;
             case R.id.nav_teacher:
-                getSupportActionBar().setTitle("Busca Professores");
-                if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
-                    fragmentTransaction.hide(currentFragment);
-                    fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
-                    fragmentTransaction.show(searchProfsFragment).commit();
-                } else if (!fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG).isVisible()) {
-                    fragmentTransaction.hide(currentFragment).show(searchProfsFragment).commit();
-                }
-                currentFragment = searchProfsFragment;
-                lastFragment = R.id.nav_teacher;
-                mRecyclerView.setAdapter(userAdapter);
+                setUpProfFragment();
                 break;
             default:
                 break;
@@ -260,6 +236,94 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == 0) {
+            id = lastFragment;
+        }
+
+        switch (id) {
+            case R.id.alfa:
+                sortByAlpha();
+                break;
+            case R.id.rating:
+//                sortByRating();
+                break;
+            case R.id.price:
+                sortByPrice();
+                break;
+            case R.id.dist:
+//                sortByDistance();
+                break;
+        }
+
+        return true;
+    }
+
+    private void sortByAlpha() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.ALPHA);
+        } else {
+
+        }
+    }
+
+    private void sortByRating() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.RATING);
+        } else {
+
+        }
+    }
+
+    private void sortByPrice() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.PRICE);
+        } else {
+
+        }
+    }
+
+    private void sortByDistance() {
+        if (currentFragment == searchAulasFragment){
+            classAdapter.sort(Sort.DISTANCE);
+        } else {
+
+        }
+    }
+
+    private void setUpClassFragment(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        getSupportActionBar().setTitle("Busca Aulas");
+        if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
+            fragmentTransaction.hide(currentFragment);
+            fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
+            fragmentTransaction.show(searchAulasFragment).commit();
+        } else if (!fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG).isVisible()) {
+            fragmentTransaction.hide(currentFragment).show(searchAulasFragment).commit();
+        }
+        currentFragment = searchAulasFragment;
+        lastFragment = R.id.nav_class;
+        mRecyclerView.setAdapter(classAdapter);
+    }
+
+    private void setUpProfFragment(){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        getSupportActionBar().setTitle("Busca Professores");
+        if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
+            fragmentTransaction.hide(currentFragment);
+            fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
+            fragmentTransaction.show(searchProfsFragment).commit();
+        } else if (!fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG).isVisible()) {
+            fragmentTransaction.hide(currentFragment).show(searchProfsFragment).commit();
+        }
+        currentFragment = searchProfsFragment;
+        lastFragment = R.id.nav_teacher;
+        mRecyclerView.setAdapter(userAdapter);
     }
 
     @Override

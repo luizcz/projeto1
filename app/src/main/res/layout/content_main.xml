@@ -27,7 +27,7 @@
         android:text="Seu feed está vazio no momento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
+        android:id="@+id/feed_empty_label"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:gravity="center"
@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_empty"
-        android:id="@+id/imageView5"
-        android:layout_above="@+id/textView2"
+        android:id="@+id/feed_empty_img"
+        android:layout_above="@+id/feed_empty_label"
         android:layout_centerHorizontal="true" />
 
 

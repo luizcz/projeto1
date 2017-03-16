@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progress = findViewById(R.id.progressBar2);
 
 
-
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
@@ -172,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Signed in successfully, show authenticated UI.
             final GoogleSignInAccount acct = result.getSignInAccount();
             //Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_SHORT).show();
-            Log.i("Login",acct.getDisplayName());
+            Log.i("Login", acct.getDisplayName());
             dao.firebaseAuthWithGoogle(acct);
             dao.getCurrentUser(new ICallback<User>() {
                 @Override
@@ -194,8 +193,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         } else {
-           // Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
-            Log.i("Login","login fail");
+            // Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
+            Log.i("Login", "login fail");
 
         }
     }
@@ -260,20 +259,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {
-                        if (param.getFirstTime() == null || param.getFirstTime()) {
-                            startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
-                        } else
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        if (param == null) {
+                            dao.signOut();
+                            showLoginBt(1);
+                        } else {
+                            if (param.getFirstTime() == null || param.getFirstTime()) {
+                                startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
+                            } else
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
                     }
                 });
             } else {
-                Log.i("Login", "status: signed_out");
-                btGoogle.setVisibility(View.VISIBLE);
-                btFb.setVisibility(View.VISIBLE);
-                signinLabel.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
+                showLoginBt(2);
             }
+        }
+
+        private void showLoginBt(int qt) {
+            Log.i("Login", "status: signed_out");
+            if (qt == 2)
+                btGoogle.setVisibility(View.VISIBLE);
+            btFb.setVisibility(View.VISIBLE);
+            signinLabel.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
         }
     }
 }

@@ -27,10 +27,12 @@
     <EditText
         android:id="@+id/edt_nome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/st_nome"
         android:background="@drawable/border"
+        android:inputType="textPersonName"
         android:padding="10dp"
+        android:maxLength="70"
         android:textColor="@color/cardview_light_background" />
 
     <TextView
@@ -46,10 +48,11 @@
     <EditText
         android:id="@+id/edt_local"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/st_local"
         android:background="@drawable/border"
         android:padding="10dp"
+        android:maxLength="70"
         android:textColor="@color/cardview_light_background" />
 
     <TextView
@@ -65,10 +68,12 @@
     <EditText
         android:id="@+id/edt_telefone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/st_telefone"
         android:background="@drawable/border"
+        android:inputType="phone"
         android:padding="10dp"
+        android:maxLength="20"
         android:textColor="@color/cardview_light_background" />
 
     <TextView
@@ -88,7 +93,9 @@
         android:layout_below="@id/st_bio"
         android:background="@drawable/border"
         android:lines="7"
+        android:gravity="top|left"
         android:padding="10dp"
+        android:maxLength="240"
         android:textColor="@color/cardview_light_background" />
 
     <Button

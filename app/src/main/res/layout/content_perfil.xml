@@ -28,7 +28,7 @@
             android:layout_centerHorizontal="true">
 
             <TextView
-                android:text="123456789012345678901"
+                android:text="..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/label_name"
@@ -53,6 +53,18 @@
                 android:elevation="10dp"
                 app:riv_oval="false" />
 
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="41dp"
+                android:id="@+id/progressBar3"
+                android:visibility="visible"
+                android:indeterminate="true" />
+
             <RatingBar
                 style="@style/StarRatingBar"
                 android:layout_width="wrap_content"
@@ -64,48 +76,139 @@
                 android:isIndicator="true"
                 android:numStars="5"/>
             <TextView
-                android:text="99 Avaliações"
+                android:text="Avaliações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
                 android:paddingBottom="10dp"
-                android:gravity="right"/>
+                android:gravity="center"/>
             <TextView
                 android:text="Informações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="7dp"
                 android:gravity="center_horizontal"/>
             <TextView
                 android:text="Local"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:id="@+id/label_local"
+                android:layout_marginBottom="3dp"
                 android:gravity="left"/>
             <TextView
-                android:text="Muitas informações importantes\nEstudou em escola\nTrabalhou em emprego"
+                android:text="Mais informações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:gravity="left"
                 android:id="@+id/label_info" />
-            <TextView
-                android:text="Aulas"
+
+            <FrameLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/cardview_light_background"
+                    android:alpha="0.5"
+                    android:layout_marginTop="35dp"
+                    android:layout_gravity="center_horizontal">
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avalie"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_margin="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+                <RatingBar
+                    style="@style/StarRatingBarSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:id="@+id/ratingBarSmal"
+                    android:stepSize="0.5"
+                    android:numStars="5"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imagem_usuario_avaliacao"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/logo"
+                    android:layout_gravity="center_horizontal"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FFFFFF"/>
+            </FrameLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:paddingTop="10dp"
-                android:gravity="center_horizontal"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_ministro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                    android:text="Aulas ministradas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="7dp"
+                    android:id="@+id/tv_aula_professor" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_ministro"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_aluno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+                <TextView
+                    android:text="Aulas que participa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="7dp"
+                    android:id="@+id/tv_aula_aluno" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_participo"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
 
 
         </LinearLayout>

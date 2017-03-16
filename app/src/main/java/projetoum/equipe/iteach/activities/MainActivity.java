@@ -6,18 +6,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-import com.google.android.gms.location.LocationServices;
-
-import android.support.v4.app.ActivityCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,11 +29,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.UserInfo;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import projetoum.equipe.iteach.R;
+import projetoum.equipe.iteach.adapter.FeedAdapter;
 import projetoum.equipe.iteach.interfaces.ICallback;
+import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -46,12 +49,13 @@ public class MainActivity extends DrawerActivity
         implements GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
-    private DAO dao;
     private ICallback<Boolean> updateUI;
     private CallbackManager mCallbackManager;
     private NavigationView navigationView;
     private String googleHighResPhotoUrl;
     public static Location mLastLocation;
+    private RecyclerView recycler;
+    private View feedEmptyText, feedEmptyImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,16 @@ public class MainActivity extends DrawerActivity
         setContentView(R.layout.activity_main);
 
         init(R.id.nav_feed);
+
+        feedEmptyImg = findViewById(R.id.feed_empty_img);
+        feedEmptyText = findViewById(R.id.feed_empty_label);
+
+        recycler = (RecyclerView) findViewById(R.id.recycler);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recycler.setLayoutManager(mLayoutManager);
+        recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
+        dao.loadFeed((FeedAdapter) recycler.getAdapter());
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();
@@ -174,6 +188,17 @@ public class MainActivity extends DrawerActivity
 
     }
 
+    public void refreshFeedCount() {
+        if (recycler.getAdapter().getItemCount() <= 0) {
+            feedEmptyImg.setVisibility(View.VISIBLE);
+            feedEmptyText.setVisibility(View.VISIBLE);
+        }
+        if (recycler.getAdapter().getItemCount() >= 0) {
+            feedEmptyImg.setVisibility(View.GONE);
+            feedEmptyText.setVisibility(View.GONE);
+        }
+    }
+
     public class UpdateUI implements ICallback<Boolean> {
         @Override
         public void execute(Boolean param) {
@@ -277,11 +302,9 @@ public class MainActivity extends DrawerActivity
                             });
                         }
                     }
-
                 });
-
             }
         }
-    }
 
+    }
 }

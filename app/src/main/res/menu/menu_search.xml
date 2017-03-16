@@ -15,24 +15,22 @@
         All4One:showAsAction="always"
         android:icon="@android:drawable/ic_menu_sort_by_size">
 
-        <menu android:id="@+id/menu_filtros">
-            <item
-                android:id="@+id/alfa"
-                android:title="Alfabeticamente"
-                android:icon="@drawable/ic_alpha"/>
-            <item
-                android:id="@+id/rating"
-                android:title="Avaliação"
-                android:icon="@drawable/ic_star"/>
-            <item
-                android:id="@+id/price"
-                android:title="Preço"
-                android:icon="@drawable/ic_money"/>
-            <item
-                android:id="@+id/dist"
-                android:title="Distância"
-                android:icon="@drawable/ic_rule"/>
-
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/alfa"
+                    android:title="Alfabeticamente"/>
+                <item
+                    android:id="@+id/rating"
+                    android:title="Avaliação"/>
+                <item
+                    android:id="@+id/price"
+                    android:title="Preço"/>
+                <item
+                    android:id="@+id/dist"
+                    android:title="Distância"/>
+            </group>
         </menu>
     </item>
 
