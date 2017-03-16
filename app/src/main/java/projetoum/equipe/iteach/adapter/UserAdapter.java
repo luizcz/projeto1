@@ -18,12 +18,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.PerfilActivity;
+import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -143,5 +145,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         int position = usuarios.indexOf(item);
         usuarios.set(position, item);
         notifyDataSetChanged();
+    }
+
+    public class SortByName implements Comparator {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            User c1 = (User) o1;
+            User c2 = (User) o2;
+
+            return c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase());
+        }
     }
 }

@@ -28,11 +28,14 @@
                 android:layout_toRightOf="@+id/img"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="15dp"
                 android:text="Prof. Pasquale Neto"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal|bold"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="25dp"
+                android:layout_marginTop="5dp" />
 
             <TextView
                 android:id="@+id/card_aula_name"
@@ -49,7 +52,7 @@
                 android:layout_toRightOf="@+id/img"
                 android:layout_toEndOf="@+id/img"
                 android:layout_below="@+id/prof_name"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:maxLines="4"
                 android:paddingBottom="15dp" />
 
@@ -63,7 +66,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="5dp">
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -71,7 +77,8 @@
                     android:layout_alignParentStart="true"
                     android:gravity="left"
                     android:orientation="vertical"
-                    android:layout_alignParentLeft="true">
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="5dp">
 
                     <TextView
                         android:id="@+id/num_aulas"
@@ -161,8 +168,8 @@
                 app:civ_border_color="#FFFFFF"
                 app:civ_border_width="2dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp" />
 
 
