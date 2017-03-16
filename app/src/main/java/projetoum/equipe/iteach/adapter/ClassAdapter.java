@@ -218,7 +218,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             ClassObject c1 = (ClassObject) o1;
             ClassObject c2 = (ClassObject) o2;
 
-            return c1.getName().compareTo(c2.getName());
+            return c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase());
         }
     }
 
