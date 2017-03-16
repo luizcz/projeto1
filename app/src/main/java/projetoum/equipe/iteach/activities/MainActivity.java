@@ -55,6 +55,7 @@ public class MainActivity extends DrawerActivity
     private String googleHighResPhotoUrl;
     public static Location mLastLocation;
     private RecyclerView recycler;
+    private View feedEmptyText, feedEmptyImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class MainActivity extends DrawerActivity
 
         init(R.id.nav_feed);
 
+        feedEmptyImg = findViewById(R.id.feed_empty_img);
+        feedEmptyText = findViewById(R.id.feed_empty_label);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -183,6 +186,17 @@ public class MainActivity extends DrawerActivity
     @Override
     public void onConnectionSuspended(int i) {
 
+    }
+
+    public void refreshFeedCount() {
+        if (recycler.getAdapter().getItemCount() <= 0) {
+            feedEmptyImg.setVisibility(View.VISIBLE);
+            feedEmptyText.setVisibility(View.VISIBLE);
+        }
+        if (recycler.getAdapter().getItemCount() >= 0) {
+            feedEmptyImg.setVisibility(View.GONE);
+            feedEmptyText.setVisibility(View.GONE);
+        }
     }
 
     public class UpdateUI implements ICallback<Boolean> {

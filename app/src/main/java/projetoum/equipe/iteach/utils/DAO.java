@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import projetoum.equipe.iteach.activities.MainActivity;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.FeedAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
@@ -271,50 +272,66 @@ public class DAO implements IRemote {
 
 
     public void loadFeed(final FeedAdapter adapter) {
-        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_CLASS);
-        Query q = ref.limitToFirst(30);
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER + "/" + getFireBaseUser().getUid() + "/feed");
+        System.out.println(ref.getKey());
+        System.out.println(Constants.FIREBASE_LOCATION_USER + getFireBaseUser().getUid() + "/feed");
+        Query q = ref.orderByKey();
 
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final FeedItem item = dataSnapshot.getValue(FeedItem.class);
                 item.id = dataSnapshot.getKey();
-                if(item.aulaID != null && !item.aulaID.isEmpty())
-                    findClassById(item.aulaID, new ICallback<ClassObject>() {
-                        @Override
-                        public void execute(ClassObject param) {
-                            item.setAula(param);
-                            adapter.add(item);
-                        }
-                    });
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.add(item);
+                                ((MainActivity) ctx).refreshFeedCount();
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 final FeedItem item = dataSnapshot.getValue(FeedItem.class);
                 item.id = dataSnapshot.getKey();
-                if(item.aulaID != null && !item.aulaID.isEmpty())
-                    findClassById(item.aulaID, new ICallback<ClassObject>() {
-                        @Override
-                        public void execute(ClassObject param) {
-                            item.setAula(param);
-                            adapter.update(item);
-                        }
-                    });
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.update(item);
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 final FeedItem item = dataSnapshot.getValue(FeedItem.class);
                 item.id = dataSnapshot.getKey();
-                if(item.aulaID != null && !item.aulaID.isEmpty())
-                    findClassById(item.aulaID, new ICallback<ClassObject>() {
-                        @Override
-                        public void execute(ClassObject param) {
-                            item.setAula(param);
-                            adapter.remove(item,-1);
-                        }
-                    });
+                try {
+                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                        findClassById(item.aulaID, new ICallback<ClassObject>() {
+                            @Override
+                            public void execute(ClassObject param) {
+                                item.setAula(param);
+                                adapter.remove(item, -1);
+                                ((MainActivity) ctx).refreshFeedCount();
+                            }
+                        });
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
@@ -346,13 +363,18 @@ public class DAO implements IRemote {
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    userICallback.execute(dataSnapshot.getValue(User.class));
+                    try {
+                        userICallback.execute(dataSnapshot.getValue(User.class));
+                    } catch (Exception e) {
+                        userICallback.execute(null);
+                        e.printStackTrace();
+                    }
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    userICallback.execute(null);
                 }
             });
         }
@@ -667,6 +689,55 @@ public class DAO implements IRemote {
         return resultado;
     }
 
+    public void findUserByTag(final List<String> tags, final ICallback<User> callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+        Query q = ref.orderByKey();
+        System.out.println("dddddddddddddddddd");
+
+        q.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        System.out.println("eeeeeeeeeeeeeeeeeeeee");
+                                        User user = dataSnapshot.getValue(User.class);
+                                        for (String tag : tags) {
+                                            System.out.println("ffffffffffffffffff");
+
+                                            if (user.tags == null || user.tags.isEmpty()) break;
+                                            for (String utag : user.tags) {
+                                                if (utag.toLowerCase().equals(tag.toLowerCase())) {
+                                                    System.out.println("gggggggggggggggggg");
+                                                    callback.execute(user);
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                }
+
+        );
+    }
 
     @Override
     public List<ClassObject> findClassByTag(String tag) {

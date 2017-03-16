@@ -252,9 +252,9 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public void remove(FeedItem item, int pos) {
         int position = pos;
-        if (pos == -1) pos = mDataset.indexOf(item);
-        mDataset.remove(pos);
-        notifyItemRemoved(pos);
+        if (pos == -1) position = mDataset.indexOf(item);
+        mDataset.remove(position);
+        notifyItemRemoved(position);
         notifyItemRangeChanged(0, mDataset.size());
     }
 

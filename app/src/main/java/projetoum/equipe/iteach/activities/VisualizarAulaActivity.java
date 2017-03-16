@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
+import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
@@ -84,7 +85,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
                 newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
                 DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
-                DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
+                final DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
                 newClassUser.child(dao.getFireBaseUser().getUid()).setValue(true);
 
                 dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
@@ -98,10 +99,23 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                         }
                         param.getAlunos().add(dao.getFireBaseUser().getUid());
                         param.setId(getIntent().getExtras().getString("aula_id"));
+                        final ClassObject aula = param;
                         dao.updateClass(param, new ICallback() {
                             @Override
                             public void execute(Object param) {
                                 // fazer nada
+                                dao.getCurrentUser(new ICallback<User>() {
+                                    @Override
+                                    public void execute(User param) {
+                                        param.feed.add(new FeedItem(aula,FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
+                                        dao.updateUser(param, new ICallback() {
+                                            @Override
+                                            public void execute(Object param) {
+
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }
