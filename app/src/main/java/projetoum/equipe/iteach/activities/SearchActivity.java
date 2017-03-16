@@ -250,9 +250,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.alfa:
                 sortByAlpha();
                 break;
-            case R.id.rating:
+//            case R.id.rating:
 //                sortByRating();
-                break;
+//                break;
             case R.id.price:
                 sortByPrice();
                 break;

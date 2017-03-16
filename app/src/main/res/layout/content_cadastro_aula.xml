@@ -25,8 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:id="@+id/img_propaganda"
-                android:background="@drawable/border"
-                android:padding="5dp"
+                android:scaleType="centerCrop"
                 android:layout_weight="1" />
 
             <TextView
