@@ -76,26 +76,26 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(v.getContext(), VisualizarAulaActivity.class);
-                        intent.putExtra("aula_id", mDataset.get(holder.getAdapterPosition()).aula.getId());
+                        intent.putExtra("aula_id", mDataset.get(holder.getAdapterPosition()).getAula().getId());
                         intent.putExtra("position", holder.getAdapterPosition());
                         v.getContext().startActivity(intent);
                     }
                 });
 
-                if (mDataset.get(position).aula.getImagem() != null && !mDataset.get(position).aula.getImagem().isEmpty())
-                    Picasso.with(mContext).load(mDataset.get(position).aula.getImagem()).fit().centerCrop().into(((ClassViewHolder) holder).card_aula_img);
+                if (mDataset.get(position).getAula().getImagem() != null && !mDataset.get(position).getAula().getImagem().isEmpty())
+                    Picasso.with(mContext).load(mDataset.get(position).getAula().getImagem()).fit().centerCrop().into(((ClassViewHolder) holder).card_aula_img);
 
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User param) {
-                        if (param.getLat() != null && param.getLon() != null && mDataset.get(position).aula.getLat() != null && mDataset.get(position).aula.getLon() != null) {
+                        if (param.getLat() != null && param.getLon() != null && mDataset.get(position).getAula().getLat() != null && mDataset.get(position).getAula().getLon() != null) {
                             Location startPoint = new Location("user");
                             startPoint.setLatitude(param.getLat());
                             startPoint.setLongitude(param.getLon());
 
                             Location endPoint = new Location("class");
-                            endPoint.setLatitude(mDataset.get(position).aula.getLat());
-                            endPoint.setLongitude(mDataset.get(position).aula.getLon());
+                            endPoint.setLatitude(mDataset.get(position).getAula().getLat());
+                            endPoint.setLongitude(mDataset.get(position).getAula().getLon());
 
                             double distance = startPoint.distanceTo(endPoint);
 
@@ -108,7 +108,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                     }
                 });
 
-                dao.findUserById(mDataset.get(position).aula.getTeacherId(), new ICallback() {
+                dao.findUserById(mDataset.get(position).getAula().getTeacherId(), new ICallback() {
                     @Override
                     public void execute(Object param) {
                         User user = (User) param;
@@ -116,10 +116,10 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                     }
                 });
 
-                ((ClassViewHolder) holder).aula_name.setText(mDataset.get(position).aula.getName());
-                ((ClassViewHolder) holder).aula_desc.setText(mDataset.get(position).aula.getDescription());
+                ((ClassViewHolder) holder).aula_name.setText(mDataset.get(position).getAula().getName());
+                ((ClassViewHolder) holder).aula_desc.setText(mDataset.get(position).getAula().getDescription());
 
-                String valor = mDataset.get(position).aula.getValorFormatado();
+                String valor = mDataset.get(position).getAula().getValorFormatado();
                 if (valor.equals("0")) {
                     ((ClassViewHolder) holder).aula_valor.setText(R.string.free);
                 } else {
@@ -242,7 +242,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.mDataset.addAll(mDataset);
     }
 
-    public void add(FeedItem item, int pos) {
+    public void add(FeedItem item) {
 
         mDataset.add(0, item);
         notifyItemInserted(0);
@@ -251,9 +251,11 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 
     public void remove(FeedItem item, int pos) {
+        int position = pos;
+        if (pos == -1) pos = mDataset.indexOf(item);
         mDataset.remove(pos);
         notifyItemRemoved(pos);
-        notifyItemRangeChanged(pos, mDataset.size());
+        notifyItemRangeChanged(0, mDataset.size());
     }
 
     public void removeAll() {
@@ -261,9 +263,10 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void update(FeedItem item, int pos) {
+    public void update(FeedItem item) {
         int position = mDataset.indexOf(item);
         mDataset.set(position, item);
         notifyDataSetChanged();
+        notifyItemRangeChanged(0, mDataset.size());
     }
 }

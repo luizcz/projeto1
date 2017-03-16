@@ -68,20 +68,8 @@ public class MainActivity extends DrawerActivity
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(mLayoutManager);
-        List<FeedItem> dataset = new ArrayList<>();
-        recycler.setAdapter(new FeedAdapter(this, dataset));
-        dao.getFirstClasses(new ICallback<ClassObject>() {
-            @Override
-            public void execute(ClassObject param) {
-                if(!param.getTeacherId().equals(dao.getFireBaseUser().getUid())) {
-                    ((FeedAdapter) recycler.getAdapter()).add(new FeedItem(param, new Random().nextInt(4)), 0);
-                    findViewById(R.id.feed_empty_img).setVisibility(View.GONE);
-                    findViewById(R.id.feed_empty_label).setVisibility(View.GONE);
-                }
-            }
-        });
-        //dataset.add(new FeedItem(,FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
-
+        recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
+        dao.loadFeed((FeedAdapter) recycler.getAdapter());
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         updateUI = new MainActivity.UpdateUI();

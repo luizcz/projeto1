@@ -14,9 +14,11 @@ public class FeedItem {
     public static final int TYPE_CLASS_SUBTYPE_LOCATION = 3;
     public static final int TYPE_FRIEND = 1;
 
-    public ClassObject aula;
+    private ClassObject aula;
+    public String aulaID;
     public int type;
     public int subtype;
+    public String id;
 
     public FeedItem() {
 
@@ -24,7 +26,16 @@ public class FeedItem {
 
     public  FeedItem(ClassObject aula, int subtype) {
         this.aula = aula;
+        aulaID = aula.getId();
         type = TYPE_CLASS;
         this.subtype = subtype;
+    }
+
+    public ClassObject getAula() {
+        return aula;
+    }
+
+    public void setAula(ClassObject aula) {
+        this.aula = aula;
     }
 }
