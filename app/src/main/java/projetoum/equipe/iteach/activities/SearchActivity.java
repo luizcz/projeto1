@@ -257,7 +257,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 sortByPrice();
                 break;
             case R.id.dist:
-//                sortByDistance();
+                sortByDistance();
                 break;
         }
 

@@ -82,10 +82,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                     endPoint.setLatitude(classes.get(position).getLat());
                     endPoint.setLongitude(classes.get(position).getLon());
 
-                    double distance = startPoint.distanceTo(endPoint);
+                    double distance = startPoint.distanceTo(endPoint) / 1000;
 
                     DecimalFormat df = new DecimalFormat("#0.0");
-                    holder.aula_dist.setText(String.valueOf(df.format(distance / 1000)) + "Km");
+                    holder.aula_dist.setText(String.valueOf(df.format(distance)) + "Km");
 
                 } else {
                     holder.aula_dist.setText("?");
@@ -251,21 +251,30 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             ClassObject c1 = (ClassObject) o1;
             ClassObject c2 = (ClassObject) o2;
 
-            Location locationA = new Location("Me");
-            locationA.setLatitude(mLocation.getLatitude());
-            locationA.setLongitude(mLocation.getLongitude());
+            if (Double.valueOf(mLocation.getLatitude()) == null ||
+                    Double.valueOf(mLocation.getLongitude()) == null ||
+                    c1.getLat() == null ||
+                    c1.getLon() == null ||
+                    c2.getLat() == null ||
+                    c2.getLon() == null) {
+                return -1;
+            }
+
+            Location locationMe = new Location("Me");
+            locationMe.setLatitude(mLocation.getLatitude());
+            locationMe.setLongitude(mLocation.getLongitude());
+
+            Location locationA = new Location("A");
+            locationA.setLatitude(c1.getLat());
+            locationA.setLongitude(c1.getLon());
 
             Location locationB = new Location("B");
-            locationB.setLatitude(c1.getLat());
-            locationB.setLongitude(c1.getLon());
-
-            Location locationC = new Location("C");
             locationB.setLatitude(c2.getLat());
             locationB.setLongitude(c2.getLon());
 
 
-            Double distanceMeToClass1 = Double.valueOf(locationA.distanceTo(locationB));
-            Double distanceMeToClass2 = Double.valueOf(locationA.distanceTo(locationC));
+            Double distanceMeToClass1 = Double.valueOf(locationMe.distanceTo(locationA));
+            Double distanceMeToClass2 = Double.valueOf(locationMe.distanceTo(locationB));
 
             return distanceMeToClass1.compareTo(distanceMeToClass2);
 

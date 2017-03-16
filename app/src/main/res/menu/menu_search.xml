@@ -21,9 +21,9 @@
                 <item
                     android:id="@+id/alfa"
                     android:title="Alfabeticamente"/>
-                <item
-                    android:id="@+id/rating"
-                    android:title="Avaliação"/>
+                <!--<item-->
+                    <!--android:id="@+id/rating"-->
+                    <!--android:title="Avaliação"/>-->
                 <item
                     android:id="@+id/price"
                     android:title="Preço"/>
