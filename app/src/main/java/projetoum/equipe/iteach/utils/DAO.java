@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -273,8 +274,6 @@ public class DAO implements IRemote {
 
     public void loadFeed(final FeedAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER + "/" + getFireBaseUser().getUid() + "/feed");
-        System.out.println(ref.getKey());
-        System.out.println(Constants.FIREBASE_LOCATION_USER + getFireBaseUser().getUid() + "/feed");
         Query q = ref.orderByKey();
 
         q.addChildEventListener(new ChildEventListener() {
@@ -289,7 +288,8 @@ public class DAO implements IRemote {
                             public void execute(ClassObject param) {
                                 item.setAula(param);
                                 adapter.add(item);
-                                ((MainActivity) ctx).refreshFeedCount();
+                                if (ctx instanceof MainActivity)
+                                    ((MainActivity) ctx).refreshFeedCount();
                             }
                         });
                 } catch (Exception e) {
@@ -326,7 +326,8 @@ public class DAO implements IRemote {
                             public void execute(ClassObject param) {
                                 item.setAula(param);
                                 adapter.remove(item, -1);
-                                ((MainActivity) ctx).refreshFeedCount();
+                                if (ctx instanceof MainActivity)
+                                    ((MainActivity) ctx).refreshFeedCount();
                             }
                         });
                 } catch (Exception e) {
@@ -764,10 +765,11 @@ public class DAO implements IRemote {
 
     public void findClassByIdOnce(String id, final ICallback<ClassObject> callback) {
         FirebaseDatabase database = getFirebaseInstance();
-        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + id);
+        final DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + id);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                myRef.removeEventListener(this);
                 ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
                 callback.execute(classObject);
             }
@@ -1033,6 +1035,7 @@ public class DAO implements IRemote {
         if (mDatabase == null) {
             mDatabase = FirebaseDatabase.getInstance();
             mDatabase.setPersistenceEnabled(true);
+            mDatabase.setLogLevel(Logger.Level.NONE);
         }
 
         return mDatabase;

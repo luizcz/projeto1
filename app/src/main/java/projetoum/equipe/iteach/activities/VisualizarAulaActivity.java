@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 
 import static projetoum.equipe.iteach.R.id.aula_mapa;
@@ -91,33 +93,46 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
                     @Override
                     public void execute(ClassObject param) {
-                        if(param.getAlunos() == null)
+                        if (param.getAlunos() == null)
                             param.setAlunos(new ArrayList<String>());
-                        if(param.getAlunos().contains(dao.getFireBaseUser().getUid())){
+                        if (param.getAlunos().contains(dao.getFireBaseUser().getUid())) {
                             Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
                             return;
-                        }
-                        param.getAlunos().add(dao.getFireBaseUser().getUid());
-                        param.setId(getIntent().getExtras().getString("aula_id"));
-                        final ClassObject aula = param;
-                        dao.updateClass(param, new ICallback() {
-                            @Override
-                            public void execute(Object param) {
-                                // fazer nada
-                                dao.getCurrentUser(new ICallback<User>() {
-                                    @Override
-                                    public void execute(User param) {
-                                        param.feed.add(new FeedItem(aula,FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
-                                        dao.updateUser(param, new ICallback() {
+                        } else {
+                            param.getAlunos().add(dao.getFireBaseUser().getUid());
+                            param.setId(getIntent().getExtras().getString("aula_id"));
+                            final ClassObject aula = param;
+                            dao.updateClass(param, new ICallback<Integer>() {
+                                @Override
+                                public void execute(Integer result) {
+                                    if (result == Constants.REQUEST_OK) {
+                                        Toast.makeText(getApplicationContext(), "Matriculado com sucesso nessa classe.", Toast.LENGTH_LONG).show();
+                                        dao.getCurrentUser(new ICallback<User>() {
                                             @Override
-                                            public void execute(Object param) {
+                                            public void execute(User user) {
+                                                if (user != null) {
+                                                    FeedItem feed = user.feed.get(user.feed.size() - 1);
+                                                    if (!(feed.aulaID == aula.getId() && feed.subtype == FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE)) {
+                                                        user.feed.add(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE));
+                                                        dao.updateUser(user, new ICallback<Integer>() {
+                                                            @Override
+                                                            public void execute(Integer result) {
+                                                                if (result == Constants.REQUEST_OK) {
+                                                                    Log.d("Visualizar Aula", "User atualizado");
+                                                                }
 
+                                                            }
+                                                        });
+                                                    }
+                                                }
                                             }
                                         });
+                                    } else {
+
                                     }
-                                });
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 });
                 dialog.dismiss();
@@ -181,7 +196,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 //            }
 //
 //
-        getImage(class_image,mClass.getImagem());
+        getImage(class_image, mClass.getImagem());
         dao.findUserById(mClass.getTeacherId(), new ICallback() {
             @Override
             public void execute(Object param) {
@@ -193,7 +208,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                if(((User)param).getUserId().equals(mClass.getTeacherId())){
+                if (((User) param).getUserId().equals(mClass.getTeacherId())) {
                     participar.setVisibility(View.GONE);
                 }
             }
@@ -203,8 +218,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             LatLng placePosition = new LatLng(MainActivity.mLastLocation.getLatitude(), MainActivity.mLastLocation.getLongitude());
             double distance = SphericalUtil.computeDistanceBetween(myPosition, placePosition);
             DecimalFormat df = new DecimalFormat("#0.00");
-            aula_mapa_dist.setText("Distancia " + String.valueOf(df.format(distance/1000)) + " Km");
-        }else {
+            aula_mapa_dist.setText("Distancia " + String.valueOf(df.format(distance / 1000)) + " Km");
+        } else {
             aula_mapa_dist.setText("Distancia desconhecida");
         }
         aula_nome_professor.setText(mClass.getName());
@@ -215,24 +230,23 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void execute(Long param) {
                 String total = "";
-                total =  param.toString() + "/" + String.valueOf(mClass.getSlots());
+                total = param.toString() + "/" + String.valueOf(mClass.getSlots());
                 aula_vagas.setText("Vagas ocupadas: " + total);
             }
         });
 
         String valor = mClass.getValorFormatado();
-        if (valor.equals("0")){
+        if (valor.equals("0")) {
             aula_valor.setText("Valor: " + getResources().getString(R.string.free));
         } else {
             aula_valor.setText("Valor: " + valor);
         }
 
-        if (mClass.getDiasSemana() != null){
+        if (mClass.getDiasSemana() != null) {
             aula_data.setText("Data: " + mClass.getDiasSemana().toString());
         } else {
             aula_data.setText("Data: Não informado");
         }
-
 
 
         aula_horario.setText("Horario: " + String.valueOf(mClass.getHoraInicio()) + " - " + String.valueOf(mClass.getHoraFim()));
@@ -282,7 +296,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         finish();
     }
 
-    private void getImage(final ImageView img, final String imgUrl){
+    private void getImage(final ImageView img, final String imgUrl) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -298,7 +312,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap !=  null){
+                if (bitmap != null) {
                     img.setImageBitmap(bitmap);
                 }
             }

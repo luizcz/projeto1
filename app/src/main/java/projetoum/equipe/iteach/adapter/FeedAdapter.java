@@ -243,7 +243,6 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void add(FeedItem item) {
-
         mDataset.add(0, item);
         notifyItemInserted(0);
         notifyItemRangeChanged(0, mDataset.size());
