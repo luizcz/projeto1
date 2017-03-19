@@ -11,15 +11,18 @@ import com.google.firebase.database.Exclude;
 public class FeedItem {
     public static final int TYPE_CLASS = 0;
     public static final int TYPE_CLASS_SUBTYPE_SUBSCRIBE = 0;
-    public static final int TYPE_CLASS_SUBTYPE_ANNOUNCE = 1;
-    public static final int TYPE_CLASS_SUBTYPE_NOTIFY = 2;
+    public static final int TYPE_CLASS_SUBTYPE_TAG = 1;
+    public static final int TYPE_CLASS_SUBTYPE_CHANGE = 2;
     public static final int TYPE_CLASS_SUBTYPE_LOCATION = 3;
     public static final int TYPE_FRIEND = 1;
+    public static final int STATUS_SHOWING = 0;
+    public static final int STATUS_SHOWED = 1;
 
     public String aulaID;
     public int type;
     public int subtype;
     public String id;
+    public int status;
 
     @Exclude
     private ClassObject aula;
@@ -29,11 +32,12 @@ public class FeedItem {
 
     }
 
-    public FeedItem(ClassObject aula, int subtype) {
+    public FeedItem(ClassObject aula, int subtype, int status) {
         this.aula = aula;
         aulaID = aula.getId();
         type = TYPE_CLASS;
         this.subtype = subtype;
+        this.status = status;
     }
 
     @Exclude

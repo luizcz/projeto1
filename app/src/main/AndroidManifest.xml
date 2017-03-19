@@ -29,6 +29,7 @@
 
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,36 +39,44 @@
         </activity>
         <activity
             android:name=".activities.SearchActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CadastroActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.PerfilActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.VisualizarAulaActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CadastroAulaActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.PreferenciasActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.DrawerActivity" />
         <activity
             android:name=".activities.MinhasAulasActivity"
-            android:label="@string/title_activity_minhas_aulas"
+            android:screenOrientation="portrait"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

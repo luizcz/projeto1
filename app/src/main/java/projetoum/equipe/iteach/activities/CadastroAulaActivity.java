@@ -5,14 +5,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -23,6 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -31,7 +30,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +40,6 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
-import projetoum.equipe.iteach.utils.DAO;
 
 public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener {
 
@@ -589,19 +586,27 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     });
                 }
                 progressBar.setVisibility(View.GONE);
-                //startActivity(new Intent(CadastroAulaActivity.this, MainActivity.class));
                 if (param != null) {
-                    System.out.println("aaaaaaaaaaaaaaaaaaaa");
                     dao.findUserByTag(classe.getTags(), new ICallback<User>() {
                         @Override
                         public void execute(User param) {
-                            System.out.println("bbbbbbbbbbbbbbbbbbbbbb");
-                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_ANNOUNCE));
+                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_TAG, FeedItem.STATUS_SHOWING));
                             dao.updateUser(param, new ICallback() {
                                 @Override
                                 public void execute(Object param) {
-                                    System.out.println("cccccccccccccccccccc");
 
+                                }
+                            });
+                        }
+                    });
+
+                    dao.findUserWithinDistance(classe.getLat(), classe.getLon(), new ICallback<User>() {
+                        @Override
+                        public void execute(User param) {
+                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
+                            dao.updateUser(param, new ICallback() {
+                                @Override
+                                public void execute(Object param) {
 
                                 }
                             });

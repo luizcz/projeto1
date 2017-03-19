@@ -12,11 +12,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -131,11 +129,11 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                         ((ClassViewHolder) holder).type_text.setText(mContext.getResources().getString(R.string.feed_card_class_sub));
                         ((ClassViewHolder) holder).type_img.setImageResource(R.drawable.ic_sub);
                         break;
-                    case FeedItem.TYPE_CLASS_SUBTYPE_ANNOUNCE:
+                    case FeedItem.TYPE_CLASS_SUBTYPE_TAG:
                         ((ClassViewHolder) holder).type_text.setText(mContext.getResources().getString(R.string.feed_card_class_announce));
                         ((ClassViewHolder) holder).type_img.setImageResource(R.drawable.ic_ad);
                         break;
-                    case FeedItem.TYPE_CLASS_SUBTYPE_NOTIFY:
+                    case FeedItem.TYPE_CLASS_SUBTYPE_CHANGE:
                         ((ClassViewHolder) holder).type_text.setText(mContext.getResources().getString(R.string.feed_card_class_alert));
                         ((ClassViewHolder) holder).type_img.setImageResource(R.drawable.ic_alert);
                         break;

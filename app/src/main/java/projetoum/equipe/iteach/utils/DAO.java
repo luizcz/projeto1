@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -26,7 +27,19 @@ import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -282,7 +295,7 @@ public class DAO implements IRemote {
                 final FeedItem item = dataSnapshot.getValue(FeedItem.class);
                 item.id = dataSnapshot.getKey();
                 try {
-                    if (item.aulaID != null && !item.aulaID.isEmpty())
+                    if (item.aulaID != null && !item.aulaID.isEmpty() && item.status != FeedItem.STATUS_SHOWED)
                         findClassById(item.aulaID, new ICallback<ClassObject>() {
                             @Override
                             public void execute(ClassObject param) {
@@ -522,47 +535,29 @@ public class DAO implements IRemote {
 
     public void getLocationFromAddress(ClassObject classe) {
 
-        Geocoder coder = new Geocoder(ctx);
-        List<Address> address;
-
 
         try {
-            address = coder.getFromLocationName(classe.getAddress(), 5);
-            if (address == null) {
-                return;
-            }
-            if (address.size() > 0) {
-                Address location = address.get(0);
-                classe.setLat(location.getLatitude());
-                classe.setLon(location.getLongitude());
-            }
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(classe.getAddress()));
 
-        } catch (IOException e) {
+                classe.setLat(source.latitude);
+                classe.setLon(source.longitude);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void getLocationFromAddress(User user) {
 
-        Geocoder coder = new Geocoder(ctx);
-        List<Address> address;
-
-
         try {
-            address = coder.getFromLocationName(user.local, 5);
-            if (address == null) {
-                return;
-            }
-            if (address.size() > 0) {
-                Address location = address.get(0);
-                user.lat = (location.getLatitude());
-                user.lon = (location.getLongitude());
-            }
-
-        } catch (IOException e) {
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(user.local));
+            user.lat = (source.latitude);
+            user.lon = (source.longitude);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void deleteClass(ClassObject classObject, final ICallback callback) {
@@ -693,26 +688,71 @@ public class DAO implements IRemote {
     public void findUserByTag(final List<String> tags, final ICallback<User> callback) {
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
         Query q = ref.orderByKey();
-        System.out.println("dddddddddddddddddd");
-
         q.addChildEventListener(new ChildEventListener() {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                        System.out.println("eeeeeeeeeeeeeeeeeeeee");
                                         User user = dataSnapshot.getValue(User.class);
                                         for (String tag : tags) {
-                                            System.out.println("ffffffffffffffffff");
-
                                             if (user.tags == null || user.tags.isEmpty()) break;
                                             for (String utag : user.tags) {
                                                 if (utag.toLowerCase().equals(tag.toLowerCase())) {
-                                                    System.out.println("gggggggggggggggggg");
                                                     callback.execute(user);
                                                     break;
                                                 }
 
                                             }
                                         }
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                }
+
+        );
+    }
+
+    public void findUserWithinDistance(final Double latitude, final Double longitude, final ICallback<User> callback) {
+        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+        Query q = ref.orderByKey();
+        q.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        if (user.lat == null || user.lon == null) {
+
+                                            Location startPoint = new Location("user");
+                                            startPoint.setLatitude(user.getLat());
+                                            startPoint.setLongitude(user.getLon());
+
+                                            Location endPoint = new Location("class");
+                                            endPoint.setLatitude(latitude);
+                                            endPoint.setLongitude(longitude);
+
+                                            int distance = (int) startPoint.distanceTo(endPoint);
+
+                                            if (distance <= user.classRange)
+                                                callback.execute(user);
+
+                                        }
+
 
                                     }
 
