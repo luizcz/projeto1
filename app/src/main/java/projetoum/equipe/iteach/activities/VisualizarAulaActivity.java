@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -208,43 +209,65 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                if (((User) param).getUserId().equals(mClass.getTeacherId())) {
+                if (param.getUserId().equals(mClass.getTeacherId())) {
                     participar.setVisibility(View.GONE);
+                }
+
+                if (param.getLat() != null && param.getLon() != null && mClass.getLat() != null && mClass.getLon() != null) {
+
+                    Location startPoint = new Location("user");
+                    startPoint.setLatitude(param.getLat());
+                    startPoint.setLongitude(param.getLon());
+
+                    Location endPoint = new Location("class");
+                    endPoint.setLatitude(mClass.getLat());
+                    endPoint.setLongitude(mClass.getLon());
+
+                    double distance = startPoint.distanceTo(endPoint) / 1000;
+
+                    DecimalFormat df = new DecimalFormat("#0.0");
+                    aula_mapa_dist.setText("Distancia " + String.valueOf(df.format(distance / 1000)) + " Km");
+                } else {
+                    aula_mapa_dist.setText("Distancia desconhecida");
                 }
             }
         });
-        if (MainActivity.mLastLocation != null && mClass.getLat() != null && mClass.getLon() != null) {
-            LatLng myPosition = new LatLng(mClass.getLat(), mClass.getLon());
-            LatLng placePosition = new LatLng(MainActivity.mLastLocation.getLatitude(), MainActivity.mLastLocation.getLongitude());
-            double distance = SphericalUtil.computeDistanceBetween(myPosition, placePosition);
-            DecimalFormat df = new DecimalFormat("#0.00");
-            aula_mapa_dist.setText("Distancia " + String.valueOf(df.format(distance / 1000)) + " Km");
-        } else {
-            aula_mapa_dist.setText("Distancia desconhecida");
-        }
+
+
         aula_nome_professor.setText(mClass.getName());
 //        aula_rating.setRating(aulaSelecionada.getRating());
         aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
 
-        dao.countVagaOcupadasClass(getIntent().getExtras().getString("aula_id"), new ICallback<Long>() {
-            @Override
-            public void execute(Long param) {
-                String total = "";
-                total = param.toString() + "/" + String.valueOf(mClass.getSlots());
-                aula_vagas.setText("Vagas ocupadas: " + total);
-            }
-        });
+        dao.countVagaOcupadasClass(getIntent().getExtras().getString("aula_id"),
+                new ICallback<Long>() {
+                    @Override
+                    public void execute(Long param) {
+                        String total = "";
+                        total = param.toString() + "/" + String.valueOf(mClass.getSlots());
+                        aula_vagas.setText("Vagas ocupadas: " + total);
+                    }
+                }
+
+        );
 
         String valor = mClass.getValorFormatado();
-        if (valor.equals("0")) {
+        if (valor.equals("0"))
+
+        {
             aula_valor.setText("Valor: " + getResources().getString(R.string.free));
-        } else {
+        } else
+
+        {
             aula_valor.setText("Valor: " + valor);
         }
 
-        if (mClass.getDiasSemana() != null) {
+        if (mClass.getDiasSemana() != null)
+
+        {
             aula_data.setText("Data: " + mClass.getDiasSemana().toString());
-        } else {
+        } else
+
+        {
             aula_data.setText("Data: Não informado");
         }
 

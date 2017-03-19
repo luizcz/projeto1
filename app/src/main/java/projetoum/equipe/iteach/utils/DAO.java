@@ -736,7 +736,7 @@ public class DAO implements IRemote {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                         User user = dataSnapshot.getValue(User.class);
-                                        if (user.lat == null || user.lon == null) {
+                                        if (user.lat != null && user.lon != null) {
 
                                             Location startPoint = new Location("user");
                                             startPoint.setLatitude(user.getLat());
