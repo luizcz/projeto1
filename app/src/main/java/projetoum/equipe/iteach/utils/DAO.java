@@ -299,6 +299,7 @@ public class DAO implements IRemote {
                         findClassById(item.aulaID, new ICallback<ClassObject>() {
                             @Override
                             public void execute(ClassObject param) {
+                                param.setId(item.aulaID);
                                 item.setAula(param);
                                 adapter.add(item);
                                 if (ctx instanceof MainActivity)
