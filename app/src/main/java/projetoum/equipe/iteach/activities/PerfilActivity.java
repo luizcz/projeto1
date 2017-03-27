@@ -10,9 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.vision.text.Text;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class PerfilActivity extends DrawerActivity {
     private RecyclerView ministroListView;
     private ClassAdapter listParticipoAdapter;
     private ClassAdapter listMinistroAdapter;
+    private RatingBar ratingBarSmall;
 
 
     @Override
@@ -51,6 +55,7 @@ public class PerfilActivity extends DrawerActivity {
         local = ((TextView) findViewById(R.id.label_local));
         bio = ((TextView) findViewById(R.id.label_info));
         img = (ImageView) findViewById(R.id.card_aula_img);
+        ratingBarSmall = (RatingBar) findViewById(R.id.ratingBarSmal);
 
 
         participoListView = (RecyclerView) findViewById( R.id.recycler_participo );
@@ -87,10 +92,13 @@ public class PerfilActivity extends DrawerActivity {
         name.setTypeface(giz);
 
         if (getIntent().hasExtra("id")) {
-
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
                 @Override
                 public void execute(User param) {
+                    if(param.getUserId() == null){
+                        param.userId = getIntent().getStringExtra("id");
+                    }
+                    preencherAvalie(param);
                     carregarClassesMinistro(param.userId);
                     name.setText(pattern(param.name));
                     local.setText("Endereço: " + param.getLocal());
@@ -106,6 +114,7 @@ public class PerfilActivity extends DrawerActivity {
             });
 
         } else {
+            findViewById(R.id.frame_avaliacao).setVisibility(View.GONE);
             dao.getCurrentUser(new ICallback<User>() {
                 @Override
                 public void execute(User param) {
@@ -125,6 +134,35 @@ public class PerfilActivity extends DrawerActivity {
             });
         }
     }
+
+    private void preencherAvalie(final User professor){
+        findViewById(R.id.st_avalie).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(((TextView)view).getText().toString().equals("Editar")){
+                    ratingBarSmall.setIsIndicator(false);
+                    ((TextView)view).setText("Avalie");
+                }else {
+                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor, new ICallback<Double>() {
+                        @Override
+                        public void execute(Double param) {
+                            //Toast.makeText(getApplicationContext(), "Deu certo", Toast.LENGTH_LONG).show();
+                            mudarParaEditar(param);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void mudarParaEditar(Double nota){
+        ratingBarSmall.setRating(nota.floatValue());
+        ratingBarSmall.setIsIndicator(true);
+        TextView avalie = (TextView) findViewById(R.id.st_avalie);
+        avalie.setText("Editar");
+    }
+
+
 
     private String pattern(String displayName) {
         String pattern = "";

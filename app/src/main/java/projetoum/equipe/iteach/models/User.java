@@ -33,12 +33,14 @@ public class User {
     public List<String> tags;
     public String highResURI;
     private String lowResURI;
+    public List<Double> notas;
+
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses,List<FeedItem> myFeed, String bio, String creationDate, String accountId, String local, String telefone) {
+    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses,List<FeedItem> myFeed, String bio, String creationDate, String accountId, String local, String telefone, List<Double> notas) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -53,6 +55,7 @@ public class User {
         this.accountId = accountId;
         this.local = local;
         this.telefone = telefone;
+        this.notas = notas;
     }
 
     public User(String userId, String name, String email) {
@@ -85,6 +88,7 @@ public class User {
         result.put("creationDate", creationDate);
         result.put("accountId", accountId);
         result.put("firstTime", firstTime);
+        result.put("notas", notas);
         return result;
     }
 
@@ -210,6 +214,14 @@ public class User {
 
     public void setMyClasses(List<String> myClasses) {
         this.myClasses = myClasses;
+    }
+
+    public List<Double> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Double> notas) {
+        this.notas = notas;
     }
 
     @Override

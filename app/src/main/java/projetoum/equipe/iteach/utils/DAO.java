@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -989,6 +990,28 @@ public class DAO implements IRemote {
     }
 
 
+    public void findUserByIdOnce(String id, final ICallback callback) {
+        FirebaseDatabase database = getFirebaseInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_USER + "/" + id);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                try {
+                    callback.execute(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(null);
+            }
+        });
+    }
+
+
     @Override
     public void loadFirstTeachers(final UserAdapter adapter) {
         DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
@@ -1043,6 +1066,31 @@ public class DAO implements IRemote {
 
     }
 
+    public void avaliarProfessor(final String idProfessor, String idAluno, final Double nota, User professor, final ICallback<Double> callback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("professor-aluno");
+        DatabaseReference newUserClass = ref.child(idProfessor);
+        newUserClass.child(idAluno).setValue(nota);
+        findUserByIdOnce(idProfessor, new ICallback() {
+            @Override
+            public void execute(Object param) {
+                User prof = (User)param;
+                if(prof.getUserId() == null){
+                    prof.userId = idProfessor;
+                }
+                if(prof.getNotas() == null){
+                    prof.setNotas(new ArrayList<Double>());
+                }
+                prof.getNotas().add(nota);
+                updateUser(prof, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+                        callback.execute(nota);
+                    }
+                });
+            }
+        });
+    }
+
     public FirebaseAuth getAuth() {
         return mAuth;
     }
@@ -1070,6 +1118,7 @@ public class DAO implements IRemote {
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
     }
 
     public FirebaseDatabase getFirebaseInstance() {
