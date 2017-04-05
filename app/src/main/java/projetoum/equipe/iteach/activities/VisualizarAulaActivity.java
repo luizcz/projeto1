@@ -114,7 +114,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                                                 if (user != null) {
                                                     FeedItem feed = user.feed.get(user.feed.size() - 1);
                                                     if (!(feed.aulaID == aula.getId() && feed.subtype == FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE)) {
-                                                        user.feed.add(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE, FeedItem.STATUS_SHOWING));
+                                                        user.addOnFeed(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE, FeedItem.STATUS_SHOWING));
                                                         dao.updateUser(user, new ICallback<Integer>() {
                                                             @Override
                                                             public void execute(Integer result) {

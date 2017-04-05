@@ -40,7 +40,7 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses,List<FeedItem> myFeed, String bio, String creationDate, String accountId, String local, String telefone, List<Double> notas) {
+    public User(String userId, String name, String email, Double lat, Double lon, List<String> favoriteClasses, List<String> enrolledClasses, List<String> myClasses, List<FeedItem> myFeed, String bio, String creationDate, String accountId, String local, String telefone, List<Double> notas) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -64,7 +64,7 @@ public class User {
         this.email = email;
     }
 
-    public User(String userId, String name, String email,String lowResURI,String creationDate, Boolean firstTime) {
+    public User(String userId, String name, String email, String lowResURI, String creationDate, Boolean firstTime) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -247,6 +247,10 @@ public class User {
         if (!getCreationDate().equals(user.getCreationDate())) return false;
         return getAccountId() != null ? getAccountId().equals(user.getAccountId()) : user.getAccountId() == null;
 
+    }
+
+    public void addOnFeed(FeedItem item) {
+        if (!feed.contains(item)) feed.add(item);
     }
 
 

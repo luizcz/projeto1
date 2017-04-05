@@ -578,6 +578,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     professor.setMyClasses(new ArrayList<String>());
                 if (!professor.getMyClasses().contains(param.toString())) {
                     professor.getMyClasses().add(param.toString());
+                    professor.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE, FeedItem.STATUS_SHOWING));
                     dao.updateUser(professor, new ICallback() {
                         @Override
                         public void execute(Object param) {
@@ -590,7 +591,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     dao.findUserByTag(classe.getTags(), new ICallback<User>() {
                         @Override
                         public void execute(User param) {
-                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_TAG, FeedItem.STATUS_SHOWING));
+                            param.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_TAG, FeedItem.STATUS_SHOWING));
                             dao.updateUser(param, new ICallback() {
                                 @Override
                                 public void execute(Object param) {
@@ -603,7 +604,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     dao.findUserWithinDistance(classe.getLat(), classe.getLon(), new ICallback<User>() {
                         @Override
                         public void execute(User param) {
-                            param.feed.add(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
+                            param.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
                             dao.updateUser(param, new ICallback() {
                                 @Override
                                 public void execute(Object param) {
