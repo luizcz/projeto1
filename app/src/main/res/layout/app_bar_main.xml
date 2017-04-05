@@ -24,18 +24,5 @@
     <include layout="@layout/content_main"
         android:id="@+id/include" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:clickable="true"
-        android:layout_margin="15dp"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_class"
-        android:id="@+id/floatingActionButton"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|right"
-        android:layout_gravity="top|left"
-        android:onClick="onClick"/>
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -25,4 +25,18 @@
         layout="@layout/content_minhas_aulas"
         android:id="@+id/include" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:clickable="true"
+        android:layout_margin="15dp"
+        app:fabSize="mini"
+        app:backgroundTint="#4d4d4d"
+        app:srcCompat="@drawable/plus"
+        android:id="@+id/floatingActionButton"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="bottom|right"
+        android:layout_gravity="top|left"
+        android:onClick="onClick"/>
+
 </android.support.design.widget.CoordinatorLayout>

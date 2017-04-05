@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,7 @@ import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
-public class MinhasAulasActivity extends DrawerActivity {
+public class MinhasAulasActivity extends DrawerActivity implements View.OnClickListener{
 
     private RecyclerView mainListView;
     private ClassAdapter listAdapter;
@@ -79,6 +80,15 @@ public class MinhasAulasActivity extends DrawerActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.floatingActionButton:
+                startActivity(new Intent(this, CadastroAulaActivity.class));
+                break;
+        }
     }
 
 

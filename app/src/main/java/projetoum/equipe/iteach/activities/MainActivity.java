@@ -47,7 +47,7 @@ import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class MainActivity extends DrawerActivity
-        implements GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private ICallback<Boolean> updateUI;
@@ -141,30 +141,6 @@ public class MainActivity extends DrawerActivity
             mGoogleApiClient.disconnect();
         }
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.floatingActionButton:
-                startActivity(new Intent(this, CadastroAulaActivity.class));
-                break;
-          /*  case R.id.sign_in_button:
-                signIn();
-                break;
-            case R.id.sign_out_and_disconnect:
-                signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                break;
-            case R.id.put:
-                dao.fillFeed();
-            case R.id.bt_edt_perfil:
-                startActivity(new Intent(this, CadastroActivity.class));
-                finish();
-                break;*/
-        }
-    }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
