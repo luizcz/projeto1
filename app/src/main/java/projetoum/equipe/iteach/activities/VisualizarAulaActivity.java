@@ -64,6 +64,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private ImageView class_image;
     private ImageView teacher_image;
     private Button participar;
+    private Button deixar;
 
 
     @Override
@@ -83,81 +84,129 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         builder.setTitle("Confirmação");
         builder.setMessage("Deseja se increver nessa aula?");
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
-                        DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
-                        newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
-                        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
-                        final DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
-                        newClassUser.child(dao.getFireBaseUser().getUid()).setValue(true);
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+                DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
+                newUserClass.child(getIntent().getExtras().getString("aula_id")).setValue(true);
+                DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+                final DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
+                newClassUser.child(dao.getFireBaseUser().getUid()).setValue(true);
 
-                        dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
-                                    @Override
-                                    public void execute(ClassObject param) {
-                                        if (param.getAlunos() == null)
-                                            param.setAlunos(new ArrayList<String>());
-                                        if (param.getAlunos().contains(dao.getFireBaseUser().getUid())) {
-                                            Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
-                                            return;
-                                        } else {
-                                            param.getAlunos().add(dao.getFireBaseUser().getUid());
-                                            param.setId(getIntent().getExtras().getString("aula_id"));
-                                            final ClassObject aula = param;
-                                            dao.updateClass(param, new ICallback<Integer>() {
-                                                @Override
-                                                public void execute(Integer result) {
-                                                    if (result == Constants.REQUEST_OK) {
-                                                        Toast.makeText(getApplicationContext(), "Matriculado com sucesso nessa classe.", Toast.LENGTH_LONG).show();
-                                                        dao.getCurrentUser(new ICallback<User>() {
+
+                dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
+                    @Override
+                    public void execute(ClassObject param) {
+                        if (param.getAlunos() == null)
+                            param.setAlunos(new ArrayList<String>());
+                        if (param.getAlunos().contains(dao.getFireBaseUser().getUid())) {
+                            Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            param.getAlunos().add(dao.getFireBaseUser().getUid());
+                            param.setId(getIntent().getExtras().getString("aula_id"));
+                            final ClassObject aula = param;
+                            dao.updateClass(param, new ICallback<Integer>() {
+                                @Override
+                                public void execute(Integer result) {
+                                    if (result == Constants.REQUEST_OK) {
+                                        Toast.makeText(getApplicationContext(), "Matriculado com sucesso nessa classe.", Toast.LENGTH_LONG).show();
+                                        dao.getCurrentUser(new ICallback<User>() {
+                                            @Override
+                                            public void execute(User user) {
+                                                if (user != null) {
+                                                    int count = user.feed.size();
+                                                    user.addOnFeed(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE, FeedItem.STATUS_SHOWING));
+                                                    if (count != user.feed.size()) {
+                                                        dao.updateUser(user, new ICallback<Integer>() {
                                                             @Override
-                                                            public void execute(User user) {
-                                                                if (user != null) {
-                                                                    int count = user.feed.size();
-                                                                    user.addOnFeed(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_SUBSCRIBE, FeedItem.STATUS_SHOWING));
-                                                                    if (count != user.feed.size()) {
-                                                                        dao.updateUser(user, new ICallback<Integer>() {
-                                                                            @Override
-                                                                            public void execute(Integer result) {
-                                                                                if (result == Constants.REQUEST_OK) {
-                                                                                    Log.d("Visualizar Aula", "User atualizado");
-                                                                                }
-
-                                                                            }
-                                                                        });
-
-                                                                    }
+                                                            public void execute(Integer result) {
+                                                                if (result == Constants.REQUEST_OK) {
+                                                                    Log.d("Visualizar Aula", "User atualizado");
                                                                 }
+
                                                             }
                                                         });
-                                                    } else
-
-                                                    {
 
                                                     }
                                                 }
-                                            });
-                                        }
+                                            }
+                                        });
                                     }
                                 }
-
-                        );
-                        dialog.dismiss();
+                            });
+                        }
                     }
-                }
+                });
 
-        );
+                dialog.dismiss();
+            }
+        });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
 
-                {
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+
+        AlertDialog.Builder builderCancelar = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+
+        builderCancelar.setTitle("Confirmação");
+        builderCancelar.setMessage("Deseja se cancelar inscrição nessa aula?");
+        builderCancelar.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+                DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
+                newUserClass.child(getIntent().getExtras().getString("aula_id")).removeValue();
+                DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+                final DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
+                newClassUser.child(dao.getFireBaseUser().getUid()).removeValue();
+
+                dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing
-                        dialog.dismiss();
-                    }
-                }
+                    public void execute(ClassObject param) {
+                        param.getAlunos().remove(dao.getFireBaseUser().getUid());
+                        param.setId(getIntent().getExtras().getString("aula_id"));
+                        final ClassObject aula = param;
+                        dao.updateClass(param, new ICallback<Integer>() {
+                            @Override
+                            public void execute(Integer result) {
+                                if (result == Constants.REQUEST_OK) {
+                                    Log.d("Sair", "Saiu");
+                                    participar.setVisibility(View.VISIBLE);
+                                    deixar.setVisibility(View.GONE);
+                                } else {
 
-        );
+                                }
+                            }
+                        });
+
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
+
+        builderCancelar.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        dao.findUserClass(dao.getFireBaseUser().getUid(), getIntent().getExtras().getString("aula_id"), new ICallback<Boolean>() {
+            @Override
+            public void execute(Boolean param) {
+                if (param != null && param) {
+                    participar.setVisibility(View.GONE);
+                    deixar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         final AlertDialog alert = builder.create();
         participar = (Button)
@@ -166,14 +215,27 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
         participar.setOnClickListener(new View.OnClickListener()
 
-                                      {
-                                          @Override
-                                          public void onClick(View v) {
-                                              alert.show();
-                                          }
-                                      }
-
-        );
+        {
+            @Override
+            public void onClick(View v) {
+                alert.show();
+            }
+        });
+        participar = (Button) findViewById(R.id.aula_botao_participar);
+        participar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alert.show();
+            }
+        });
+        final AlertDialog alertCancel = builderCancelar.create();
+        deixar = (Button) findViewById(R.id.aula_botao_deixar);
+        deixar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertCancel.show();
+            }
+        });
 
 
         teacher_image = (ImageView)

@@ -286,7 +286,6 @@ public class DAO implements IRemote {
                             public void execute(ClassObject param) {
                                 param.setId(item.aulaID);
                                 item.setAula(param);
-                                System.out.println("Adiconado");
                                 adapter.add(item);
                                 if (ctx instanceof MainActivity)
                                     ((MainActivity) ctx).refreshFeedCount();
@@ -979,6 +978,22 @@ public class DAO implements IRemote {
         });
     }
 
+    public void findUserClass(String idUser, String idClass, final ICallback<Boolean> callback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+        DatabaseReference newUserClass = ref.child(idUser).child(idClass);
+        newUserClass.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(dataSnapshot.getValue(Boolean.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     public void findUserByIdOnce(String id, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
@@ -1056,7 +1071,7 @@ public class DAO implements IRemote {
 
     }
 
-    public void avaliarProfessor(final String idProfessor, String idAluno, final Double nota, User professor, final ICallback<Double> callback) {
+    public void avaliarProfessor(final String idProfessor, String idAluno, final Double nota, User professor,final Double atua, final ICallback<Double> callback){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("professor-aluno");
         DatabaseReference newUserClass = ref.child(idProfessor);
         newUserClass.child(idAluno).setValue(nota);
@@ -1071,6 +1086,9 @@ public class DAO implements IRemote {
                     prof.setNotas(new ArrayList<Double>());
                 }
                 prof.getNotas().add(nota);
+                if(prof.getNotas().contains(atua)){
+                    prof.getNotas().remove(atua);
+                }
                 updateUser(prof, new ICallback() {
                     @Override
                     public void execute(Object param) {
@@ -1079,6 +1097,23 @@ public class DAO implements IRemote {
                 });
             }
         });
+    }
+
+    public void carregarNota(final String idProfessor, String idAluno , final ICallback<Double> callback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("professor-aluno");
+        DatabaseReference newUserClass = ref.child(idProfessor).child(idAluno);
+        newUserClass.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(dataSnapshot.getValue(double.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public FirebaseAuth getAuth() {
@@ -1110,6 +1145,8 @@ public class DAO implements IRemote {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
     }
+
+
 
     public FirebaseDatabase getFirebaseInstance() {
         if (mDatabase == null) {

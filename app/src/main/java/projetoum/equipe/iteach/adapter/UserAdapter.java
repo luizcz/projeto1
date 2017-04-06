@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -60,7 +61,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
         holder.bio.setText(usuarios.get(position).getBio());
 
+
         holder.membroSince.setText(usuarios.get(position).getCreationDate());
+        if(usuarios.get(position).getNotas() != null && usuarios.get(position).getNotas().size()>0){
+            holder.ratingProfessor.setRating(calcularMedia(usuarios.get(position).getNotas()).floatValue());
+            holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size())+" Avaliações");
+        }else {
+            holder.ratingProfessor.setVisibility(View.GONE);
+            holder.numAval.setText("Sem avaliações");
+        }
+
         if (usuarios.get(position).getLowResURI() != null && !usuarios.get(position).getLowResURI().isEmpty())
             Picasso.with(mContext).load(usuarios.get(position).getLowResURI()).fit().centerCrop().into(holder.img);
 
@@ -74,6 +84,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     }
 
+    private Double calcularMedia(List<Double> l){
+        Double soma = 0d;
+        for(Double a : l){
+            if(a != null){
+                soma += a;
+            }
+        }
+        return soma/l.size();
+    }
 
     @Override
     public int getItemCount() {
@@ -96,6 +115,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         TextView numAulas;
         TextView bio;
         TextView membroSince;
+        TextView numAval;
+        RatingBar ratingProfessor;
         CircleImageView img;
 
         UserViewHolder(View itemView) {
@@ -112,6 +133,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             bio = (TextView) itemView.findViewById(R.id.card_aula_name);
             membroSince = (TextView) itemView.findViewById(R.id.data_membro_desde);
             img = (CircleImageView) itemView.findViewById(R.id.img);
+            numAval = (TextView) itemView.findViewById(R.id.prof_num_aval);
+            ratingProfessor = (RatingBar) itemView.findViewById(R.id.aula_rating);
 
 
 
