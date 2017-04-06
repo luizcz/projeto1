@@ -83,7 +83,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
         builder.setTitle("Confirmação");
         builder.setMessage("Deseja se increver nessa aula?");
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
@@ -109,6 +109,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                                 public void execute(Integer result) {
                                     if (result == Constants.REQUEST_OK) {
                                         Toast.makeText(getApplicationContext(), "Matriculado com sucesso nessa classe.", Toast.LENGTH_LONG).show();
+                                        participar.setVisibility(View.GONE);
+                                        deixar.setVisibility(View.VISIBLE);
                                         dao.getCurrentUser(new ICallback<User>() {
                                             @Override
                                             public void execute(User user) {
@@ -141,7 +143,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing
@@ -149,6 +151,62 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
+
+        AlertDialog.Builder builderCancelar = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+
+        builderCancelar.setTitle("Confirmação");
+        builderCancelar.setMessage("Deseja se cancelar inscrição nessa aula?");
+        builderCancelar.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+                DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
+                newUserClass.child(getIntent().getExtras().getString("aula_id")).removeValue();
+                DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+                final DatabaseReference newClassUser = refClass.child(getIntent().getExtras().getString("aula_id"));
+                newClassUser.child(dao.getFireBaseUser().getUid()).removeValue();
+
+                dao.findClassByIdOnce(getIntent().getExtras().getString("aula_id"), new ICallback<ClassObject>() {
+                    @Override
+                    public void execute(ClassObject param) {
+                        param.getAlunos().remove(dao.getFireBaseUser().getUid());
+                        param.setId(getIntent().getExtras().getString("aula_id"));
+                        final ClassObject aula = param;
+                        dao.updateClass(param, new ICallback<Integer>() {
+                            @Override
+                            public void execute(Integer result) {
+                                if (result == Constants.REQUEST_OK) {
+                                    Log.d("Sair","Saiu");
+                                    participar.setVisibility(View.VISIBLE);
+                                    deixar.setVisibility(View.GONE);
+                                } else {
+
+                                }
+                            }
+                        });
+
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
+
+        builderCancelar.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        dao.findUserClass(dao.getFireBaseUser().getUid(), getIntent().getExtras().getString("aula_id"), new ICallback<Boolean>() {
+            @Override
+            public void execute(Boolean param) {
+                if(param != null && param){
+                    participar.setVisibility(View.GONE);
+                    deixar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         final AlertDialog alert = builder.create();
         participar = (Button) findViewById(R.id.aula_botao_participar);
@@ -158,7 +216,15 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 alert.show();
             }
         });
+        final AlertDialog alertCancel = builderCancelar.create();
         deixar = (Button) findViewById(R.id.aula_botao_deixar);
+        deixar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertCancel.show();
+            }
+        });
+
 
 
         teacher_image = (ImageView) findViewById(R.id.profile_image);

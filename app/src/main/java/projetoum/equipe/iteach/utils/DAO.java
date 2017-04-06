@@ -989,8 +989,20 @@ public class DAO implements IRemote {
         });
     }
 
-    public void findUserClass(){
-        
+    public void findUserClass(String idUser, String idClass, final ICallback<Boolean> callback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
+        DatabaseReference newUserClass = ref.child(idUser).child(idClass);
+        newUserClass.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(dataSnapshot.getValue(Boolean.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
