@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,32 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 if (param!= null && param.myClasses != null) holder.numAulas.setText(param.myClasses.size());
             }
         });*/
-        holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
+       /* final ArrayList<ClassObject> classes = new ArrayList<>();
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                Log.e("teste",usuarios.get(position).userId);
+                dao.findClassesByUser(usuarios.get(position).userId, new ICallback<List<String>>() {
+                    @Override
+                    public void execute(List<String> param) {
+                        for (String classId: param){
+                            dao.findClassById(classId, new ICallback<ClassObject>() {
+                                @Override
+                                public void execute(ClassObject param) {
+                                    classes.add(param);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+        */
+       if(usuarios.get(position).getMyClasses() != null) {
+           holder.numAulas.setText(Integer.toString(usuarios.get(position).getMyClasses().size()));
+       }else{
+           holder.numAulas.setText("0");
+       }
         holder.bio.setText(usuarios.get(position).getBio());
 
 
