@@ -63,7 +63,7 @@ public class PerfilActivity extends DrawerActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 
-        participoListView = (RecyclerView) findViewById( R.id.recycler_participo );
+        participoListView = (RecyclerView) findViewById(R.id.recycler_participo);
 //        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
 //        tem_aulas = (TextView) findViewById(R.id.tem_aulas);
 
@@ -76,7 +76,7 @@ public class PerfilActivity extends DrawerActivity {
 
         participoListView.setAdapter(listParticipoAdapter);
 
-        ministroListView = (RecyclerView) findViewById( R.id.recycler_ministro);
+        ministroListView = (RecyclerView) findViewById(R.id.recycler_ministro);
 //        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
 //        tem_aulas = (TextView) findViewById(R.id.tem_aulas);
 
@@ -97,22 +97,27 @@ public class PerfilActivity extends DrawerActivity {
         name.setTypeface(giz);
 
 
-
         if (getIntent().hasExtra("id")) {
             findViewById(R.id.frame_avaliacao).setVisibility(View.GONE);
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
                 @Override
                 public void execute(User param) {
-                    if(param.getUserId() == null){
+                    if (param.getUserId() == null) {
                         param.userId = getIntent().getStringExtra("id");
                     }
                     dao.carregarNota(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), new ICallback<Double>() {
                         @Override
                         public void execute(Double param) {
-                            if(param != null){
+                            if (param != null) {
                                 mudarParaEditar(param);
                             }
-                            findViewById(R.id.frame_avaliacao).setVisibility(View.VISIBLE);
+
+                            if (getIntent().getStringExtra("id") != null && !getIntent().getStringExtra("id").
+                                    equals(dao.getFireBaseUser().getUid())) {
+                                findViewById(R.id.frame_avaliacao).setVisibility(View.VISIBLE);
+                            }
+
+
                         }
                     });
                     preencherAvalie(param);
@@ -121,9 +126,9 @@ public class PerfilActivity extends DrawerActivity {
                     name.setText(pattern(param.name));
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
-                    if(param.getNotas() != null && param.getNotas().size()>0){
-                        ratingBar.setRating( calcularMedia(param.getNotas()).floatValue());
-                    }else{
+                    if (param.getNotas() != null && param.getNotas().size() > 0) {
+                        ratingBar.setRating(calcularMedia(param.getNotas()).floatValue());
+                    } else {
                         ratingBar.setVisibility(View.GONE);
                     }
                     if (param.highResURI != null && !param.highResURI.isEmpty())
@@ -146,9 +151,9 @@ public class PerfilActivity extends DrawerActivity {
                     name.setText(pattern(param.name));
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
-                    if(param.getNotas() != null && param.getNotas().size()>0){
-                        ratingBar.setRating( calcularMedia(param.getNotas()).floatValue());
-                    }else{
+                    if (param.getNotas() != null && param.getNotas().size() > 0) {
+                        ratingBar.setRating(calcularMedia(param.getNotas()).floatValue());
+                    } else {
                         ratingBar.setVisibility(View.GONE);
                     }
                     if (param.highResURI != null && !param.highResURI.isEmpty())
@@ -163,7 +168,7 @@ public class PerfilActivity extends DrawerActivity {
         }
     }
 
-    private void carregarImagemAvalie(){
+    private void carregarImagemAvalie() {
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
@@ -177,28 +182,28 @@ public class PerfilActivity extends DrawerActivity {
         });
     }
 
-    private Double calcularMedia(List<Double> l){
+    private Double calcularMedia(List<Double> l) {
         Double soma = 0d;
-        for(Double a : l){
-            if(a != null){
+        for (Double a : l) {
+            if (a != null) {
                 soma += a;
             }
         }
-        return soma/l.size();
+        return soma / l.size();
     }
 
-    private void preencherAvalie(final User professor){
+    private void preencherAvalie(final User professor) {
         findViewById(R.id.st_avalie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(((TextView)view).getText().toString().equals("Editar")){
+                if (((TextView) view).getText().toString().equals("Editar")) {
                     ratingBarSmall.setIsIndicator(false);
-                    atual = (double)ratingBarSmall.getRating();
-                    ((TextView)view).setText("Avalie");
-                    ((TextView)view).setTextColor(Color.parseColor("#000000"));
-                    ((RelativeLayout)findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#FFFFFF"));
-                }else {
-                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor,atual, new ICallback<Double>() {
+                    atual = (double) ratingBarSmall.getRating();
+                    ((TextView) view).setText("Avalie");
+                    ((TextView) view).setTextColor(Color.parseColor("#000000"));
+                    ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                } else {
+                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor, atual, new ICallback<Double>() {
                         @Override
                         public void execute(Double param) {
                             //Toast.makeText(getApplicationContext(), "Deu certo", Toast.LENGTH_LONG).show();
@@ -210,16 +215,15 @@ public class PerfilActivity extends DrawerActivity {
         });
     }
 
-    private void mudarParaEditar(Double nota){
+    private void mudarParaEditar(Double nota) {
         ratingBarSmall.setRating(nota.floatValue());
         ratingBarSmall.setIsIndicator(true);
         TextView avalie = (TextView) findViewById(R.id.st_avalie);
-        ((RelativeLayout)findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#000000"));
+        ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#000000"));
         avalie.setText("Editar");
         avalie.setTextColor(Color.parseColor("#FFFFFF"));
         ratingBar.setVisibility(View.VISIBLE);
     }
-
 
 
     private String pattern(String displayName) {
@@ -259,32 +263,32 @@ public class PerfilActivity extends DrawerActivity {
     }
 
     private void carregarClassesParticipo(String id) {
-                dao.findClassesByUser(id, new ICallback<List<String>>() {
-                    @Override
-                    public void execute(List<String> param) {
-                        for (String classId: param){
-                            dao.findClassById(classId, new ICallback<ClassObject>() {
-                                @Override
-                                public void execute(ClassObject param) {
-                                    classes.add(param);
-                                    listParticipoAdapter.setClasses(classes);
-                                    listParticipoAdapter.notifyItemInserted(classes.size()-1);
+        dao.findClassesByUser(id, new ICallback<List<String>>() {
+            @Override
+            public void execute(List<String> param) {
+                for (String classId : param) {
+                    dao.findClassById(classId, new ICallback<ClassObject>() {
+                        @Override
+                        public void execute(ClassObject param) {
+                            classes.add(param);
+                            listParticipoAdapter.setClasses(classes);
+                            listParticipoAdapter.notifyItemInserted(classes.size() - 1);
 
-                                    if(classes.size() > 0){
-                                        findViewById(R.id.ll_aluno).setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            });
+                            if (classes.size() > 0) {
+                                findViewById(R.id.ll_aluno).setVisibility(View.VISIBLE);
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            }
+        });
     }
 
     private void carregarClassesMinistro(String id) {
         dao.findUserById(id, new ICallback() {
             @Override
             public void execute(Object param) {
-                if(((User)param).getMyClasses() != null) {
+                if (((User) param).getMyClasses() != null) {
                     for (String classId : ((User) param).getMyClasses()) {
                         dao.findClassById(classId, new ICallback<ClassObject>() {
                             @Override
