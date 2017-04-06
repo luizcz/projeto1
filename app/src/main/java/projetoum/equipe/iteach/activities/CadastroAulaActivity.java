@@ -572,7 +572,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private void criarClasse(final ClassObject classe) {
         dao.createClass(classe, new ICallback() {
             @Override
-            public void execute(Object param) {
+            public void execute(final Object param) {
 
                 if (professor.getMyClasses() == null)
                     professor.setMyClasses(new ArrayList<String>());
@@ -588,31 +588,48 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 }
                 progressBar.setVisibility(View.GONE);
                 if (param != null) {
-                    dao.findUserByTag(classe.getTags(), new ICallback<User>() {
-                        @Override
-                        public void execute(User param) {
-                            param.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_TAG, FeedItem.STATUS_SHOWING));
-                            dao.updateUser(param, new ICallback() {
-                                @Override
-                                public void execute(Object param) {
 
+                    dao.getCurrentUser(new ICallback<User>() {
+                        @Override
+                        public void execute(final User current) {
+
+                            dao.findUserByTag(classe.getTags(), new ICallback<User>() {
+                                @Override
+                                public void execute(User user) {
+                                    if (user.getUserId() != current.getUserId()) {
+
+                                        user.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_TAG, FeedItem.STATUS_SHOWING));
+                                        dao.updateUser(user, new ICallback() {
+                                            @Override
+                                            public void execute(Object param) {
+
+                                            }
+                                        });
+                                    }
                                 }
                             });
+
+                            dao.findUserWithinDistance(classe.getLat(), classe.getLon(), new ICallback<User>() {
+                                @Override
+                                public void execute(User user) {
+                                    if (user.getUserId() != current.getUserId()) {
+
+                                        user.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
+                                        dao.updateUser(user, new ICallback() {
+                                            @Override
+                                            public void execute(Object param) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+
                         }
                     });
 
-                    dao.findUserWithinDistance(classe.getLat(), classe.getLon(), new ICallback<User>() {
-                        @Override
-                        public void execute(User param) {
-                            param.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
-                            dao.updateUser(param, new ICallback() {
-                                @Override
-                                public void execute(Object param) {
 
-                                }
-                            });
-                        }
-                    });
                     Toast.makeText(CadastroAulaActivity.this, "Aula cadastrada com sucesso", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(CadastroAulaActivity.this, VisualizarAulaActivity.class);
                     intent.putExtra("aula_id", param.toString());

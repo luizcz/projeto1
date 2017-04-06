@@ -241,10 +241,12 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void add(FeedItem item) {
-        mDataset.add(0, item);
-        notifyItemInserted(0);
-        notifyDataSetChanged();
-        notifyItemRangeChanged(0, mDataset.size());
+        if (!mDataset.contains(item)) {
+            mDataset.add(0, item);
+            notifyItemInserted(0);
+            notifyDataSetChanged();
+            notifyItemRangeChanged(0, mDataset.size());
+        }
     }
 
 
@@ -267,7 +269,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                List<FeedItem>temp = mDataset;
+                List<FeedItem> temp = mDataset;
                 temp.remove(pos);
                 param.feed = temp;
                 dao.updateUser(param, new ICallback() {
@@ -289,7 +291,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (position >= 0) {
             mDataset.set(position, item);
             notifyDataSetChanged();
-           // notifyItemRangeChanged(0, mDataset.size());
+            notifyItemRangeChanged(0, mDataset.size());
         }
     }
 }

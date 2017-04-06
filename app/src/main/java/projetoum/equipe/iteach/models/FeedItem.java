@@ -56,7 +56,7 @@ public class FeedItem {
         if (o == null || getClass() != o.getClass()) return false;
 
         FeedItem feedItem = (FeedItem) o;
-        if (feedItem.type == type && feedItem.status == status && feedItem.subtype == subtype)
+        if (feedItem.type == type && feedItem.status == status && feedItem.subtype == subtype && feedItem.aulaID == aulaID)
             return true;
 
         if (id != null && feedItem.id != null)
@@ -65,5 +65,8 @@ public class FeedItem {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "id "+id+"subtype "+subtype+"type "+type+"status "+status;
+    }
 }

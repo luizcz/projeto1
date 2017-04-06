@@ -2,8 +2,6 @@ package projetoum.equipe.iteach.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -28,28 +26,14 @@ import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import projetoum.equipe.iteach.activities.MainActivity;
+import projetoum.equipe.iteach.activities.SearchActivity;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.FeedAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
@@ -302,6 +286,7 @@ public class DAO implements IRemote {
                             public void execute(ClassObject param) {
                                 param.setId(item.aulaID);
                                 item.setAula(param);
+                                System.out.println("Adiconado");
                                 adapter.add(item);
                                 if (ctx instanceof MainActivity)
                                     ((MainActivity) ctx).refreshFeedCount();
@@ -539,10 +524,10 @@ public class DAO implements IRemote {
 
 
         try {
-            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(classe.getAddress()));
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(classe.getAddress().trim()));
 
-                classe.setLat(source.latitude);
-                classe.setLon(source.longitude);
+            classe.setLat(source.latitude);
+            classe.setLon(source.longitude);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -552,7 +537,7 @@ public class DAO implements IRemote {
     public void getLocationFromAddress(User user) {
 
         try {
-            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(user.local));
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(user.local.trim()));
             user.lat = (source.latitude);
             user.lon = (source.longitude);
         } catch (Exception e) {
@@ -732,54 +717,56 @@ public class DAO implements IRemote {
     }
 
     public void findUserWithinDistance(final Double latitude, final Double longitude, final ICallback<User> callback) {
-        DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
-        Query q = ref.orderByKey();
-        q.addChildEventListener(new ChildEventListener() {
-                                    @Override
-                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                        User user = dataSnapshot.getValue(User.class);
-                                        if (user.lat != null && user.lon != null) {
+        if (latitude != null && longitude != null) {
+            DatabaseReference ref = getFirebaseInstance().getReference(Constants.FIREBASE_LOCATION_USER);
+            Query q = ref.orderByKey();
+            q.addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                            User user = dataSnapshot.getValue(User.class);
+                                            if (user.lat != null && user.lon != null) {
 
-                                            Location startPoint = new Location("user");
-                                            startPoint.setLatitude(user.getLat());
-                                            startPoint.setLongitude(user.getLon());
+                                                Location startPoint = new Location("user");
+                                                startPoint.setLatitude(user.getLat());
+                                                startPoint.setLongitude(user.getLon());
 
-                                            Location endPoint = new Location("class");
-                                            endPoint.setLatitude(latitude);
-                                            endPoint.setLongitude(longitude);
+                                                Location endPoint = new Location("class");
+                                                endPoint.setLatitude(latitude);
+                                                endPoint.setLongitude(longitude);
 
-                                            int distance = (int) startPoint.distanceTo(endPoint);
+                                                int distance = (int) startPoint.distanceTo(endPoint);
 
-                                            if (distance <= user.classRange)
-                                                callback.execute(user);
+                                                if (distance <= user.classRange)
+                                                    callback.execute(user);
+
+                                            }
+
 
                                         }
 
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
                                     }
 
-                                    @Override
-                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                                    }
-
-                                    @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                                    }
-
-                                    @Override
-                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                }
-
-        );
+            );
+        }
     }
 
     @Override
@@ -878,7 +865,8 @@ public class DAO implements IRemote {
                     if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
                         ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
                         classObject.setId(dataSnapshot.getKey());
-                        adapter.add(classObject);
+                        if (ctx instanceof SearchActivity)
+                            adapter.add(classObject);
                     }
                 } catch (NullPointerException e) {
 
@@ -890,7 +878,8 @@ public class DAO implements IRemote {
                 if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
                     ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
                     classObject.setId(dataSnapshot.getKey());
-                    adapter.update(classObject);
+                    if (ctx instanceof SearchActivity)
+                        adapter.update(classObject);
                 }
             }
 
@@ -899,7 +888,8 @@ public class DAO implements IRemote {
                 if (adapter.getItemCount() < Constants.MAX_ITEM_COUNT && ((String) dataSnapshot.child("name").getValue()).toLowerCase().contains(lower)) {
                     ClassObject classObject = dataSnapshot.getValue(ClassObject.class);
                     classObject.setId(dataSnapshot.getKey());
-                    adapter.remove(classObject);
+                    if (ctx instanceof SearchActivity)
+                        adapter.remove(classObject);
                 }
             }
 
@@ -1066,18 +1056,18 @@ public class DAO implements IRemote {
 
     }
 
-    public void avaliarProfessor(final String idProfessor, String idAluno, final Double nota, User professor, final ICallback<Double> callback){
+    public void avaliarProfessor(final String idProfessor, String idAluno, final Double nota, User professor, final ICallback<Double> callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("professor-aluno");
         DatabaseReference newUserClass = ref.child(idProfessor);
         newUserClass.child(idAluno).setValue(nota);
         findUserByIdOnce(idProfessor, new ICallback() {
             @Override
             public void execute(Object param) {
-                User prof = (User)param;
-                if(prof.getUserId() == null){
+                User prof = (User) param;
+                if (prof.getUserId() == null) {
                     prof.userId = idProfessor;
                 }
-                if(prof.getNotas() == null){
+                if (prof.getNotas() == null) {
                     prof.setNotas(new ArrayList<Double>());
                 }
                 prof.getNotas().add(nota);
