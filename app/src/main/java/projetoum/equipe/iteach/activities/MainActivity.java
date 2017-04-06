@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,6 +73,30 @@ public class MainActivity extends DrawerActivity
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(mLayoutManager);
         recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
+
+
+
+        ItemTouchHelper mIth = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        return true;// true if moved, false otherwise
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        ((FeedAdapter)recycler.getAdapter()).removeAt(viewHolder.getAdapterPosition());
+                    }
+                });
+
+        mIth.attachToRecyclerView(recycler);
+
+
+
         dao.loadFeed((FeedAdapter) recycler.getAdapter());
 
         FacebookSdk.sdkInitialize(getApplicationContext());

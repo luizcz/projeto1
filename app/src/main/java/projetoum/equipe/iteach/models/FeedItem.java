@@ -56,9 +56,13 @@ public class FeedItem {
         if (o == null || getClass() != o.getClass()) return false;
 
         FeedItem feedItem = (FeedItem) o;
+        if (feedItem.type == type && feedItem.status == status && feedItem.subtype == subtype)
+            return true;
 
-        return id.equals(feedItem.id);
+        if (id != null && feedItem.id != null)
+            return id.equals(feedItem.id);
 
+        return false;
     }
 
 
