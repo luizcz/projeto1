@@ -155,7 +155,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         AlertDialog.Builder builderCancelar = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
 
         builderCancelar.setTitle("Confirmação");
-        builderCancelar.setMessage("Deseja se cancelar inscrição nessa aula?");
+        builderCancelar.setMessage("Deseja cancelar inscrição nessa aula?");
         builderCancelar.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
@@ -176,6 +176,27 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                             public void execute(Integer result) {
                                 if (result == Constants.REQUEST_OK) {
                                     Log.d("Sair", "Saiu");
+                                    dao.getCurrentUser(new ICallback<User>() {
+                                        @Override
+                                        public void execute(User user) {
+                                            if (user != null) {
+                                                int count = user.feed.size();
+                                                user.addOnFeed(new FeedItem(aula, FeedItem.TYPE_CLASS_SUBTYPE_OUT, FeedItem.STATUS_SHOWING));
+                                                if (count != user.feed.size()) {
+                                                    dao.updateUser(user, new ICallback<Integer>() {
+                                                        @Override
+                                                        public void execute(Integer result) {
+                                                            if (result == Constants.REQUEST_OK) {
+                                                                Log.d("Visualizar Aula", "User atualizado");
+                                                            }
+
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    });
                                     participar.setVisibility(View.VISIBLE);
                                     deixar.setVisibility(View.GONE);
                                 } else {

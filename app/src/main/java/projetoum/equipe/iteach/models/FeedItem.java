@@ -14,6 +14,7 @@ public class FeedItem {
     public static final int TYPE_CLASS_SUBTYPE_TAG = 1;
     public static final int TYPE_CLASS_SUBTYPE_CHANGE = 2;
     public static final int TYPE_CLASS_SUBTYPE_LOCATION = 3;
+    public static final int TYPE_CLASS_SUBTYPE_OUT = 4;
     public static final int TYPE_FRIEND = 1;
     public static final int STATUS_SHOWING = 0;
     public static final int STATUS_SHOWED = 1;

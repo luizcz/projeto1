@@ -139,6 +139,7 @@
     <string name="feed_card_class_alert">Esta aula sofreu mudanças</string>
     <string name="feed_card_class_announce">Nova aula de seu interesse</string>
     <string name="feed_card_class_distance">Nova aula perto de você</string>
+    <string name="feed_card_class_sair">Você foi desvinculado da turma</string>
 
 
 </resources>

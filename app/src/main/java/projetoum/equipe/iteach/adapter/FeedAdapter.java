@@ -141,6 +141,10 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                         ((ClassViewHolder) holder).type_text.setText(mContext.getResources().getString(R.string.feed_card_class_distance));
                         ((ClassViewHolder) holder).type_img.setImageResource(R.drawable.ic_pin_small);
                         break;
+                    case FeedItem.TYPE_CLASS_SUBTYPE_OUT:
+                        ((ClassViewHolder) holder).type_text.setText(mContext.getResources().getString(R.string.feed_card_class_sair));
+                        ((ClassViewHolder) holder).type_img.setImageResource(R.drawable.ic_exit);
+                        break;
                 }
                 break;
             case FeedItem.TYPE_FRIEND:
