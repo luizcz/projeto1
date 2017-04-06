@@ -64,6 +64,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     private ImageView class_image;
     private ImageView teacher_image;
     private Button participar;
+    private Button deixar;
 
 
     @Override
@@ -148,6 +149,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
+
         final AlertDialog alert = builder.create();
         participar = (Button) findViewById(R.id.aula_botao_participar);
         participar.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +158,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                 alert.show();
             }
         });
+        deixar = (Button) findViewById(R.id.aula_botao_deixar);
 
 
         teacher_image = (ImageView) findViewById(R.id.profile_image);

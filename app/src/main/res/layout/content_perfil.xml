@@ -123,6 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="@color/cardview_light_background"
+                    android:id="@+id/fundo_avaliar"
                     android:alpha="0.5"
                     android:layout_marginTop="35dp"
                     android:layout_gravity="center_horizontal">

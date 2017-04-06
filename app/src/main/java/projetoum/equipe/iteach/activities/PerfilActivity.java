@@ -1,6 +1,7 @@
 package projetoum.equipe.iteach.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,8 @@ public class PerfilActivity extends DrawerActivity {
     private ClassAdapter listParticipoAdapter;
     private ClassAdapter listMinistroAdapter;
     private RatingBar ratingBarSmall;
+    private RatingBar ratingBar;
+    private Double atual;
 
 
     @Override
@@ -56,6 +60,7 @@ public class PerfilActivity extends DrawerActivity {
         bio = ((TextView) findViewById(R.id.label_info));
         img = (ImageView) findViewById(R.id.card_aula_img);
         ratingBarSmall = (RatingBar) findViewById(R.id.ratingBarSmal);
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 
         participoListView = (RecyclerView) findViewById( R.id.recycler_participo );
@@ -91,18 +96,36 @@ public class PerfilActivity extends DrawerActivity {
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
         name.setTypeface(giz);
 
+
+
         if (getIntent().hasExtra("id")) {
+            findViewById(R.id.frame_avaliacao).setVisibility(View.GONE);
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
                 @Override
                 public void execute(User param) {
                     if(param.getUserId() == null){
                         param.userId = getIntent().getStringExtra("id");
                     }
+                    dao.carregarNota(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), new ICallback<Double>() {
+                        @Override
+                        public void execute(Double param) {
+                            if(param != null){
+                                mudarParaEditar(param);
+                            }
+                            findViewById(R.id.frame_avaliacao).setVisibility(View.VISIBLE);
+                        }
+                    });
                     preencherAvalie(param);
+                    carregarImagemAvalie();
                     carregarClassesMinistro(param.userId);
                     name.setText(pattern(param.name));
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
+                    if(param.getNotas() != null && param.getNotas().size()>0){
+                        ratingBar.setRating( calcularMedia(param.getNotas()).floatValue());
+                    }else{
+                        ratingBar.setVisibility(View.GONE);
+                    }
                     if (param.highResURI != null && !param.highResURI.isEmpty())
                         Picasso.with(getBaseContext()).load(param.highResURI).fit().
                                 centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
@@ -123,6 +146,11 @@ public class PerfilActivity extends DrawerActivity {
                     name.setText(pattern(param.name));
                     local.setText("Endereço: " + param.getLocal());
                     bio.setText("Bio: " + param.getBio());
+                    if(param.getNotas() != null && param.getNotas().size()>0){
+                        ratingBar.setRating( calcularMedia(param.getNotas()).floatValue());
+                    }else{
+                        ratingBar.setVisibility(View.GONE);
+                    }
                     if (param.highResURI != null && !param.highResURI.isEmpty())
                         Picasso.with(getBaseContext()).load(param.highResURI).fit().
                                 centerCrop().into((ImageView) findViewById(R.id.card_aula_img));
@@ -135,15 +163,42 @@ public class PerfilActivity extends DrawerActivity {
         }
     }
 
+    private void carregarImagemAvalie(){
+        dao.getCurrentUser(new ICallback<User>() {
+            @Override
+            public void execute(User param) {
+                if (param.highResURI != null && !param.highResURI.isEmpty())
+                    Picasso.with(getBaseContext()).load(param.highResURI).fit().
+                            centerCrop().into((ImageView) findViewById(R.id.imagem_usuario_avaliacao));
+                else
+                    Picasso.with(getBaseContext()).load(param.getLowResURI()).fit().
+                            centerCrop().into((ImageView) findViewById(R.id.imagem_usuario_avaliacao));
+            }
+        });
+    }
+
+    private Double calcularMedia(List<Double> l){
+        Double soma = 0d;
+        for(Double a : l){
+            if(a != null){
+                soma += a;
+            }
+        }
+        return soma/l.size();
+    }
+
     private void preencherAvalie(final User professor){
         findViewById(R.id.st_avalie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(((TextView)view).getText().toString().equals("Editar")){
                     ratingBarSmall.setIsIndicator(false);
+                    atual = (double)ratingBarSmall.getRating();
                     ((TextView)view).setText("Avalie");
+                    ((TextView)view).setTextColor(Color.parseColor("#000000"));
+                    ((RelativeLayout)findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#FFFFFF"));
                 }else {
-                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor, new ICallback<Double>() {
+                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor,atual, new ICallback<Double>() {
                         @Override
                         public void execute(Double param) {
                             //Toast.makeText(getApplicationContext(), "Deu certo", Toast.LENGTH_LONG).show();
@@ -159,7 +214,10 @@ public class PerfilActivity extends DrawerActivity {
         ratingBarSmall.setRating(nota.floatValue());
         ratingBarSmall.setIsIndicator(true);
         TextView avalie = (TextView) findViewById(R.id.st_avalie);
+        ((RelativeLayout)findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#000000"));
         avalie.setText("Editar");
+        avalie.setTextColor(Color.parseColor("#FFFFFF"));
+        ratingBar.setVisibility(View.VISIBLE);
     }
 
 
