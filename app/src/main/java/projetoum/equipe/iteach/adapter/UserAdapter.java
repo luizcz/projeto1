@@ -27,6 +27,7 @@ import java.util.Random;
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.PerfilActivity;
+import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
@@ -55,18 +56,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     @Override
-    public void onBindViewHolder(UserViewHolder holder, final int position) {
+    public void onBindViewHolder(final UserViewHolder holder, final int position) {
 
         holder.nomeUser.setText(usuarios.get(position).getName());
+/*            @Override
+            public void execute(User param) {
+                if (param!= null && param.myClasses != null) holder.numAulas.setText(param.myClasses.size());
+            }
+        });*/
         holder.numAulas.setText(String.valueOf(new Random().nextInt(100)));
         holder.bio.setText(usuarios.get(position).getBio());
 
 
         holder.membroSince.setText(usuarios.get(position).getCreationDate());
-        if(usuarios.get(position).getNotas() != null && usuarios.get(position).getNotas().size()>0){
+        if (usuarios.get(position).getNotas() != null && usuarios.get(position).getNotas().size() > 0) {
             holder.ratingProfessor.setRating(calcularMedia(usuarios.get(position).getNotas()).floatValue());
-            holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size())+" Avaliações");
-        }else {
+            holder.ratingProfessor.setVisibility(View.VISIBLE);
+            if (usuarios.get(position).getNotas().size() == 1) {
+                holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size()) + " Avaliação");
+            } else {
+                holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size()) + " Avaliações");
+            }
+        } else {
             holder.ratingProfessor.setVisibility(View.GONE);
             holder.numAval.setText("Sem avaliações");
         }
@@ -78,20 +89,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, PerfilActivity.class).putExtra("id",usuarios.get(position).getUserId()));
+                mContext.startActivity(new Intent(mContext, PerfilActivity.class).putExtra("id", usuarios.get(position).getUserId()));
             }
         });
 
     }
 
-    private Double calcularMedia(List<Double> l){
+    private Double calcularMedia(List<Double> l) {
         Double soma = 0d;
-        for(Double a : l){
-            if(a != null){
+        for (Double a : l) {
+            if (a != null) {
                 soma += a;
             }
         }
-        return soma/l.size();
+        return soma / l.size();
     }
 
     @Override
@@ -102,6 +113,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public void onViewRecycled(UserViewHolder holder) {
         holder.nomeUser.setText("");
+        holder.numAulas.setText("-");
+        holder.ratingProfessor.setVisibility(View.GONE);
+        holder.numAval.setText("Sem avaliações");
         super.onViewRecycled(holder);
     }
 
@@ -135,7 +149,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             img = (CircleImageView) itemView.findViewById(R.id.img);
             numAval = (TextView) itemView.findViewById(R.id.prof_num_aval);
             ratingProfessor = (RatingBar) itemView.findViewById(R.id.aula_rating);
-
 
 
         }
