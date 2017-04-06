@@ -54,8 +54,6 @@
     </style>
 
 
-
-
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>

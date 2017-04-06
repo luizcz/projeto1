@@ -63,12 +63,14 @@ public class DrawerActivity extends AppCompatActivity
             intent.putExtra("busca", "user");
             startActivity(intent);
             finish();
-
-        } else if (id == R.id.nav_logout && id != navId) {
-            dao.signOut();
-            startActivity(new Intent(this, LoginActivity.class));
+        } else if (id == R.id.nav_about && id != navId) {
+            Intent intent = new Intent(this, SobreActivity.class);
+            startActivity(intent);
             finish();
 
+        } else if (id == R.id.nav_logout && id != navId) {
+            startActivity(new Intent(this,SobreActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
