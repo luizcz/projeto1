@@ -42,19 +42,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/card_aula_img"
-                android:layout_alignEnd="@+id/prof_name"
-                android:layout_alignRight="@+id/prof_name"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
                 android:text="Mussum Ipsum, cacilds vidis litro abertis. Detraxit consequat et quo num tendi nada. Não sou faixa ... "
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:layout_toRightOf="@+id/img"
-                android:layout_toEndOf="@+id/img"
                 android:layout_below="@+id/prof_name"
                 android:paddingTop="5dp"
                 android:maxLines="4"
-                android:paddingBottom="15dp" />
+                android:paddingBottom="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
 
             <RelativeLayout
