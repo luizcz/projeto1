@@ -104,6 +104,8 @@ public class PerfilActivity extends DrawerActivity {
                 public void execute(User param) {
                     if (param.getUserId() == null) {
                         param.userId = getIntent().getStringExtra("id");
+                    } else {
+                        uncheckAll();
                     }
                     dao.carregarNota(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), new ICallback<Double>() {
                         @Override
