@@ -102,6 +102,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                 if(user.getUserId().equals(dao.getFireBaseUser().getUid())){
                     holder.aula_prof_name.setTextColor(Color.GREEN);
                     holder.logo_professor.setColorFilter(Color.GREEN);
+                }else{
+                    holder.aula_prof_name.setTextColor(Color.WHITE);
+                    holder.logo_professor.setColorFilter(Color.WHITE);
                 }
             }
         });
