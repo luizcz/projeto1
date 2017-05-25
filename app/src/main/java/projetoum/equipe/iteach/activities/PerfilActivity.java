@@ -37,9 +37,7 @@ public class PerfilActivity extends DrawerActivity {
     private ProgressBar spinner;
     private List<ClassObject> classes;
     private List<ClassObject> classesMinistro;
-    private RecyclerView participoListView;
     private RecyclerView ministroListView;
-    private ClassAdapter listParticipoAdapter;
     private ClassAdapter listMinistroAdapter;
     private RatingBar ratingBarSmall;
     private RatingBar ratingBar;
@@ -63,18 +61,12 @@ public class PerfilActivity extends DrawerActivity {
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 
-        participoListView = (RecyclerView) findViewById(R.id.recycler_participo);
+
 //        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
 //        tem_aulas = (TextView) findViewById(R.id.tem_aulas);
 
-        listParticipoAdapter = new ClassAdapter(this);
-        participoListView.setHasFixedSize(true);
-
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        participoListView.setLayoutManager(mLayoutManager);
-
-        participoListView.setAdapter(listParticipoAdapter);
 
         ministroListView = (RecyclerView) findViewById(R.id.recycler_ministro);
 //        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
@@ -268,16 +260,19 @@ public class PerfilActivity extends DrawerActivity {
         dao.findClassesByUser(id, new ICallback<List<String>>() {
             @Override
             public void execute(List<String> param) {
-                for (String classId : param) {
+                for (final String classId : param) {
                     dao.findClassById(classId, new ICallback<ClassObject>() {
                         @Override
                         public void execute(ClassObject param) {
-                            classes.add(param);
-                            listParticipoAdapter.setClasses(classes);
-                            listParticipoAdapter.notifyItemInserted(classes.size() - 1);
+                            if (param != null) {
+                                param.setId(classId);
+                                classesMinistro.add(param);
+                                listMinistroAdapter.setClasses(classesMinistro);
+                                listMinistroAdapter.notifyItemInserted(classesMinistro.size() - 1);
 
-                            if (classes.size() > 0) {
-                                findViewById(R.id.ll_aluno).setVisibility(View.VISIBLE);
+                                if (classes.size() > 0) {
+                                    findViewById(R.id.ll_aluno).setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                     });
@@ -291,11 +286,12 @@ public class PerfilActivity extends DrawerActivity {
             @Override
             public void execute(Object param) {
                 if (((User) param).getMyClasses() != null) {
-                    for (String classId : ((User) param).getMyClasses()) {
+                    for (final String classId : ((User) param).getMyClasses()) {
                         dao.findClassById(classId, new ICallback<ClassObject>() {
                             @Override
                             public void execute(ClassObject param) {
                                 if (param != null) {
+                                    param.setId(classId);
                                     classesMinistro.add(param);
                                     listMinistroAdapter.setClasses(classesMinistro);
                                     listMinistroAdapter.notifyItemInserted(classesMinistro.size() - 1);

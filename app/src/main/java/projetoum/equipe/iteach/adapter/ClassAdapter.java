@@ -2,6 +2,7 @@ package projetoum.equipe.iteach.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -98,6 +99,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             public void execute(Object param) {
                 User user = (User) param;
                 holder.aula_prof_name.setText(user.getName());
+                if(user.getUserId().equals(dao.getFireBaseUser().getUid())){
+                    holder.aula_prof_name.setTextColor(Color.GREEN);
+                    holder.logo_professor.setColorFilter(Color.GREEN);
+                }else{
+                    holder.aula_prof_name.setTextColor(Color.WHITE);
+                    holder.logo_professor.setColorFilter(Color.WHITE);
+                }
             }
         });
 
@@ -127,6 +135,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         CardView cv;
         ImageView card_aula_img;
+        ImageView logo_professor;
         TextView aula_dist;
         TextView aula_prof_name;
         TextView aula_name;
@@ -149,6 +158,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             aula_name = (TextView) itemView.findViewById(R.id.card_aula_name);
             aula_desc = (TextView) itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView) itemView.findViewById(R.id.card_aula_valor);
+            logo_professor = (ImageView) itemView.findViewById(R.id.image_professor_card_aula);
 
 
         }
