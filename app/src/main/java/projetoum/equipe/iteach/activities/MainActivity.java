@@ -244,7 +244,6 @@ public class MainActivity extends DrawerActivity
                     }
                 });
 
-            } else {
             }
         }
     }

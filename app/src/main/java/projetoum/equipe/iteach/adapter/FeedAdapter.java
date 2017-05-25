@@ -29,6 +29,7 @@ import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 
 public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -60,7 +61,6 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
             case FeedItem.TYPE_FRIEND:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_aula_feed, parent, false);
                 return new FriendViewHolder(v);
-
         }
         return null;
     }
@@ -95,10 +95,9 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                             endPoint.setLatitude(mDataset.get(position).getAula().getLat());
                             endPoint.setLongitude(mDataset.get(position).getAula().getLon());
 
-                            double distance = startPoint.distanceTo(endPoint);
+                            double distanceInMeters = startPoint.distanceTo(endPoint);
 
-                            DecimalFormat df = new DecimalFormat("#0.0");
-                            ((ClassViewHolder) holder).aula_dist.setText(String.valueOf(df.format(distance / 1000)) + "Km");
+                            ((ClassViewHolder) holder).aula_dist.setText(getFormatedDistance(distanceInMeters));
 
                         } else {
                             ((ClassViewHolder) holder).aula_dist.setText("?");
@@ -150,38 +149,30 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
             case FeedItem.TYPE_FRIEND:
                 break;
         }
-
-
     }
 
+    private String getFormatedDistance(double distance) {
+        DecimalFormat df;
+        if (distance < Constants.KM_IN_METERS) {
+            df = new DecimalFormat("#3");
+            return String.valueOf(df.format(distance)) + "m";
+        } else {
+            df = new DecimalFormat("#0.0");
+            return String.valueOf(df.format(distance / Constants.KM_IN_METERS)) + "Km";
+        }
+    }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
 
-    /*@Override
-    public void onViewRecycled(ViewHolder holder) {
-        switch (holder.getItemViewType()) {
-            case FeedItem.TYPE_CLASS:
-                ((ClassAdapter.ClassViewHolder) holder).aula_dist.setText("");
-                ((ClassAdapter.ClassViewHolder) holder).aula_prof_name.setText("");
-                ((ClassAdapter.ClassViewHolder) holder).aula_name.setText("");
-                ((ClassAdapter.ClassViewHolder) holder).aula_desc.setText("");
-                ((ClassAdapter.ClassViewHolder) holder).aula_valor.setText("");
-                super.onViewRecycled(holder);
-                break;
-            case FeedItem.TYPE_FRIEND:
-                break;
-        }
-    }*/
-
     @Override
     public int getItemViewType(int position) {
         return mDataset.get(position).type;
     }
 
-    public class ClassViewHolder extends RecyclerView.ViewHolder {
+    private class ClassViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         ImageView card_aula_img;
         ImageView type_img;
@@ -191,7 +182,6 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
         TextView aula_name;
         TextView aula_desc;
         TextView aula_valor;
-
 
         ClassViewHolder(View itemView) {
             super(itemView);
@@ -210,8 +200,6 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
             aula_desc = (TextView) itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView) itemView.findViewById(R.id.card_aula_valor);
             type_text = (TextView) itemView.findViewById(R.id.type_text);
-
-
         }
     }
 
@@ -230,11 +218,8 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             btAdd = (TextView) itemView.findViewById(R.id.bt_add);
             edt = (EditText) itemView.findViewById(R.id.edt);*/
-
-
         }
     }
-
 
     public List<FeedItem> getDataset() {
         return mDataset;

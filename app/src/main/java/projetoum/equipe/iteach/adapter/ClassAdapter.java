@@ -26,6 +26,7 @@ import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.Sort;
 
@@ -82,10 +83,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                     endPoint.setLatitude(classes.get(position).getLat());
                     endPoint.setLongitude(classes.get(position).getLon());
 
-                    double distance = startPoint.distanceTo(endPoint) / 1000;
-
-                    DecimalFormat df = new DecimalFormat("#0.0");
-                    holder.aula_dist.setText(String.valueOf(df.format(distance)) + "Km");
+                    double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
+                    holder.aula_dist.setText(getFormatedDistance(distanceInMeters));
 
                 } else {
                     holder.aula_dist.setText("?");
@@ -113,15 +112,21 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     }
 
+    private String getFormatedDistance(double distance) {
+        DecimalFormat df;
+        if (distance < Constants.KM_IN_METERS) {
+            df = new DecimalFormat("#3");
+            return String.valueOf(df.format(distance)) + "m";
+        } else {
+            df = new DecimalFormat("#0.0");
+            return String.valueOf(df.format(distance / Constants.KM_IN_METERS)) + "Km";
+        }
+    }
+
     @Override
     public int getItemCount() {
         return classes.size();
     }
-
-//    public void addClass(ClassObject classObject) {
-//        classes.add(classObject);
-//        notifyDataSetChanged();
-//    }
 
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
 

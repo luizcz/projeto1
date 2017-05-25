@@ -78,7 +78,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar_cd_aula);
         init(R.id.nav_feed);
-        diasSemana = new ArrayList<String>();
+        diasSemana = new ArrayList<>();
         mReference = FirebaseStorage.getInstance().getReference();
 
 
@@ -548,7 +548,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.TimePickerTheme,
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -566,7 +565,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
-
     }
 
     private void criarClasse(final ClassObject classe) {
@@ -612,7 +610,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                             dao.findUserWithinDistance(classe.getLat(), classe.getLon(), new ICallback<User>() {
                                 @Override
                                 public void execute(User user) {
-                                    if (user.getUserId() != current.getUserId()) {
+                                    if (!user.getUserId().equals(current.getUserId())) {
 
                                         user.addOnFeed(new FeedItem(classe, FeedItem.TYPE_CLASS_SUBTYPE_LOCATION, FeedItem.STATUS_SHOWING));
                                         dao.updateUser(user, new ICallback() {
@@ -624,8 +622,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                                     }
                                 }
                             });
-
-
                         }
                     });
 
