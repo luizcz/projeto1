@@ -105,7 +105,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                             param.getAlunos().add(dao.getFireBaseUser().getUid());
                             param.setId(getIntent().getExtras().getString("aula_id"));
                             final ClassObject aula = param;
-                            dao.updateClass(param, new ICallback<Integer>() {
+                            dao.updateClassOnce(param, new ICallback<Integer>() {
                                 @Override
                                 public void execute(Integer result) {
                                     if (result == Constants.REQUEST_OK) {
@@ -131,6 +131,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                                                 }
                                             }
                                         });
+                                        participar.setVisibility(View.GONE);
+                                        deixar.setVisibility(View.VISIBLE);
                                     }
                                 }
                             });
@@ -171,11 +173,11 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                         param.getAlunos().remove(dao.getFireBaseUser().getUid());
                         param.setId(getIntent().getExtras().getString("aula_id"));
                         final ClassObject aula = param;
-                        dao.updateClass(param, new ICallback<Integer>() {
+                        dao.updateClassOnce(param, new ICallback<Integer>() {
                             @Override
                             public void execute(Integer result) {
                                 if (result == Constants.REQUEST_OK) {
-                                    Log.d("Sair", "Saiu");
+                                    Toast.makeText(getApplicationContext(), "Desvinculado com sucesso dessa classe.", Toast.LENGTH_LONG).show();
                                     dao.getCurrentUser(new ICallback<User>() {
                                         @Override
                                         public void execute(User user) {

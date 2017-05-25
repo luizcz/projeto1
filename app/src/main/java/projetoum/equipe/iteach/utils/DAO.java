@@ -587,6 +587,25 @@ public class DAO implements IRemote {
         myRef.setValue(classObject);
     }
 
+    public void updateClassOnce(ClassObject classObject, final ICallback callback) {
+        FirebaseDatabase database = getFirebaseInstance();
+        DatabaseReference myRef = database.getReference(Constants.FIREBASE_LOCATION_CLASS + "/" + classObject.getId());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                callback.execute(Constants.REQUEST_OK);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.execute(Constants.REQUEST_BAD);
+            }
+        });
+
+        myRef.setValue(classObject);
+    }
+
     @Override
     public void deleteClass(String classID, final ICallback callback) {
         FirebaseDatabase database = getFirebaseInstance();
