@@ -116,7 +116,6 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     protected void uncheckAll(){
-        System.out.println("aaaaaaaaaaaa ");
         navigationView.setCheckedItem(R.id.menu_none);
     }
 }

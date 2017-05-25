@@ -301,4 +301,10 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    protected void onPause() {
+        ((TagAdapter)recycler.getAdapter()).updateTags();
+        super.onPause();
+    }
 }
