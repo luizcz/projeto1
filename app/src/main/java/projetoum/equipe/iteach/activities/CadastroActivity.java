@@ -1,19 +1,30 @@
 package projetoum.equipe.iteach.activities;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
+
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.BrazilNumberFormatter;
 
 public class CadastroActivity extends DrawerActivity implements View.OnClickListener {
     User usuarioAtual;
     private EditText edtNome;
     private EditText edtTelefone;
+    private EditText edtTelefoneFormatted;
     private EditText edtLocal;
     private EditText edtBio;
     private Button btProximo;
@@ -28,8 +39,11 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
 
         edtNome = (EditText) findViewById(R.id.edt_nome);
         edtTelefone = (EditText) findViewById(R.id.edt_telefone);
+        BrazilNumberFormatter formatter = new BrazilNumberFormatter(new WeakReference<EditText>(edtTelefone));
+        edtTelefone.addTextChangedListener(formatter);
         edtLocal = (EditText) findViewById(R.id.edt_local);
         edtBio = (EditText) findViewById(R.id.edt_bio);
+
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
