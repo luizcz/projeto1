@@ -142,6 +142,16 @@
     <string name="feed_card_class_sair">Você foi desvinculado da turma</string>
     <string name="title_activity_sobre">SobreActivity</string>
     <string name="sem_avaliacoes">Sem avaliações.</string>
-
+    <string name="avaliacao">%d Avaliação</string>
+    <string name="avaliacoes">%d Avaliações</string>
+    <string name="busca_aulas">Busca Aulas</string>
+    <string name="busca_profs">Busca Professores</string>
+    <string name="dist_desconhecida">Distância desconhecida.</string>
+    <string name="distancia">Distância %s</string>
+    <string name="vagas_ocupadas">Vagas ocupadas: %s</string>
+    <string name="valor">Valor: %s</string>
+    <string name="valor_free">Valor: Grátis!</string>
+    <string name="data">Data: %s</string>
+    <string name="data_n_informada">Data não informada.</string>
 
 </resources>

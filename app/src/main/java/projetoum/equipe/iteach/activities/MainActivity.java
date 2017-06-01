@@ -213,9 +213,8 @@ public class MainActivity extends DrawerActivity
                 Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
-                    public void execute(User param) {
-                        User update = param;
-                        update.setLowResURI(dao.getFireBaseUser().getPhotoUrl().toString());
+                    public void execute(User user) {
+                        user.setLowResURI(dao.getFireBaseUser().getPhotoUrl().toString());
 
 
                         for (UserInfo profile : dao.getFireBaseUser().getProviderData()) {
@@ -225,8 +224,8 @@ public class MainActivity extends DrawerActivity
                             if (firstProvider.equals("facebook.com")) {
                                 String facebookUserId = profile.getUid();
                                 String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
-                                update.highResURI = photoUrl;
-                                dao.updateUser(param, new ICallback() {
+                                user.highResURI = photoUrl;
+                                dao.updateUser(user, new ICallback() {
                                     @Override
                                     public void execute(Object param) {
 

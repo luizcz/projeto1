@@ -220,6 +220,28 @@ public class User {
         return notas;
     }
 
+    public Double getRating() {
+        Double soma = 0d;
+        if (notas != null) {
+            for (Double a : notas) {
+                if (a != null) {
+                    soma += a;
+                }
+            }
+            return soma / notas.size();
+        } else {
+            return 0d;
+        }
+    }
+
+    public int getNumNotas() {
+        if (notas != null) {
+            return notas.size();
+        } else {
+            return 0;
+        }
+    }
+
     public void setNotas(List<Double> notas) {
         this.notas = notas;
     }

@@ -1,9 +1,5 @@
 package projetoum.equipe.iteach.adapter;
 
-/**
- * Created by treinamento-asus on 02/02/2017.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -95,13 +91,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
 
         holder.membroSince.setText(usuarios.get(position).getCreationDate());
-        if (usuarios.get(position).getNotas() != null && usuarios.get(position).getNotas().size() > 0) {
-            holder.ratingProfessor.setRating(calcularMedia(usuarios.get(position).getNotas()).floatValue());
+        if (usuarios.get(position).getNotas() != null && usuarios.get(position).getNumNotas() > 0) {
+            holder.ratingProfessor.setRating(usuarios.get(position).getRating().floatValue());
             holder.ratingProfessor.setVisibility(View.VISIBLE);
             if (usuarios.get(position).getNotas().size() == 1) {
-                holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size()) + " Avaliação");
+                holder.numAval.setText(mContext.getString(R.string.avaliacao,
+                        usuarios.get(position).getNumNotas()));
             } else {
-                holder.numAval.setText(String.valueOf(usuarios.get(position).getNotas().size()) + " Avaliações");
+                holder.numAval.setText(mContext.getString(R.string.avaliacoes,
+                        usuarios.get(position).getNumNotas()));
             }
         } else {
             holder.ratingProfessor.setVisibility(View.GONE);
@@ -119,16 +117,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
         });
 
-    }
-
-    private Double calcularMedia(List<Double> l) {
-        Double soma = 0d;
-        for (Double a : l) {
-            if (a != null) {
-                soma += a;
-            }
-        }
-        return soma / l.size();
     }
 
     @Override
@@ -217,10 +205,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 Collections.sort(usuarios, new SortByName());
                 notifyDataSetChanged();
                 break;
-//            case RATING:
-//                Collections.sort(classes, new SortByRating());
-//                notifyDataSetChanged();
-//                break;
+            case RATING:
+                Collections.sort(usuarios, new SortByRating());
+                notifyDataSetChanged();
+                break;
 //            case PRICE:
 //                Collections.sort(classes, new ClassAdapter.SortByPrice());
 //                notifyDataSetChanged();
@@ -243,14 +231,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
     }
 
-//    public class SortByCreationDate implements Comparator {
-//
-//        @Override
-//        public int compare(Object o1, Object o2) {
-//            User c1 = (User) o1;
-//            User c2 = (User) o2;
-//
-//            return c1.getCreationDate().compareTo(c2.getCreationDate());
-//        }
-//    }
+    private class SortByRating implements Comparator<User> {
+
+        @Override
+        public int compare(User user1, User user2) {
+            return user2.getRating().compareTo(user1.getRating());
+        }
+    }
+
 }

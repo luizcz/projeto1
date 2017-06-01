@@ -31,6 +31,7 @@ import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.LocationHelper;
 
 public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
     private List<FeedItem> mDataset;
@@ -97,7 +98,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
 
                             double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
 
-                            ((ClassViewHolder) holder).aula_dist.setText(getFormatedDistance(distanceInMeters));
+                            ((ClassViewHolder) holder).aula_dist.setText(LocationHelper.getFormatedDistance(distanceInMeters));
 
                         } else {
                             ((ClassViewHolder) holder).aula_dist.setText("?");
@@ -148,17 +149,6 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                 break;
             case FeedItem.TYPE_FRIEND:
                 break;
-        }
-    }
-
-    private String getFormatedDistance(double distance) {
-        DecimalFormat df;
-        if (distance < Constants.KM_IN_METERS) {
-            df = new DecimalFormat("#3");
-            return String.valueOf(df.format(distance)) + "m";
-        } else {
-            df = new DecimalFormat("#0.0");
-            return String.valueOf(df.format(distance / Constants.KM_IN_METERS)) + "Km";
         }
     }
 

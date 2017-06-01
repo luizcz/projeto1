@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 /**
  * Created by Victor on 19-Mar-17.
@@ -40,7 +41,6 @@ public class LocationHelper {
             while ((b = stream.read()) != -1) {
                 stringBuilder.append((char) b);
             }
-        } catch (ClientProtocolException e) {
         } catch (IOException e) {
         }
 
@@ -57,8 +57,8 @@ public class LocationHelper {
 
     public static LatLng getLatLng(JSONObject jsonObject) {
 
-        Double lon = new Double(0);
-        Double lat = new Double(0);
+        Double lon = 0d;
+        Double lat = 0d;
 
         try {
 
@@ -76,8 +76,22 @@ public class LocationHelper {
         }
 
         return new LatLng(lat, lon);
-
     }
 
-
+    /**
+     * Gets the distance formatted for displaying.
+     *
+     * @param distanceInMeters The distance in meters
+     * @return The formated distance
+     */
+    public static String getFormatedDistance(double distanceInMeters) {
+        DecimalFormat df;
+        if (distanceInMeters < Constants.KM_IN_METERS) {
+            df = new DecimalFormat("#3");
+            return String.valueOf(df.format(distanceInMeters)) + "m";
+        } else {
+            df = new DecimalFormat("#0.0");
+            return String.valueOf(df.format(distanceInMeters / Constants.KM_IN_METERS)) + "Km";
+        }
+    }
 }

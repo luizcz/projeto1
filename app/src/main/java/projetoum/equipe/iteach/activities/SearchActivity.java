@@ -3,6 +3,8 @@ package projetoum.equipe.iteach.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,32 +14,24 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import projetoum.equipe.iteach.R;
-import projetoum.equipe.iteach.fragments.SearchAulasFragment;
-import projetoum.equipe.iteach.fragments.SearchProfsFragment;
 import projetoum.equipe.iteach.adapter.ClassAdapter;
 import projetoum.equipe.iteach.adapter.UserAdapter;
+import projetoum.equipe.iteach.fragments.SearchAulasFragment;
+import projetoum.equipe.iteach.fragments.SearchProfsFragment;
 import projetoum.equipe.iteach.interfaces.ICallback;
-import projetoum.equipe.iteach.models.ClassObject;
-import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.Sort;
 
@@ -59,6 +53,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     public static final String SEARCH_AULAS_TAG = "SEARCH_AULAS_TAG";
     public static final String SEARCH_PROFS_TAG = "SEARCH_PROFS_TAG";
+    private Menu mMenu;
 
 
     @Override
@@ -142,7 +137,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        mMenu = menu;
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         // Associate searchable configuration with the SearchView
@@ -190,12 +185,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 return true;
             }
         });
+
+        changeMenuItems();
         return true;
     }
 
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -255,9 +252,9 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.alfa:
                 sortByAlpha();
                 break;
-//            case R.id.rating:
-//                sortByRating();
-//                break;
+            case R.id.rating:
+                sortByRating();
+                break;
             case R.id.price:
                 sortByPrice();
                 break;
@@ -278,32 +275,26 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     }
 
     private void sortByRating() {
-        if (currentFragment == searchAulasFragment){
-            classAdapter.sort(Sort.RATING);
-        } else {
-
+        if (currentFragment == searchProfsFragment){
+            userAdapter.sort(Sort.RATING);
         }
     }
 
     private void sortByPrice() {
         if (currentFragment == searchAulasFragment){
             classAdapter.sort(Sort.PRICE);
-        } else {
-
         }
     }
 
     private void sortByDistance() {
         if (currentFragment == searchAulasFragment){
             classAdapter.sort(Sort.DISTANCE);
-        } else {
-
         }
     }
 
     private void setUpClassFragment(){
         fragmentTransaction = fragmentManager.beginTransaction();
-        getSupportActionBar().setTitle("Busca Aulas");
+        getSupportActionBar().setTitle(R.string.busca_aulas);
         if (fragmentManager.findFragmentByTag(SEARCH_AULAS_TAG) == null) {
             fragmentTransaction.hide(currentFragment);
             fragmentTransaction.add(R.id.fragment_container, searchAulasFragment, SEARCH_AULAS_TAG);
@@ -314,11 +305,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         currentFragment = searchAulasFragment;
         lastFragment = R.id.nav_class;
         mRecyclerView.setAdapter(classAdapter);
+        changeMenuItems();
     }
 
     private void setUpProfFragment(){
         fragmentTransaction = fragmentManager.beginTransaction();
-        getSupportActionBar().setTitle("Busca Professores");
+        getSupportActionBar().setTitle(R.string.busca_profs);
         if (fragmentManager.findFragmentByTag(SEARCH_PROFS_TAG) == null) {
             fragmentTransaction.hide(currentFragment);
             fragmentTransaction.add(R.id.fragment_container, searchProfsFragment, SEARCH_PROFS_TAG);
@@ -329,6 +321,19 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         currentFragment = searchProfsFragment;
         lastFragment = R.id.nav_teacher;
         mRecyclerView.setAdapter(userAdapter);
+        changeMenuItems();
+    }
+
+    private void changeMenuItems() {
+        if (currentFragment == searchAulasFragment) {
+            mMenu.findItem(R.id.rating).setVisible(false);
+            mMenu.findItem(R.id.price).setVisible(true);
+            mMenu.findItem(R.id.dist).setVisible(true);
+        } else {
+            mMenu.findItem(R.id.rating).setVisible(true);
+            mMenu.findItem(R.id.price).setVisible(false);
+            mMenu.findItem(R.id.dist).setVisible(false);
+        }
     }
 
     @Override

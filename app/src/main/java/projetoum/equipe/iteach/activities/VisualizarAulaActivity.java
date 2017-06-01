@@ -41,6 +41,7 @@ import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
+import projetoum.equipe.iteach.utils.LocationHelper;
 
 import static projetoum.equipe.iteach.R.id.aula_mapa;
 
@@ -100,7 +101,6 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                             param.setAlunos(new ArrayList<String>());
                         if (param.getAlunos().contains(dao.getFireBaseUser().getUid())) {
                             Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
-                            return;
                         } else {
                             param.getAlunos().add(dao.getFireBaseUser().getUid());
                             param.setId(getIntent().getExtras().getString("aula_id"));
@@ -191,10 +191,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                                                             if (result == Constants.REQUEST_OK) {
                                                                 Log.d("Visualizar Aula", "User atualizado");
                                                             }
-
                                                         }
                                                     });
-
                                                 }
                                             }
                                         }
@@ -358,12 +356,11 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
                     endPoint.setLatitude(mClass.getLat());
                     endPoint.setLongitude(mClass.getLon());
 
-                    double distance = startPoint.distanceTo(endPoint) / 1000;
+                    double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
 
-                    DecimalFormat df = new DecimalFormat("#0.0");
-                    aula_mapa_dist.setText("Distancia " + String.valueOf(df.format(distance / 1000)) + " Km");
+                    aula_mapa_dist.setText(getString(R.string.distancia, LocationHelper.getFormatedDistance(distanceInMeters)));
                 } else {
-                    aula_mapa_dist.setText("Distancia desconhecida");
+                    aula_mapa_dist.setText(R.string.dist_desconhecida);
                 }
             }
         });
@@ -371,39 +368,29 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
 
         aula_nome_professor.setText(mClass.getName());
 //        aula_rating.setRating(aulaSelecionada.getRating());
-        aula_vagas.setText("Vagas ocupadas: " + String.valueOf(mClass.getSlots()));
+        aula_vagas.setText(getString(R.string.vagas_ocupadas, String.valueOf(mClass.getSlots())));
 
         dao.countVagaOcupadasClass(getIntent().getExtras().getString("aula_id"),
                 new ICallback<Long>() {
                     @Override
                     public void execute(Long param) {
-                        String total = "";
-                        total = param.toString() + "/" + String.valueOf(mClass.getSlots());
-                        aula_vagas.setText("Vagas ocupadas: " + total);
+                        String total = param.toString() + "/" + String.valueOf(mClass.getSlots());
+                        aula_vagas.setText(getString(R.string.vagas_ocupadas, total));
                     }
                 }
-
         );
 
         String valor = mClass.getValorFormatado();
-        if (valor.equals("0"))
-
-        {
-            aula_valor.setText("Valor: " + getResources().getString(R.string.free));
-        } else
-
-        {
-            aula_valor.setText("Valor: " + valor);
+        if (valor.equals("R$ 0")) {
+            aula_valor.setText(getString(R.string.valor_free));
+        } else {
+            aula_valor.setText(getString(R.string.valor, valor));
         }
 
-        if (mClass.getDiasSemana() != null)
-
-        {
-            aula_data.setText("Data: " + mClass.getDiasSemana().toString());
-        } else
-
-        {
-            aula_data.setText("Data: Não informado");
+        if (mClass.getDiasSemana() != null) {
+            aula_data.setText(getString(R.string.data, mClass.getDiasSemana().toString()));
+        } else {
+            aula_data.setText(R.string.data_n_informada);
         }
 
 
@@ -460,8 +447,7 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
             protected Bitmap doInBackground(Void... params) {
                 try {
                     URL url = new URL(imgUrl);
-                    Bitmap classImg = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    return classImg;
+                    return BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
