@@ -75,7 +75,7 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
         if (v.getId() == R.id.bt_salvar_perfil) {
             carregarDadosUsuario();
             usuarioAtual.setFirstTime(false);
-            dao.updateUser(usuarioAtual, new ICallback() {
+            dao.updateUserOnce(usuarioAtual, new ICallback() {
                 @Override
                 public void execute(Object param) {
                     startActivity(new Intent(CadastroActivity.this, PreferenciasActivity.class));
