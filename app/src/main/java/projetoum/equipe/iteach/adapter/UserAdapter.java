@@ -105,7 +105,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
         } else {
             holder.ratingProfessor.setVisibility(View.GONE);
-            holder.numAval.setText("Sem avaliações");
+            holder.numAval.setText(R.string.sem_avaliacoes);
         }
 
         if (usuarios.get(position).getLowResURI() != null && !usuarios.get(position).getLowResURI().isEmpty())
@@ -141,7 +141,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.nomeUser.setText("");
         holder.numAulas.setText("-");
         holder.ratingProfessor.setVisibility(View.GONE);
-        holder.numAval.setText("Sem avaliações");
+        holder.numAval.setText(R.string.sem_avaliacoes);
         super.onViewRecycled(holder);
     }
 
@@ -214,7 +214,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void sort(Sort type) {
         switch (type) {
             case ALPHA:
-                Collections.sort(usuarios, new UserAdapter.SortByName());
+                Collections.sort(usuarios, new SortByName());
                 notifyDataSetChanged();
                 break;
 //            case RATING:
@@ -234,14 +234,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
     }
 
-    public class SortByName implements Comparator {
+    private class SortByName implements Comparator<User> {
 
         @Override
-        public int compare(Object o1, Object o2) {
-            User c1 = (User) o1;
-            User c2 = (User) o2;
-
-            return c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase());
+        public int compare(User user1, User user2) {
+            return user1.getName().toLowerCase().trim().
+                    compareTo(user2.getName().toLowerCase().trim());
         }
     }
 

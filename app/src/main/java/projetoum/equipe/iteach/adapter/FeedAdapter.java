@@ -95,7 +95,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
                             endPoint.setLatitude(mDataset.get(position).getAula().getLat());
                             endPoint.setLongitude(mDataset.get(position).getAula().getLon());
 
-                            double distanceInMeters = startPoint.distanceTo(endPoint);
+                            double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
 
                             ((ClassViewHolder) holder).aula_dist.setText(getFormatedDistance(distanceInMeters));
 

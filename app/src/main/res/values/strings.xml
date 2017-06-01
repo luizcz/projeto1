@@ -141,6 +141,7 @@
     <string name="feed_card_class_distance">Nova aula perto de você</string>
     <string name="feed_card_class_sair">Você foi desvinculado da turma</string>
     <string name="title_activity_sobre">SobreActivity</string>
+    <string name="sem_avaliacoes">Sem avaliações.</string>
 
 
 </resources>

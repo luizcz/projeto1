@@ -49,7 +49,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     @Override
     public ClassViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_aula, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.item_search_aula, parent, false);
         return new ClassViewHolder(v);
     }
 
@@ -66,27 +67,33 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             }
         });
 
-        if (classes.get(position).getImagem() != null && !classes.get(position).getImagem().isEmpty())
-            Picasso.with(mContext).load(classes.get(position).getImagem()).fit().centerCrop().into(holder.card_aula_img);
+        if (classes.get(position).getImagem() != null
+                && !classes.get(position).getImagem().isEmpty()) {
+            Picasso.with(mContext).load(classes.get(position).getImagem()).
+                    fit().centerCrop().into(holder.card_aula_img);
+        }
 
         dao.getCurrentUser(new ICallback<User>() {
             @Override
             public void execute(User param) {
-                if (param.getLat() != null && param.getLon() != null && classes.get(position).getLat() != null && classes.get(position).getLon() != null) {
-                    mLocation.setLatitude(param.getLat());
-                    mLocation.setLongitude(param.getLon());
+                if (param != null) {
+                    if (param.getLat() != null && param.getLon() != null
+                            && classes.get(position).getLat() != null
+                            && classes.get(position).getLon() != null) {
+                        mLocation.setLatitude(param.getLat());
+                        mLocation.setLongitude(param.getLon());
 
-                    Location startPoint = new Location("user");
-                    startPoint.setLatitude(param.getLat());
-                    startPoint.setLongitude(param.getLon());
+                        Location startPoint = new Location("user");
+                        startPoint.setLatitude(param.getLat());
+                        startPoint.setLongitude(param.getLon());
 
-                    Location endPoint = new Location("class");
-                    endPoint.setLatitude(classes.get(position).getLat());
-                    endPoint.setLongitude(classes.get(position).getLon());
+                        Location endPoint = new Location("class");
+                        endPoint.setLatitude(classes.get(position).getLat());
+                        endPoint.setLongitude(classes.get(position).getLon());
 
-                    double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
-                    holder.aula_dist.setText(getFormatedDistance(distanceInMeters));
-
+                        double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
+                        holder.aula_dist.setText(getFormatedDistance(distanceInMeters));
+                    }
                 } else {
                     holder.aula_dist.setText("?");
                 }
@@ -152,10 +159,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             super(itemView);
 
             cv = (CardView) itemView.findViewById(R.id.card_aula);
+            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(),
+                    R.color.transparent));
 
-            cv.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.transparent));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.cardback));
+                cv.setBackground(ContextCompat.getDrawable(itemView.getContext(),
+                        R.drawable.cardback));
             }
             card_aula_img = (ImageView) itemView.findViewById(R.id.card_aula_img);
             aula_dist = (TextView) itemView.findViewById(R.id.card_aula_dist);
@@ -164,8 +173,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             aula_desc = (TextView) itemView.findViewById(R.id.card_aula_desc);
             aula_valor = (TextView) itemView.findViewById(R.id.card_aula_valor);
             logo_professor = (ImageView) itemView.findViewById(R.id.image_professor_card_aula);
-
-
         }
     }
 
@@ -226,7 +233,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         }
     }
 
-    public class SortByName implements Comparator {
+    private class SortByName implements Comparator {
 
         @Override
         public int compare(Object o1, Object o2) {
@@ -248,7 +255,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 //        }
 //    }
 
-    public class SortByPrice implements Comparator {
+    private class SortByPrice implements Comparator {
 
         @Override
         public int compare(Object o1, Object o2) {
@@ -259,19 +266,18 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         }
     }
 
-    public class SortByDistance implements Comparator {
-
+    private class SortByDistance implements Comparator {
         @Override
         public int compare(Object o1, Object o2) {
             ClassObject c1 = (ClassObject) o1;
             ClassObject c2 = (ClassObject) o2;
 
-            if (Double.valueOf(mLocation.getLatitude()) == null ||
-                    Double.valueOf(mLocation.getLongitude()) == null ||
-                    c1.getLat() == null ||
-                    c1.getLon() == null ||
-                    c2.getLat() == null ||
-                    c2.getLon() == null) {
+            Double lat = mLocation.getLatitude();
+            Double lon = mLocation.getLongitude();
+            if (c1.getLat() == null
+                    || c1.getLon() == null
+                    || c2.getLat() == null
+                    || c2.getLon() == null) {
                 return -1;
             }
 
@@ -287,12 +293,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             locationB.setLatitude(c2.getLat());
             locationB.setLongitude(c2.getLon());
 
-
-            Double distanceMeToClass1 = Double.valueOf(locationMe.distanceTo(locationA));
-            Double distanceMeToClass2 = Double.valueOf(locationMe.distanceTo(locationB));
+            Double distanceMeToClass1 = (double) locationMe.distanceTo(locationA);
+            Double distanceMeToClass2 = (double) locationMe.distanceTo(locationB);
 
             return distanceMeToClass1.compareTo(distanceMeToClass2);
-
         }
     }
 }
