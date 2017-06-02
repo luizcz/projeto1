@@ -45,9 +45,7 @@ import projetoum.equipe.iteach.utils.LocationHelper;
 
 import static projetoum.equipe.iteach.R.id.aula_mapa;
 
-public class VisualizarAulaActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private Toolbar toolbar;
-    private DAO dao;
+public class VisualizarAulaActivity extends DrawerActivity implements OnMapReadyCallback {
     private String user;
     private String class_object;
     private ClassObject mClass;
@@ -72,8 +70,8 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizar_aula);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        dao = DAO.getInstace(this);
+
+        init(R.id.nav_class);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(aula_mapa);
@@ -259,49 +257,17 @@ public class VisualizarAulaActivity extends AppCompatActivity implements OnMapRe
         });
 
 
-        teacher_image = (ImageView)
-
-                findViewById(R.id.profile_image);
-
-        class_image = (ImageView)
-
-                findViewById(R.id.class_image_detail);
-
-        aula_nome_professor = (TextView)
-
-                findViewById(R.id.aula_nome_professor);
-
-        aula_rating = (RatingBar)
-
-                findViewById(R.id.aula_rating);
-
-        aula_vagas = (TextView)
-
-                findViewById(R.id.aula_vagas);
-
-        aula_valor = (TextView)
-
-                findViewById(R.id.aula_valor);
-
-        aula_data = (TextView)
-
-                findViewById(R.id.aula_data);
-
-        aula_horario = (TextView)
-
-                findViewById(R.id.aula_horario);
-
-        aula_conteudo_body = (TextView)
-
-                findViewById(R.id.aula_conteudo_body);
-
-        aula_endereco = (TextView)
-
-                findViewById(R.id.aula_endereco);
-
-        aula_mapa_dist = (TextView)
-
-                findViewById(R.id.aula_mapa_dist);
+        teacher_image = (ImageView) findViewById(R.id.profile_image);
+        class_image = (ImageView) findViewById(R.id.class_image_detail);
+        aula_nome_professor = (TextView) findViewById(R.id.aula_nome_professor);
+        aula_rating = (RatingBar) findViewById(R.id.aula_rating);
+        aula_vagas = (TextView) findViewById(R.id.aula_vagas);
+        aula_valor = (TextView) findViewById(R.id.aula_valor);
+        aula_data = (TextView) findViewById(R.id.aula_data);
+        aula_horario = (TextView) findViewById(R.id.aula_horario);
+        aula_conteudo_body = (TextView) findViewById(R.id.aula_conteudo_body);
+        aula_endereco = (TextView) findViewById(R.id.aula_endereco);
+        aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
 
     }
 

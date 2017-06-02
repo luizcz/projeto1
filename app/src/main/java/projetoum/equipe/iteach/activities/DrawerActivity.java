@@ -24,6 +24,7 @@ public class DrawerActivity extends AppCompatActivity
     protected DAO dao;
     private int navId = 0;
     NavigationView navigationView;
+    protected Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,7 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     public void init(int navId){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 

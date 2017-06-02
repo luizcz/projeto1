@@ -6,231 +6,229 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="projetoum.equipe.iteach.activities.VisualizarAulaActivity"
-    tools:showIn="@layout/activity_visualizar_aula">
+    tools:context="projetoum.equipe.iteach.activities.VisualizarAulaActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical|center_horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_image"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/icon_user"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FFFFFF"/>
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:text="Professora Helena"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/aula_nome_professor"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:textStyle="normal|bold"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/white" />
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/profile_image"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/icon_user"
+                        app:civ_border_color="#FFFFFF"
+                        app:civ_border_width="2dp" />
 
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:rating="4.5"
-                    android:isIndicator="true"/>
+                    <TextView
+                        android:id="@+id/aula_nome_professor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Professora Helena"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <RatingBar
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:rating="4.5" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:text="Sobre a Classe:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_sobre"
-            android:textAlignment="center"
-            android:textStyle="normal|bold"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"/>
-
-        <TextView
-            android:text="Vagas ocupadas:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_vagas"
-            android:textColor="@android:color/white"
-            android:paddingTop="5dp" />
-
-        <TextView
-            android:text="Valor:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_valor"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            android:text="Data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_data"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            android:text="Horario:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_horario"
-            android:textColor="@android:color/white" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:text="Conteúdo da Aula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_conteudo_title"
-            android:textAlignment="center"
-            android:textStyle="normal|bold"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
-
-        <TextView
-            android:text="Preposições\nUso de Crase\nVerbos Irregulares"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_conteudo_body"
-            android:textColor="@android:color/white"
-            android:layout_margin="5dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:text="Local"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_local_title"
-            android:textAlignment="center"
-            android:textStyle="normal|bold"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
-
-        <TextView
-            android:text="Avenida Marechal Floriano Peixoto, S/N - Centro, Campina Grande - PB, 58400-165"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_endereco"
-            android:textAlignment="center"
-            android:textColor="@android:color/white" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-            <fragment
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/aula_mapa"
-                tools:context=".MapsActivity"
-                android:name="com.google.android.gms.maps.SupportMapFragment" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:src="@drawable/ic_pin"
-                android:id="@+id/aula_mapa_pin"
-                android:layout_alignBottom="@+id/linearLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:scaleType="fitEnd"
-                android:layout_weight="1"
-                android:cropToPadding="false"
-                android:layout_marginRight="5dp"
-                android:tint="@android:color/white" />
+                android:layout_height="20dp" />
 
             <TextView
-                android:text="3,7 Km"
-                android:layout_width="wrap_content"
+                android:id="@+id/aula_sobre"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/aula_mapa_dist"
-                android:layout_weight="1"
+                android:text="Sobre a Classe:"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:id="@+id/aula_vagas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="Vagas ocupadas:"
                 android:textColor="@android:color/white" />
 
+            <TextView
+                android:id="@+id/aula_valor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Valor:"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/aula_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/aula_horario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horario:"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/aula_conteudo_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conteúdo da Aula"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:id="@+id/aula_conteudo_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Preposições\nUso de Crase\nVerbos Irregulares"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/aula_local_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Local"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:id="@+id/aula_endereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Avenida Marechal Floriano Peixoto, S/N - Centro, Campina Grande - PB, 58400-165"
+                android:textAlignment="center"
+                android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+                <fragment
+                    android:id="@+id/aula_mapa"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".MapsActivity" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/aula_mapa_pin"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_alignBottom="@+id/linearLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:cropToPadding="false"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_pin"
+                    android:tint="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/aula_mapa_dist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3,7 Km"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/aula_botao_participar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:background="@drawable/bt_transp_with_border"
+                android:text="Participar da Aula"
+                android:textAlignment="center"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/aula_botao_deixar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:background="@drawable/bt_transp_with_border"
+                android:text="Cancelar Matricula na Aula"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="30dp" />
-
-        <Button
-            android:text="Participar da Aula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_botao_participar"
-            android:background="@drawable/bt_transp_with_border"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp" />
-
-        <Button
-            android:text="Cancelar Matricula na Aula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/aula_botao_deixar"
-            android:background="@drawable/bt_transp_with_border"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:layout_marginEnd="50dp"
-            android:visibility="gone"
-            android:layout_marginStart="50dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
-    </LinearLayout>
-</ScrollView>
-
+    </ScrollView>
 
 
 </android.support.v4.widget.NestedScrollView>
