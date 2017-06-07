@@ -269,6 +269,14 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
         aula_endereco = (TextView) findViewById(R.id.aula_endereco);
         aula_mapa_dist = (TextView) findViewById(R.id.aula_mapa_dist);
 
+        teacher_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VisualizarAulaActivity.this, PerfilActivity.class).putExtra("id",mClass.getTeacherId()));
+                finish();
+            }
+        });
+
     }
 
     private void preencherDados() {
