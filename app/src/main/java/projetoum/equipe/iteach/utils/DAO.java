@@ -540,7 +540,7 @@ public class DAO implements IRemote {
 
 
         try {
-            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(classe.getAddress().trim()));
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(classe.getAddress().trim()));
 
             classe.setLat(source.latitude);
             classe.setLon(source.longitude);
@@ -553,7 +553,7 @@ public class DAO implements IRemote {
     public void getLocationFromAddress(User user) {
 
         try {
-            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFormGoogle(user.local.trim()));
+            LatLng source = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(user.local.trim()));
             user.lat = (source.latitude);
             user.lon = (source.longitude);
         } catch (Exception e) {

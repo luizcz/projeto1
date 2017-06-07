@@ -21,7 +21,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,8 +45,12 @@ import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
+import projetoum.equipe.iteach.utils.Constants;
+import projetoum.equipe.iteach.utils.LocationHelper;
 
-public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener {
+import static projetoum.equipe.iteach.R.id.mapview;
+
+public class CadastroAulaActivity extends DrawerActivity implements View.OnClickListener, OnMapReadyCallback {
 
     private EditText tituloEd;
     private EditText numVagasEd;
@@ -69,6 +78,9 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private int PICK_IMAGE_REQUEST = 1;
     private ProgressBar progressBar;
     private RecyclerView recycler;
+    private GoogleMap mMap;
+    private View mapView;
+    private LatLng local;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +90,8 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar_cd_aula);
         init(R.id.nav_feed);
+
+
         diasSemana = new ArrayList<>();
         mReference = FirebaseStorage.getInstance().getReference();
 
@@ -90,7 +104,32 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
         horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
         assuntoEd = (EditText) findViewById(R.id.edt_assunto);
+
+        local = Constants.DEFAULT_LOCATION;
+
         localEd = (EditText) findViewById(R.id.edt_local_aula);
+        localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                    showMap();
+                }
+            }
+        });
+        localEd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mapView = findViewById(R.id.mapview);
+        //mapView.setVisibility(View.GONE);
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
+        mapFragment.getMapAsync(this);
+
         imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
         title_dias_semana = (TextView) findViewById(R.id.st_week_day);
 
@@ -124,6 +163,7 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
 
 
     }
+
 
     private void setTextListeners() {
 
@@ -645,6 +685,36 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         else
             diasSemana.remove(((CheckBox) view).getText().toString());
 
+    }
+
+
+    private void showMap() {
+        // mapView.setVisibility(View.VISIBLE);
+        markLocalOnMap();
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.mMap = googleMap;
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                local = latLng;
+                markLocalOnMap();
+                localEd.setText(LocationHelper.getLocation(LocationHelper.getLocationFromGoogleLatLng(latLng)));
+            }
+        });
+
+        markLocalOnMap();
+
+    }
+
+    private void markLocalOnMap() {
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(local).title("Local da aula"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(local));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 13f));
     }
 
 }

@@ -391,7 +391,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                     }
 
                     mMap.clear();
-                    mMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+                    mMap.addMarker(new MarkerOptions().position(sydney).title("Local da Aula"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
 
