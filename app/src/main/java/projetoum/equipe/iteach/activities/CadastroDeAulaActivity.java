@@ -58,7 +58,7 @@ public class CadastroDeAulaActivity extends DrawerActivity {
                 int current = getItem(+1);
                 if (current > 1) {
                     // move to next screen
-                    viewPager.setCurrentItem(current);
+                    viewPager.setCurrentItem(current-2);
                 }
             }
         });
