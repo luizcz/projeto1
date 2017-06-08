@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -34,27 +34,20 @@
 
 
     <style name="StarRatingBar" parent="@android:style/Widget.RatingBar">
-
         <item name="android:progressDrawable">@drawable/ratingbar_star</item>
-
         <item name="android:minHeight">41dip</item>
-
         <item name="android:maxHeight">41dip</item>
-
     </style>
 
     <style name="StarRatingBarSmall" parent="@android:style/Widget.RatingBar">
-
         <item name="android:progressDrawable">@drawable/ratingbar_star_small</item>
-
         <item name="android:minHeight">21dip</item>
-
         <item name="android:maxHeight">21dip</item>
-
     </style>
-
 
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+
 </resources>
