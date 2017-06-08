@@ -86,7 +86,7 @@ public class MinhasAulasActivity extends DrawerActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floatingActionButton:
-                startActivity(new Intent(this, CadastroAulaActivity.class));
+                startActivity(new Intent(this, CadastroDeAulaActivity.class));
                 break;
         }
     }

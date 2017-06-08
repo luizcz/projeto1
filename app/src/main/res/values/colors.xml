@@ -4,4 +4,13 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
     <color name="transparent">#00000000</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark">#313131</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light">#ffffff</color>
+
 </resources>
+
+

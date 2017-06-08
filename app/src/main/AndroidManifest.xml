@@ -81,7 +81,8 @@
         <activity
             android:name=".activities.SobreActivity"
             android:label="@string/title_activity_sobre"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.CadastroDeAulaActivity"></activity>
     </application>
 
 </manifest>
