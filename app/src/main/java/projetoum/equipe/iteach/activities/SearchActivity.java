@@ -3,6 +3,7 @@ package projetoum.equipe.iteach.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -140,6 +141,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         mMenu = menu;
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
+        menu.findItem(R.id.alfa).setIcon(R.drawable.ic_sort_by_alpha);
+        menu.findItem(R.id.dist).setIcon(R.drawable.ic_sort_by_location);
+        menu.findItem(R.id.price).setIcon(R.drawable.ic_sort_by_price);
+        menu.findItem(R.id.rating).setIcon(R.drawable.ic_sort_by_rating);
+
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -247,7 +253,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         if (id == 0) {
             id = lastFragment;
         }
-
         switch (id) {
             case R.id.alfa:
                 sortByAlpha();
@@ -262,7 +267,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 sortByDistance();
                 break;
         }
-
+        item.setChecked(true);
         return true;
     }
 

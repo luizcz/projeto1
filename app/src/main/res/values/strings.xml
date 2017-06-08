@@ -153,5 +153,12 @@
     <string name="valor_free">Valor: Grátis!</string>
     <string name="data">Data: %s</string>
     <string name="data_n_informada">Data não informada.</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="filtros">Filtros</string>
+    <string name="filtros_alpha">Alfabeticamente</string>
+    <string name="filtros_dist">Distância</string>
+    <string name="filtros_price">Preço</string>
+    <string name="filtros_rating">Avaliação</string>
+
 
 </resources>

@@ -5,31 +5,31 @@
     xmlns:All4One="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/search"
-        android:title="Pesquisar por livros"
+        android:title="@string/pesquisar"
         android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item android:id="@+id/item_filtros"
-        android:title="Filtros"
+        android:title="@string/filtros"
         All4One:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_sort_by_size">
+        android:icon="@drawable/ic_filter_list">
 
         <menu>
             <group
                 android:checkableBehavior="single">
                 <item
                     android:id="@+id/alfa"
-                    android:title="Alfabeticamente"/>
+                    android:title="@string/filtros_alpha"/>
                 <item
                     android:id="@+id/rating"
-                    android:title="Avaliação"/>
+                    android:title="@string/filtros_rating"/>
                 <item
                     android:id="@+id/price"
-                    android:title="Preço"/>
+                    android:title="@string/filtros_price"/>
                 <item
                     android:id="@+id/dist"
-                    android:title="Distância"/>
+                    android:title="@string/filtros_dist"/>
             </group>
         </menu>
     </item>
