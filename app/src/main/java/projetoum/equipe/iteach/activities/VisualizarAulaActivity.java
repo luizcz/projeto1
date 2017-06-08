@@ -24,15 +24,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.google.maps.android.SphericalUtil;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -64,6 +70,8 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
     private ImageView teacher_image;
     private Button participar;
     private Button deixar;
+    private Date dataHoje;
+    private Date dataFim;
 
 
     @Override
@@ -372,6 +380,29 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
         aula_conteudo_body.setText(mClass.getSubject());
         aula_endereco.setText(mClass.getAddress());
 
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        dataFim = null;
+        try {
+            dataFim = format.parse(mClass.getDataFim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        dao.getCurrentTime(new ICallback<Long>() {
+            @Override
+            public void execute(Long param) {
+                dataHoje = new Date(param);
+                if(dataFim !=null && dataFim.before(dataHoje)){
+                    participar.setVisibility(View.GONE);
+                    deixar.setVisibility(View.GONE);
+                    aula_data.setText("Aula não está mais disponível para matriculas");
+                    dao.removerAula(mClass.getId());
+                }
+            }
+        });
+
+
     }
 
 
@@ -387,23 +418,26 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
 
 
         if (getIntent().hasExtra("aula_id"))
-            dao.findClassById(getIntent().getStringExtra("aula_id"), new ICallback<ClassObject>() {
+            dao.findClassByIdOnce(getIntent().getStringExtra("aula_id"), new ICallback<ClassObject>() {
                 @Override
                 public void execute(ClassObject param) {
-                    mClass = param;
+                    if(param != null){
+                        param.setId(getIntent().getStringExtra("aula_id"));
+                        mClass = param;
 
-                    LatLng sydney = new LatLng(-34, 151);
+                        LatLng sydney = new LatLng(-34, 151);
 
-                    if (mClass != null && mClass.getLat() != null && mClass.getLon() != null) {
-                        sydney = new LatLng(mClass.getLat(), mClass.getLon());
+                        if (mClass != null && mClass.getLat() != null && mClass.getLon() != null) {
+                            sydney = new LatLng(mClass.getLat(), mClass.getLon());
+                        }
+
+                        mMap.clear();
+                        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
+
+                        preencherDados();
                     }
-
-                    mMap.clear();
-                    mMap.addMarker(new MarkerOptions().position(sydney).title("Marker"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
-
-                    preencherDados();
                 }
             });
 

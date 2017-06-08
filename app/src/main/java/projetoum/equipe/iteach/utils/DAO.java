@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -284,11 +285,13 @@ public class DAO implements IRemote {
                         findClassById(item.aulaID, new ICallback<ClassObject>() {
                             @Override
                             public void execute(ClassObject param) {
-                                param.setId(item.aulaID);
-                                item.setAula(param);
-                                adapter.add(item);
-                                if (ctx instanceof MainActivity)
-                                    ((MainActivity) ctx).refreshFeedCount();
+                                if(param != null) {
+                                    param.setId(item.aulaID);
+                                    item.setAula(param);
+                                    adapter.add(item);
+                                    if (ctx instanceof MainActivity)
+                                        ((MainActivity) ctx).refreshFeedCount();
+                                }
                             }
                         });
                 } catch (Exception e) {
@@ -1193,4 +1196,70 @@ public class DAO implements IRemote {
 
         return mDatabase;
     }
+
+    public void getCurrentTime(final ICallback<Long> callback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("timestamp");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Long timestamp = (Long) snapshot.getValue();
+                callback.execute(timestamp);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        ref.setValue(ServerValue.TIMESTAMP);
+    }
+
+    public void removerAula(final String idClass){
+        if(idClass == null){
+            return;
+        }
+        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class-user");
+        DatabaseReference newClassUser = refClass.child(idClass);
+        newClassUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot a : dataSnapshot.getChildren()){
+                    removerAlunoClasse(idClass,a.getKey());
+                }
+                removerClasse(idClass);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+    }
+
+    public void removerAlunoClasse(String idClass,String idAluno){
+        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("user-class");
+        DatabaseReference newAluno = refClass.child(idAluno);
+        DatabaseReference ref = newAluno.child(idClass);
+        ref.removeValue();
+    }
+
+    public void removerClasse(String idClass){
+        DatabaseReference refClassUser = FirebaseDatabase.getInstance().getReference("class-user");
+        DatabaseReference ref = refClassUser.child(idClass);
+        ref.removeValue();
+//        DatabaseReference refClass = FirebaseDatabase.getInstance().getReference("class");
+//        DatabaseReference referencia = refClass.child(idClass);
+//        referencia.removeValue();
+        deleteClass(idClass, new ICallback() {
+            @Override
+            public void execute(Object param) {
+
+            }
+        });
+    }
+
+
 }

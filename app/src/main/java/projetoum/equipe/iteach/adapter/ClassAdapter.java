@@ -180,6 +180,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     public void add(ClassObject item) {
         classes.add(item);
         notifyItemInserted(classes.size() - 1);
+        notifyItemRangeChanged(0, classes.size());
         //notifyDataSetChanged();
     }
 
@@ -187,6 +188,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         int position = classes.indexOf(item);
         classes.remove(position);
         notifyItemRemoved(position);
+        notifyDataSetChanged();
+        notifyItemRangeChanged(0, classes.size());
     }
 
     public void removeAll() {
