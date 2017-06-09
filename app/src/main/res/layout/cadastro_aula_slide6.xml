@@ -3,4 +3,33 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/background">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/st_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_assunto"
+            android:layout_marginTop="5dp"
+            android:text="@string/tags"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_below="@id/st_tags"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/cardback"
+            android:padding="5dp" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>

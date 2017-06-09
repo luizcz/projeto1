@@ -3,4 +3,54 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/background">
 
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/st_local_aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/local_aula"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_local_aula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/st_local_aula"
+            android:background="@drawable/border"
+            android:inputType="text"
+            android:maxLines="3"
+            android:padding="10dp"
+            android:textColor="@color/cardview_light_background" />
+
+        <LinearLayout
+            android:id="@+id/mapview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/edt_local_aula"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp">
+
+            <fragment
+                android:id="@+id/mapview"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

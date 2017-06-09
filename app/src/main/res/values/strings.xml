@@ -109,7 +109,7 @@
     <string name="titulo_aula">Título da aula</string>
     <string name="num_vagas">Número de vagas</string>
     <string name="preco">Valor</string>
-    <string name="assunto">Assunto</string>
+    <string name="assunto">Descrição ou ementa da aula</string>
     <string name="horario">Horário</string>
     <string name="data_inicio">Data de início das aulas</string>
     <string name="data_fim">Data de fim das aulas</string>

@@ -3,4 +3,69 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/background">
 
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/st_horario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_date_fim"
+            android:layout_marginTop="5dp"
+            android:text="@string/horario"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_horario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/st_horario"
+            android:weightSum="2.5">
+
+            <TextView
+                android:id="@+id/edt_horario_inicio"
+                style="@android:style/Widget.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:background="@drawable/border"
+                android:focusable="false"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.20"
+                android:text="até"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/edt_horario_fim"
+                style="@android:style/Widget.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.15"
+                android:background="@drawable/border"
+                android:focusable="false"
+                android:padding="10dp"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 </RelativeLayout>
