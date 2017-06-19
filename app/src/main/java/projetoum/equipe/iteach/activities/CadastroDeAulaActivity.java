@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.TagAdapter;
@@ -92,6 +93,7 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
     private GoogleMap mMap;
     private View mapView;
     private LatLng local;
+    private View[] telas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,72 +106,14 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
         diasSemana = new ArrayList<>();
         mReference = FirebaseStorage.getInstance().getReference();
 
-
-        tituloEd = (EditText) findViewById(R.id.edt_titulo);
-        numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
-        valorEd = (EditText) findViewById(R.id.edt_valor);
-        dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
-        dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
-        horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
-        horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
-        assuntoEd = (EditText) findViewById(R.id.edt_assunto);
-
         local = Constants.DEFAULT_LOCATION;
-
-        localEd = (EditText) findViewById(R.id.edt_local_aula);
-        localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
-                    markLocalOnMap();
-                }
-            }
-        });
-        localEd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        mapView = findViewById(R.id.mapview);
-        //mapView.setVisibility(View.GONE);
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
-        mapFragment.getMapAsync(this);
-
-        imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
-        title_dias_semana = (TextView) findViewById(R.id.st_week_day);
-
-        selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
-        fotoSelecionada = false;
 
         calDataInicio = Calendar.getInstance();
         calDataFim = Calendar.getInstance();
         calHorarioInicio = Calendar.getInstance();
         calHorarioFim = Calendar.getInstance();
 
-        horarioInicioEd.setOnClickListener(this);
-        horarioFimEd.setOnClickListener(this);
-        dataInicioEd.setOnClickListener(this);
-        dataFimEd.setOnClickListener(this);
-
-        setTextListeners();
-        imagePropaganda.setOnClickListener(this);
-        findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
-        findViewById(R.id.bt_salvar_aula).setEnabled(true);
-
-
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-
-        List<String> rowListItem = new ArrayList<String>();
-        GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
-
-        recycler.setHasFixedSize(false);
-        recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new TagAdapter(this, rowListItem, true));
-
+        init();
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -187,6 +131,8 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
                 R.layout.cadastro_aula_slide5,
                 R.layout.cadastro_aula_slide6};
 
+
+        telas = new View[layouts.length];
         // adding bottom dots
         addBottomDots(0);
 
@@ -220,6 +166,73 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
                 }
             }
         });
+    }
+
+    private void init() {
+        try {
+            tituloEd = (EditText) findViewById(R.id.edt_titulo);
+            numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
+            valorEd = (EditText) findViewById(R.id.edt_valor);
+            dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
+            dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
+            horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
+            horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
+            assuntoEd = (EditText) findViewById(R.id.edt_assunto);
+
+
+            localEd = (EditText) findViewById(R.id.edt_local_aula);
+            localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                        markLocalOnMap();
+                    }
+                }
+            });
+            localEd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            mapView = findViewById(R.id.mapview);
+            //mapView.setVisibility(View.GONE);
+
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
+            mapFragment.getMapAsync(this);
+
+            imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
+            title_dias_semana = (TextView) findViewById(R.id.st_week_day);
+
+            selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
+            fotoSelecionada = false;
+
+
+            horarioInicioEd.setOnClickListener(this);
+            horarioFimEd.setOnClickListener(this);
+            dataInicioEd.setOnClickListener(this);
+            dataFimEd.setOnClickListener(this);
+
+            setTextListeners();
+            imagePropaganda.setOnClickListener(this);
+            findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+            findViewById(R.id.bt_salvar_aula).setEnabled(true);
+
+
+            recycler = (RecyclerView) findViewById(R.id.recycler);
+
+            List<String> rowListItem = new ArrayList<String>();
+            GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
+
+            recycler.setHasFixedSize(false);
+            recycler.setLayoutManager(layoutManager);
+            recycler.setAdapter(new TagAdapter(this, rowListItem, true));
+
+        } catch (Exception e) {
+
+        }
     }
 
     private void addBottomDots(int currentPage) {
@@ -309,10 +322,14 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View view = layoutInflater.inflate(layouts[position], container, false);
-            container.addView(view);
+            if(telas[position] == null) {
+                View view = layoutInflater.inflate(layouts[position], container, false);
+                init();
+                telas[position] = view;
+            }
+            container.addView(telas[position]);
 
-            return view;
+            return telas[position];
         }
 
         @Override
