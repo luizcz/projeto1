@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/background">
 
@@ -27,11 +28,19 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/st_local_aula"
+            android:layout_weight="1"
             android:background="@drawable/border"
             android:inputType="text"
             android:maxLines="3"
             android:padding="10dp"
             android:textColor="@color/cardview_light_background" />
+
+        <ImageView
+            android:id="@+id/bt_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            app:srcCompat="@drawable/ic_search" />
 
         <LinearLayout
             android:id="@+id/mapview_layout"

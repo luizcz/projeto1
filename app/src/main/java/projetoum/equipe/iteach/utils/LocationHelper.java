@@ -10,6 +10,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,27 +59,23 @@ public class LocationHelper {
 
     public static JSONObject getLocationFromGoogleLatLng(LatLng location) {
 
-        HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?latlng=" + location.latitude+","+location.longitude + "&ka&sensor=false");
+        HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?latlng=" + location.latitude + "," + location.longitude + "&ka&sensor=false");
         HttpClient client = new DefaultHttpClient();
         HttpResponse response;
         StringBuilder stringBuilder = new StringBuilder();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        String responseBody = "";
         try {
             response = client.execute(httpGet);
             HttpEntity entity = response.getEntity();
-            InputStream stream = entity.getContent();
-            int b;
-            while ((b = stream.read()) != -1) {
-                stringBuilder.append((char) b);
-            }
+            responseBody = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
         } catch (IOException e) {
         }
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject = new JSONObject(stringBuilder.toString());
+            jsonObject = new JSONObject(responseBody);
         } catch (JSONException e) {
 
             e.printStackTrace();
@@ -118,7 +116,6 @@ public class LocationHelper {
 
             location = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
                     .getString("formatted_address");
-
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
