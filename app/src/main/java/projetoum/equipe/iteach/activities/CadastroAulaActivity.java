@@ -11,9 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -83,7 +81,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
     private GoogleMap mMap;
     private View mapView;
     private LatLng local;
-    private View btSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +108,21 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
         local = Constants.DEFAULT_LOCATION;
 
         localEd = (EditText) findViewById(R.id.edt_local_aula);
-        btSearch = findViewById(R.id.bt_search);
-        btSearch.setOnClickListener(this);
+        localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                    showMap();
+                }
+            }
+        });
+        localEd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         mapView = findViewById(R.id.mapview);
         //mapView.setVisibility(View.GONE);
 
@@ -357,10 +366,6 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
                 break;
-            case R.id.bt_search:
-                local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
-                showMap();
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
     }
 

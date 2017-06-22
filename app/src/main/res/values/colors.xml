@@ -5,6 +5,8 @@
     <color name="colorAccent">#ffffff</color>
     <color name="transparent">#00000000</color>
 
+    <color name="colorBackground">#00302e2e</color>
+
     <!-- dots inactive colors -->
     <color name="dot_dark">#313131</color>
 

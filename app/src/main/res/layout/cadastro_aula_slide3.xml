@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/background">
 
     <LinearLayout
@@ -12,58 +14,123 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/st_horario"
+            android:id="@+id/st_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edt_date_fim"
+            android:layout_marginTop="10dp"
+            android:text="@string/data_inicio"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:ems="10"
+            android:inputType="date" />
+
+        <TextView
+            android:id="@+id/st_date_fim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/horario"
+            android:text="@string/data_fim"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:ems="10"
+            android:inputType="date" />
+
+        <TextView
+            android:id="@+id/st_week_day"
+            style="@android:style/Widget.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_valor"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/transparent"
+            android:text="@string/dias_semana"
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
         <LinearLayout
-            android:id="@+id/ll_horario"
+            android:id="@+id/ll_week_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/st_horario"
-            android:weightSum="2.5">
+            android:layout_below="@id/st_week_day"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/edt_horario_inicio"
-                style="@android:style/Widget.EditText"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/checkbox_domingo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.15"
-                android:background="@drawable/border"
-                android:focusable="false"
-                android:padding="10dp"
-                android:textColor="@color/cardview_light_background"
-                android:textSize="20sp" />
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/domingo"
+                android:textColor="@color/cardview_light_background" />
 
-            <TextView
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/checkbox_segunda"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.20"
-                android:text="até"
-                android:textAlignment="center"
-                android:textColor="@color/cardview_light_background"
-                android:textSize="18sp" />
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/segunda"
+                android:textColor="@color/cardview_light_background" />
 
-            <TextView
-                android:id="@+id/edt_horario_fim"
-                style="@android:style/Widget.EditText"
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/checkbox_terca"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.15"
-                android:background="@drawable/border"
-                android:focusable="false"
-                android:padding="10dp"
-                android:textColor="@color/cardview_light_background"
-                android:textSize="20sp" />
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/terca"
+                android:textColor="@color/cardview_light_background" />
+
+            <CheckBox
+                android:id="@+id/checkbox_quarta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/quarta"
+                android:textColor="@color/cardview_light_background" />
+
+            <CheckBox
+                android:id="@+id/checkbox_quinta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/quinta"
+                android:textColor="@color/cardview_light_background" />
+
+            <CheckBox
+                android:id="@+id/checkbox_sexta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/sexta"
+                android:textColor="@color/cardview_light_background" />
+
+            <CheckBox
+                android:id="@+id/checkbox_sabado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/cardview_light_background"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/sabado"
+                android:textColor="@color/cardview_light_background" />
+
 
         </LinearLayout>
-
 
     </LinearLayout>
 

@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:maxEms="5"
             android:text="@string/num_vagas"
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
@@ -25,8 +26,8 @@
             android:id="@+id/edt_num_vagas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:inputType="number"
+            android:backgroundTint="@android:color/white"
+            android:inputType="numberDecimal"
             android:padding="10dp"
             android:textColor="@color/cardview_light_background" />
 
@@ -45,54 +46,56 @@
             android:id="@+id/edt_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
+            android:backgroundTint="@android:color/white"
             android:inputType="numberDecimal"
             android:padding="10dp"
             android:textColor="@color/cardview_light_background" />
 
+
+
         <TextView
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:id="@+id/st_date"
+            android:id="@+id/st_horario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/data_inicio"
+            android:text="@string/horario"
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/edt_date_inicio"
-            style="@android:style/Widget.EditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:focusable="false"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="20sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:id="@+id/st_date_fim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/data_fim"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="18sp" />
+            <EditText
+                android:id="@+id/start_time_edt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:backgroundTint="@android:color/white"
+                android:ems="5"
+                android:inputType="time" />
 
-        <TextView
-            android:id="@+id/edt_date_fim"
-            style="@android:style/Widget.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:focusable="false"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="-"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/end_time_edt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:backgroundTint="@android:color/white"
+                android:ems="5"
+                android:inputType="time" />
+        </LinearLayout>
 
     </LinearLayout>
 

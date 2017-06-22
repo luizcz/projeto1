@@ -41,12 +41,13 @@
             android:id="@+id/edt_titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
+            android:backgroundTint="@android:color/white"
             android:inputType="text"
             android:maxLength="30"
             android:maxLines="1"
             android:padding="10dp"
             android:textColor="@color/cardview_light_background" />
+
 
         <TextView
             android:id="@+id/st_assunto"

@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,9 +17,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -46,6 +52,7 @@ import java.util.concurrent.ExecutionException;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.adapter.TagAdapter;
+import projetoum.equipe.iteach.fragments.CadastroAulaFragment;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.FeedItem;
@@ -55,9 +62,8 @@ import projetoum.equipe.iteach.utils.LocationHelper;
 
 import static projetoum.equipe.iteach.R.id.mapview;
 
-public class CadastroDeAulaActivity extends DrawerActivity implements View.OnClickListener, OnMapReadyCallback {
+public class CadastroDeAulaActivity extends DrawerFragmentActivity implements View.OnClickListener, OnMapReadyCallback {
     private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
@@ -113,7 +119,7 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
         calHorarioInicio = Calendar.getInstance();
         calHorarioFim = Calendar.getInstance();
 
-        init();
+        inflateScreen(R.layout.cadastro_aula_slide1);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -136,8 +142,7 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
         // adding bottom dots
         addBottomDots(0);
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -168,71 +173,106 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
         });
     }
 
-    private void init() {
-        try {
-            tituloEd = (EditText) findViewById(R.id.edt_titulo);
-            numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
-            valorEd = (EditText) findViewById(R.id.edt_valor);
-            dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
-            dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
-            horarioInicioEd = (TextView) findViewById(R.id.edt_horario_inicio);
-            horarioFimEd = (TextView) findViewById(R.id.edt_horario_fim);
-            assuntoEd = (EditText) findViewById(R.id.edt_assunto);
+    private void inflateScreen(int layout) {
+            switch (layout) {
+                case R.layout.cadastro_aula_slide1:
+
+                    break;
+                case R.layout.cadastro_aula_slide2:
+                    numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
+                    valorEd = (EditText) findViewById(R.id.edt_valor);
+                    horarioInicioEd = (TextView) findViewById(R.id.start_time_edt);
+                    horarioFimEd = (TextView) findViewById(R.id.end_time_edt);
+                    horarioInicioEd.setOnClickListener(this);
+                    horarioFimEd.setOnClickListener(this);
+                    break;
+                case R.layout.cadastro_aula_slide3:
+
+                    dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
+                    dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
+                    title_dias_semana = (TextView) findViewById(R.id.st_week_day);
+
+                    dataInicioEd.setOnClickListener(this);
+                    dataFimEd.setOnClickListener(this);
+                    break;
+                case R.layout.cadastro_aula_slide4:
+                    localEd = (EditText) findViewById(R.id.edt_local_aula);
+                    localEd.setOnKeyListener(new View.OnKeyListener() {
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                                switch (keyCode) {
+                                    case KeyEvent.KEYCODE_DPAD_CENTER:
+                                    case KeyEvent.KEYCODE_ENTER:
+                                        if (!localEd.getText().toString().trim().isEmpty()) {
+                                            local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                                            markLocalOnMap();
+                                        }
+                                        return true;
+                                    default:
+                                        break;
+                                }
+                            }
+                            return false;
+                        }
+                    });
+                    localEd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                if (!localEd.getText().toString().trim().isEmpty()) {
+                                    local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                                    markLocalOnMap();
+                                }
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus && !localEd.getText().toString().trim().isEmpty()) {
+                                local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                                markLocalOnMap();
+                            }
+                        }
+                    });
+                    mapView = findViewById(R.id.mapview);
+                    //mapView.setVisibility(View.GONE);
+
+                    SupportMapFragment mapFragment =
+                            (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
+                    mapFragment.getMapAsync(this);
+
+                    break;
+                case R.layout.cadastro_aula_slide5:
+
+                    imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
+                    selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
+                    fotoSelecionada = false;
+                    imagePropaganda.setOnClickListener(this);
+
+                    break;
+                case R.layout.cadastro_aula_slide6:
+
+                    recycler = (RecyclerView) findViewById(R.id.recycler);
+
+                    List<String> rowListItem = new ArrayList<String>();
+                    GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
+
+                    recycler.setHasFixedSize(false);
+                    recycler.setLayoutManager(layoutManager);
+                    recycler.setAdapter(new TagAdapter(this, rowListItem, true));
+                    findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+                    findViewById(R.id.bt_salvar_aula).setEnabled(true);
+
+                    break;
 
 
-            localEd = (EditText) findViewById(R.id.edt_local_aula);
-            localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus) {
-                        local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
-                        markLocalOnMap();
-                    }
-                }
-            });
-            localEd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            }
 
-                }
-            });
-            mapView = findViewById(R.id.mapview);
-            //mapView.setVisibility(View.GONE);
+            // setTextListeners();
 
-            SupportMapFragment mapFragment =
-                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
-            mapFragment.getMapAsync(this);
-
-            imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
-            title_dias_semana = (TextView) findViewById(R.id.st_week_day);
-
-            selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
-            fotoSelecionada = false;
-
-
-            horarioInicioEd.setOnClickListener(this);
-            horarioFimEd.setOnClickListener(this);
-            dataInicioEd.setOnClickListener(this);
-            dataFimEd.setOnClickListener(this);
-
-            setTextListeners();
-            imagePropaganda.setOnClickListener(this);
-            findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
-            findViewById(R.id.bt_salvar_aula).setEnabled(true);
-
-
-            recycler = (RecyclerView) findViewById(R.id.recycler);
-
-            List<String> rowListItem = new ArrayList<String>();
-            GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
-
-            recycler.setHasFixedSize(false);
-            recycler.setLayoutManager(layoutManager);
-            recycler.setAdapter(new TagAdapter(this, rowListItem, true));
-
-        } catch (Exception e) {
-
-        }
     }
 
     private void addBottomDots(int currentPage) {
@@ -312,44 +352,30 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
     /**
      * View pager adapter
      */
-    public class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
+    private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        public MyViewPagerAdapter() {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        public Fragment getItem(int pos) {
+            switch(pos) {
 
-            if(telas[position] == null) {
-                View view = layoutInflater.inflate(layouts[position], container, false);
-                init();
-                telas[position] = view;
+                case 0: return CadastroAulaFragment.newInstance("FirstFragment", "Instance 1");
+//                case 1: return SecondFragment.newInstance("SecondFragment, Instance 1");
+//                case 2: return ThirdFragment.newInstance("ThirdFragment, Instance 1");
+//                case 3: return ThirdFragment.newInstance("ThirdFragment, Instance 2");
+//                case 4: return ThirdFragment.newInstance("ThirdFragment, Instance 3");
+                default: return CadastroAulaFragment.newInstance("FirstFragment", "Instance 1");
             }
-            container.addView(telas[position]);
-
-            return telas[position];
         }
 
         @Override
         public int getCount() {
-            return layouts.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
-        }
-
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
+            return 5;
         }
     }
-
     private void setTextListeners() {
 
         tituloEd.addTextChangedListener(new TextWatcher() {
@@ -519,6 +545,8 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
+        System.out.println("aaaaaaaaaaaa");
+        System.out.println(v.getId());
         switch (v.getId()) {
             case R.id.bt_salvar_aula:
                 findViewById(R.id.bt_salvar_aula).setEnabled(false);
@@ -529,11 +557,11 @@ public class CadastroDeAulaActivity extends DrawerActivity implements View.OnCli
                     findViewById(R.id.bt_salvar_aula).setEnabled(true);
                 }
                 break;
-            case R.id.edt_horario_inicio:
+            case R.id.start_time_edt:
                 inicio = true;
                 showTimePickerDialog();
                 break;
-            case R.id.edt_horario_fim:
+            case R.id.end_time_edt:
                 inicio = false;
                 showTimePickerDialog();
                 break;

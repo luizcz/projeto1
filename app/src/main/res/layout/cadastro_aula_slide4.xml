@@ -8,7 +8,8 @@
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/linearLayout2">
 
         <TextView
             android:paddingTop="5dp"
@@ -21,26 +22,27 @@
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edt_local_aula"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/st_local_aula"
-            android:layout_weight="1"
-            android:background="@drawable/border"
-            android:inputType="text"
-            android:maxLines="3"
-            android:padding="10dp"
-            android:textColor="@color/cardview_light_background" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/bt_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            app:srcCompat="@drawable/ic_search" />
+            <EditText
+                android:id="@+id/edt_local_aula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/st_local_aula"
+                android:layout_weight="1"
+                android:inputType="text"
+                android:backgroundTint="@android:color/white"
+                android:maxLines="3"
+                android:padding="10dp"
+                android:imeOptions="actionSearch"
+                android:textColor="@color/cardview_light_background" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/mapview_layout"
@@ -59,7 +61,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

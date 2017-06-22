@@ -113,7 +113,7 @@
     <string name="horario">Horário</string>
     <string name="data_inicio">Data de início das aulas</string>
     <string name="data_fim">Data de fim das aulas</string>
-    <string name="tags">Tags (ex: artes, desenho,pintura)</string>
+    <string name="tags">Tags (ex: artes, desenho, matemática)</string>
     <string name="botao_criar_aula">Criar Aula</string>
     <string name="local_aula">Endereço da aula</string>
     <string name="dias_semana">Dias da semana</string>
@@ -159,6 +159,9 @@
     <string name="filtros_dist">Distância</string>
     <string name="filtros_price">Preço</string>
     <string name="filtros_rating">Avaliação</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
