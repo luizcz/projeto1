@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -62,7 +63,7 @@ import projetoum.equipe.iteach.utils.LocationHelper;
 
 import static projetoum.equipe.iteach.R.id.mapview;
 
-public class CadastroDeAulaActivity extends DrawerFragmentActivity implements View.OnClickListener, OnMapReadyCallback {
+public class CadastroDeAulaActivity extends DrawerActivity implements View.OnClickListener, OnMapReadyCallback, CadastroAulaFragment.OnFragmentInteractionListener {
     private ViewPager viewPager;
     private LinearLayout dotsLayout;
     private TextView[] dots;
@@ -174,104 +175,104 @@ public class CadastroDeAulaActivity extends DrawerFragmentActivity implements Vi
     }
 
     private void inflateScreen(int layout) {
-            switch (layout) {
-                case R.layout.cadastro_aula_slide1:
+        switch (layout) {
+            case R.layout.cadastro_aula_slide1:
 
-                    break;
-                case R.layout.cadastro_aula_slide2:
-                    numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
-                    valorEd = (EditText) findViewById(R.id.edt_valor);
-                    horarioInicioEd = (TextView) findViewById(R.id.start_time_edt);
-                    horarioFimEd = (TextView) findViewById(R.id.end_time_edt);
-                    horarioInicioEd.setOnClickListener(this);
-                    horarioFimEd.setOnClickListener(this);
-                    break;
-                case R.layout.cadastro_aula_slide3:
+                break;
+            case R.layout.cadastro_aula_slide2:
+                numVagasEd = (EditText) findViewById(R.id.edt_num_vagas);
+                valorEd = (EditText) findViewById(R.id.edt_valor);
+                horarioInicioEd = (TextView) findViewById(R.id.start_time_edt);
+                horarioFimEd = (TextView) findViewById(R.id.end_time_edt);
+                horarioInicioEd.setOnClickListener(this);
+                horarioFimEd.setOnClickListener(this);
+                break;
+            case R.layout.cadastro_aula_slide3:
 
-                    dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
-                    dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
-                    title_dias_semana = (TextView) findViewById(R.id.st_week_day);
+                dataInicioEd = (TextView) findViewById(R.id.edt_date_inicio);
+                dataFimEd = (TextView) findViewById(R.id.edt_date_fim);
+                title_dias_semana = (TextView) findViewById(R.id.st_week_day);
 
-                    dataInicioEd.setOnClickListener(this);
-                    dataFimEd.setOnClickListener(this);
-                    break;
-                case R.layout.cadastro_aula_slide4:
-                    localEd = (EditText) findViewById(R.id.edt_local_aula);
-                    localEd.setOnKeyListener(new View.OnKeyListener() {
-                        public boolean onKey(View v, int keyCode, KeyEvent event) {
-                            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                                switch (keyCode) {
-                                    case KeyEvent.KEYCODE_DPAD_CENTER:
-                                    case KeyEvent.KEYCODE_ENTER:
-                                        if (!localEd.getText().toString().trim().isEmpty()) {
-                                            local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
-                                            markLocalOnMap();
-                                        }
-                                        return true;
-                                    default:
-                                        break;
-                                }
+                dataInicioEd.setOnClickListener(this);
+                dataFimEd.setOnClickListener(this);
+                break;
+            case R.layout.cadastro_aula_slide4:
+                localEd = (EditText) findViewById(R.id.edt_local_aula);
+                localEd.setOnKeyListener(new View.OnKeyListener() {
+                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                            switch (keyCode) {
+                                case KeyEvent.KEYCODE_DPAD_CENTER:
+                                case KeyEvent.KEYCODE_ENTER:
+                                    if (!localEd.getText().toString().trim().isEmpty()) {
+                                        local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                                        markLocalOnMap();
+                                    }
+                                    return true;
+                                default:
+                                    break;
                             }
-                            return false;
                         }
-                    });
-                    localEd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                        @Override
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                if (!localEd.getText().toString().trim().isEmpty()) {
-                                    local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
-                                    markLocalOnMap();
-                                }
-                                return true;
-                            }
-                            return false;
-                        }
-                    });
-                    localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                        @Override
-                        public void onFocusChange(View v, boolean hasFocus) {
-                            if (!hasFocus && !localEd.getText().toString().trim().isEmpty()) {
+                        return false;
+                    }
+                });
+                localEd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            if (!localEd.getText().toString().trim().isEmpty()) {
                                 local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
                                 markLocalOnMap();
                             }
+                            return true;
                         }
-                    });
-                    mapView = findViewById(R.id.mapview);
-                    //mapView.setVisibility(View.GONE);
+                        return false;
+                    }
+                });
+                localEd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (!hasFocus && !localEd.getText().toString().trim().isEmpty()) {
+                            local = LocationHelper.getLatLng(LocationHelper.getLocationFromGoogle(localEd.getText().toString().trim()));
+                            markLocalOnMap();
+                        }
+                    }
+                });
+                mapView = findViewById(R.id.mapview);
+                //mapView.setVisibility(View.GONE);
 
-                    SupportMapFragment mapFragment =
-                            (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
-                    mapFragment.getMapAsync(this);
+                SupportMapFragment mapFragment =
+                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(mapview);
+                mapFragment.getMapAsync(this);
 
-                    break;
-                case R.layout.cadastro_aula_slide5:
+                break;
+            case R.layout.cadastro_aula_slide5:
 
-                    imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
-                    selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
-                    fotoSelecionada = false;
-                    imagePropaganda.setOnClickListener(this);
+                imagePropaganda = (ImageView) findViewById(R.id.img_propaganda);
+                selecioneUmaImagem = (TextView) findViewById(R.id.selecione_uma_imagem);
+                fotoSelecionada = false;
+                imagePropaganda.setOnClickListener(this);
 
-                    break;
-                case R.layout.cadastro_aula_slide6:
+                break;
+            case R.layout.cadastro_aula_slide6:
 
-                    recycler = (RecyclerView) findViewById(R.id.recycler);
+                recycler = (RecyclerView) findViewById(R.id.recycler);
 
-                    List<String> rowListItem = new ArrayList<String>();
-                    GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
+                List<String> rowListItem = new ArrayList<String>();
+                GridLayoutManager layoutManager = new GridLayoutManager(CadastroDeAulaActivity.this, 3);
 
-                    recycler.setHasFixedSize(false);
-                    recycler.setLayoutManager(layoutManager);
-                    recycler.setAdapter(new TagAdapter(this, rowListItem, true));
-                    findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
-                    findViewById(R.id.bt_salvar_aula).setEnabled(true);
+                recycler.setHasFixedSize(false);
+                recycler.setLayoutManager(layoutManager);
+                recycler.setAdapter(new TagAdapter(this, rowListItem, true));
+                findViewById(R.id.bt_salvar_aula).setOnClickListener(this);
+                findViewById(R.id.bt_salvar_aula).setEnabled(true);
 
-                    break;
+                break;
 
 
-            }
+        }
 
-            // setTextListeners();
+        // setTextListeners();
 
     }
 
@@ -348,7 +349,6 @@ public class CadastroDeAulaActivity extends DrawerFragmentActivity implements Vi
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 13f));
     }
 
-
     /**
      * View pager adapter
      */
@@ -360,14 +360,22 @@ public class CadastroDeAulaActivity extends DrawerFragmentActivity implements Vi
 
         @Override
         public Fragment getItem(int pos) {
-            switch(pos) {
+            switch (pos) {
 
-                case 0: return CadastroAulaFragment.newInstance("FirstFragment", "Instance 1");
-//                case 1: return SecondFragment.newInstance("SecondFragment, Instance 1");
-//                case 2: return ThirdFragment.newInstance("ThirdFragment, Instance 1");
-//                case 3: return ThirdFragment.newInstance("ThirdFragment, Instance 2");
-//                case 4: return ThirdFragment.newInstance("ThirdFragment, Instance 3");
-                default: return CadastroAulaFragment.newInstance("FirstFragment", "Instance 1");
+                case 0:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide1);
+                case 1:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide2);
+                case 2:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide3);
+                case 3:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide4);
+                case 4:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide5);
+                case 5:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide6);
+                default:
+                    return CadastroAulaFragment.newInstance(R.layout.cadastro_aula_slide1);
             }
         }
 
@@ -376,6 +384,7 @@ public class CadastroDeAulaActivity extends DrawerFragmentActivity implements Vi
             return 5;
         }
     }
+
     private void setTextListeners() {
 
         tituloEd.addTextChangedListener(new TextWatcher() {
@@ -868,6 +877,13 @@ public class CadastroDeAulaActivity extends DrawerFragmentActivity implements Vi
             }
         });
     }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 
 }
 
