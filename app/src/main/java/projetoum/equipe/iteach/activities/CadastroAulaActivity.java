@@ -567,12 +567,23 @@ public class CadastroAulaActivity extends DrawerActivity implements View.OnClick
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
+                        String formattedHour = "";
+                        String formattedMinute = "";
+                        if (hourOfDay < 10) {
+                            formattedHour = "0";
+                        }
+                        if (minute < 10) {
+                            formattedMinute = "0";
+                        }
+                        formattedHour += Integer.toString(hourOfDay);
+                        formattedMinute += Integer.toString(minute);
+
                         if (inicio) {
-                            horarioInicioEd.setText(hourOfDay + ":" + minute);
+                            horarioInicioEd.setText(formattedHour + ":" + formattedMinute);
                             calHorarioInicio.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             calHorarioInicio.set(Calendar.MINUTE, minute);
                         } else {
-                            horarioFimEd.setText(hourOfDay + ":" + minute);
+                            horarioFimEd.setText(formattedHour + ":" + formattedMinute);
                             calHorarioFim.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             calHorarioFim.set(Calendar.MINUTE, minute);
                         }
