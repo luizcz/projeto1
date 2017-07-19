@@ -94,6 +94,7 @@ public class MinhasAulasActivity extends DrawerActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }

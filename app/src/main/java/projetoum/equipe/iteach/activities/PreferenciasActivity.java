@@ -294,7 +294,8 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override

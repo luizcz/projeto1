@@ -306,7 +306,11 @@ public class PerfilActivity extends DrawerActivity {
                 }
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

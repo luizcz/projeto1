@@ -71,7 +71,6 @@ public class DrawerActivity extends AppCompatActivity
             finish();
 
         } else if (id == R.id.nav_logout && id != navId) {
-            startActivity(new Intent(this,SobreActivity.class));
             finish();
         }
 

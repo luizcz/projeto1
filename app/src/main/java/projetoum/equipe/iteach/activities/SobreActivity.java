@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,7 @@ public class SobreActivity extends DrawerActivity {
 
     @Override
     public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
