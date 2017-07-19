@@ -28,14 +28,6 @@ public class SobreActivity extends DrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        if (getIntent().getStringExtra("id") != null && !getIntent().getStringExtra("id").
-                equals(dao.getFireBaseUser().getUid())) {
-            menu.findItem(R.id.edit).setVisible(false);
-        }
         return true;
     }
 
