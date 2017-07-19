@@ -1,6 +1,8 @@
 package projetoum.equipe.iteach.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -112,10 +114,28 @@ public class MainActivity extends DrawerActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            showExitDialog();
         }
     }
 
+    private void showExitDialog() {
+        AlertDialog exitDialog = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme).create();
+        exitDialog.setTitle("Sair");
+        exitDialog.setMessage("Deseja realmente sair?");
+        exitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+        exitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        exitDialog.show();
+    }
 
     @Override
     public void onStart() {
