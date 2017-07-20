@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -106,6 +108,7 @@ public class MainActivity extends DrawerActivity
         dao = DAO.getInstace(updateUI, this);
 
         buildGoogleApiClient();
+        installShortCut();
     }
 
     @Override
@@ -165,6 +168,27 @@ public class MainActivity extends DrawerActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void installShortCut(){
+        SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean isAppInstalled = appPreferences.getBoolean("isAppInstalled",false);
+
+        if(isAppInstalled==false){
+
+            Intent shortcutIntent = new Intent(getApplicationContext(),LoginActivity.class);
+            shortcutIntent.setAction(Intent.ACTION_MAIN);
+            Intent intent = new Intent();
+            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "SocialTeach");
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_launcher));
+            intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+
+            getApplicationContext().sendBroadcast(intent);
+            SharedPreferences.Editor editor = appPreferences.edit();
+            editor.putBoolean("isAppInstalled", true);
+            editor.commit();
+        }
     }
 
     public void disconnectFromFacebook() {
@@ -326,4 +350,6 @@ public class MainActivity extends DrawerActivity
         }
 
     }
+
+
 }
