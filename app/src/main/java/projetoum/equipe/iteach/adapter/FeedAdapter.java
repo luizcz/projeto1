@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import projetoum.equipe.iteach.R;
@@ -29,7 +28,6 @@ import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
-import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.LocationHelper;
 
@@ -119,7 +117,7 @@ public class FeedAdapter extends RecyclerView.Adapter<ViewHolder> {
 
                 String valor = mDataset.get(position).getAula().getValorFormatado();
                 if (valor.equals("0")) {
-                    ((ClassViewHolder) holder).aula_valor.setText(R.string.free);
+                    ((ClassViewHolder) holder).aula_valor.setText(R.string.gratis);
                 } else {
                     ((ClassViewHolder) holder).aula_valor.setText(valor);
                 }

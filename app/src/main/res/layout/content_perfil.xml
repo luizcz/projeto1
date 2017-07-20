@@ -75,139 +75,146 @@
                 android:rating="4.5"
                 android:isIndicator="true"
                 android:numStars="5"/>
+
             <TextView
-                android:text="Avaliações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/avaliacoes"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:paddingBottom="10dp"
-                android:gravity="center"/>
+                android:textSize="14sp" />
+
             <TextView
-                android:text="Informações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="@string/informacoes"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="7dp"
-                android:gravity="center_horizontal"/>
+                android:textStyle="bold" />
+
             <TextView
-                android:text="Local"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
                 android:id="@+id/label_local"
-                android:layout_marginBottom="3dp"
-                android:gravity="left"/>
-            <TextView
-                android:text="Mais informações"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:layout_marginTop="10dp"
                 android:gravity="left"
-                android:id="@+id/label_info" />
+                android:text="@string/endereco"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/label_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:text="@string/sobre_mim"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <FrameLayout
                 android:id="@+id/frame_avaliacao"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
-
+                android:layout_height="200dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="20dp">
 
 
                 <RelativeLayout
+                    android:id="@+id/fundo_avaliar"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:background="@color/cardview_light_background"
-                    android:id="@+id/fundo_avaliar"
-                    android:alpha="0.5"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="35dp"
-                    android:layout_gravity="center_horizontal">
-
+                    android:alpha="0.5"
+                    android:background="@color/cardview_light_background">
 
 
                     <TextView
+                        android:id="@+id/st_avalie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Avalie"
-                        android:id="@+id/st_avalie"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"/>
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
+                        android:text="@string/avalie"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
+
                 <RatingBar
+                    android:id="@+id/ratingBarSmal"
                     style="@style/StarRatingBarSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:id="@+id/ratingBarSmal"
-                    android:stepSize="0.5"
-                    android:numStars="5"/>
+                    android:numStars="5"
+                    android:stepSize="0.5" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/imagem_usuario_avaliacao"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/logo"
                     android:layout_gravity="center_horizontal"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FFFFFF"/>
+                    android:src="@drawable/logo"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="2dp" />
             </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/ll_ministro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
-                <TextView
-                    android:text="Aulas do usuário"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="7dp"
-                    android:id="@+id/tv_aula_professor" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_ministro"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp" />
+                    <TextView
+                        android:id="@+id/tv_aula_professor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/aulas_usuario"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_ministro"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_aluno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
-                <TextView
-                    android:text="Aulas que participa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="7dp"
-                    android:id="@+id/tv_aula_aluno" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_participo"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp" />
+                    <TextView
+                        android:id="@+id/tv_aula_aluno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="7dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/aulas_participa"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_participo"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
                 </LinearLayout>
             </LinearLayout>
 

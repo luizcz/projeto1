@@ -65,7 +65,7 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
 
         labelMajorMethod = (TextView) findViewById(R.id.label_major_method);
         labelMajorMethod.setOnClickListener(onClick);
-        labelMajorMethod.setText("Pagamento indisponível no momento");
+        labelMajorMethod.setText(R.string.pagamento_indisponivel);
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
 

@@ -94,22 +94,22 @@
                 android:layout_marginBottom="10dp" />
 
             <TextView
-                android:text="Preferências de pagamento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/pref_pagamento"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:gravity="left"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView11"
-                android:text="Principal meio de pagamento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/principal_pagamento"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:gravity="left" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/label_major_method"
@@ -124,14 +124,14 @@
 
             <TextView
                 android:id="@+id/bt_add_payment"
-                android:text="Adicionar outro meio de pagamento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:gravity="left"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:gravity="left"
+                android:text="@string/add_outro_pagamento"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -143,14 +143,14 @@
                 android:layout_marginBottom="10dp" />
 
             <TextView
-                android:text="Principais tags de aula"
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/principais_tags"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:id="@+id/textView3" />
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -169,14 +169,14 @@
                 android:layout_marginBottom="10dp" />
 
             <TextView
-                android:text="Distância máxima das aulas no feed"
+                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/dist_maxima"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:id="@+id/textView5" />
+                android:textStyle="bold" />
 
             <SeekBar
                 android:layout_width="match_parent"

@@ -120,8 +120,8 @@ public class MainActivity extends DrawerActivity
 
     private void showExitDialog() {
         AlertDialog exitDialog = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme).create();
-        exitDialog.setTitle("Sair");
-        exitDialog.setMessage("Deseja realmente sair?");
+        exitDialog.setTitle(R.string.sair);
+        exitDialog.setMessage(getString(R.string.deseja_sair));
         exitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

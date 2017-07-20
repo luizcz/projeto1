@@ -118,8 +118,8 @@ public class PerfilActivity extends DrawerActivity {
                     carregarImagemAvalie();
                     carregarClassesMinistro(param.userId);
                     name.setText(pattern(param.name));
-                    local.setText("Endereço: " + param.getLocal());
-                    bio.setText("Bio: " + param.getBio());
+                    local.setText(getString(R.string.endereco, param.getLocal()));
+                    bio.setText(getString(R.string.sobre_mim, param.getBio()));
                     if (param.getNotas() != null && param.getNotas().size() > 0) {
                         ratingBar.setRating(calcularMedia(param.getNotas()).floatValue());
                     } else {
@@ -190,10 +190,10 @@ public class PerfilActivity extends DrawerActivity {
         findViewById(R.id.st_avalie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((TextView) view).getText().toString().equals("Editar")) {
+                if (((TextView) view).getText().toString().equals(R.string.editar)) {
                     ratingBarSmall.setIsIndicator(false);
                     atual = (double) ratingBarSmall.getRating();
-                    ((TextView) view).setText("Avalie");
+                    ((TextView) view).setText(R.string.avalie);
                     ((TextView) view).setTextColor(Color.parseColor("#000000"));
                     ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#FFFFFF"));
                 } else {
@@ -214,7 +214,7 @@ public class PerfilActivity extends DrawerActivity {
         ratingBarSmall.setIsIndicator(true);
         TextView avalie = (TextView) findViewById(R.id.st_avalie);
         ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#000000"));
-        avalie.setText("Editar");
+        avalie.setText(R.string.editar);
         avalie.setTextColor(Color.parseColor("#FFFFFF"));
         ratingBar.setVisibility(View.VISIBLE);
     }

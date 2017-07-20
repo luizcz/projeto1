@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.activities.PerfilActivity;
-import projetoum.equipe.iteach.interfaces.ICallback;
-import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.Sort;
@@ -95,10 +91,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             holder.ratingProfessor.setRating(usuarios.get(position).getRating().floatValue());
             holder.ratingProfessor.setVisibility(View.VISIBLE);
             if (usuarios.get(position).getNotas().size() == 1) {
-                holder.numAval.setText(mContext.getString(R.string.avaliacao,
+                holder.numAval.setText(mContext.getString(R.string.avaliacao_search_card,
                         usuarios.get(position).getNumNotas()));
             } else {
-                holder.numAval.setText(mContext.getString(R.string.avaliacoes,
+                holder.numAval.setText(mContext.getString(R.string.avaliacoes_search_card,
                         usuarios.get(position).getNumNotas()));
             }
         } else {

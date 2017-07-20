@@ -8,8 +8,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,21 +22,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.google.maps.android.SphericalUtil;
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
 import projetoum.equipe.iteach.R;
 import projetoum.equipe.iteach.interfaces.ICallback;
@@ -46,7 +37,6 @@ import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.FeedItem;
 import projetoum.equipe.iteach.models.User;
 import projetoum.equipe.iteach.utils.Constants;
-import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.LocationHelper;
 
 import static projetoum.equipe.iteach.R.id.aula_mapa;
@@ -375,8 +365,8 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
             aula_data.setText(R.string.data_n_informada);
         }
 
-
-        aula_horario.setText("Horario: " + String.valueOf(mClass.getHoraInicio()) + " - " + String.valueOf(mClass.getHoraFim()));
+        aula_horario.setText(getString(R.string.horario_formatado,
+                String.valueOf(mClass.getHoraInicio()), String.valueOf(mClass.getHoraFim())));
         aula_conteudo_body.setText(mClass.getSubject());
         aula_endereco.setText(mClass.getAddress());
 

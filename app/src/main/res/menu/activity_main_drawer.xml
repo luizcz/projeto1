@@ -6,32 +6,32 @@
         <item
             android:id="@+id/nav_feed"
             android:icon="@drawable/ic_feed"
-            android:title="Feed" />
+            android:title="@string/feed" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
-            android:title="Meu Perfil" />
+            android:title="@string/meu_perfil" />
         <item
             android:id="@+id/nav_my_class"
             android:icon="@drawable/ic_course"
-            android:title="Minhas Aulas" />
+            android:title="@string/minhas_aulas" />
         <item
             android:id="@+id/nav_options"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Configurações" />
+            android:title="@string/action_settings" />
     </group>
 
 
-    <item android:title="Buscar">
+    <item android:title="@string/buscar">
         <menu>
             <item
                 android:id="@+id/nav_class"
                 android:icon="@drawable/ic_class"
-                android:title="Aulas" />
+                android:title="@string/aulas" />
             <item
                 android:id="@+id/nav_teacher"
                 android:icon="@drawable/ic_teacher"
-                android:title="Professores" />
+                android:title="@string/professores" />
         </menu>
     </item>
 
@@ -41,11 +41,11 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"
-            android:title="Sobre" />
+            android:title="@string/sobre" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit"
-            android:title="Log out" />
+            android:title="@string/logout" />
 
         <item
             android:id="@+id/menu_none"

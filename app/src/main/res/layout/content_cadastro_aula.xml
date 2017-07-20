@@ -41,7 +41,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="center"
-            android:text="Selecione uma imagem sobre o assunto "
+            android:text="@string/selecione_uma_imagem"
             android:textColor="#ffffff" />
 
         <TextView

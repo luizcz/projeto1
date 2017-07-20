@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,7 +26,6 @@ import projetoum.equipe.iteach.activities.VisualizarAulaActivity;
 import projetoum.equipe.iteach.interfaces.ICallback;
 import projetoum.equipe.iteach.models.ClassObject;
 import projetoum.equipe.iteach.models.User;
-import projetoum.equipe.iteach.utils.Constants;
 import projetoum.equipe.iteach.utils.DAO;
 import projetoum.equipe.iteach.utils.LocationHelper;
 import projetoum.equipe.iteach.utils.Sort;
@@ -121,7 +119,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         String valor = classes.get(position).getValorFormatado();
         if (valor.equals("0")) {
-            holder.aula_valor.setText(R.string.free);
+            holder.aula_valor.setText(R.string.gratis);
         } else {
             holder.aula_valor.setText(valor);
         }
