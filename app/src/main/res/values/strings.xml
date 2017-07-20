@@ -6,7 +6,7 @@
     <string name="nome">Nome </string>
     <string name="telefone">Telefone </string>
     <string name="local">Local </string>
-    <string name="txt_botao_perfil">Ir para configurações</string>
+    <string name="txt_botao_perfil">Salvar</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

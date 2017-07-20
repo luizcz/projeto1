@@ -70,6 +70,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
     private ImageView teacher_image;
     private Button participar;
     private Button deixar;
+    private Button remover;
     private Date dataHoje;
     private Date dataFim;
 
@@ -225,6 +226,28 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
             }
         });
 
+
+        AlertDialog.Builder builderRemover = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+
+        builderRemover.setTitle("Confirmação");
+        builderRemover.setMessage("Deseja realmente remover essa aula?");
+        builderRemover.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dao.removerAula(mClass.getId());
+                dialog.dismiss();
+                finish();
+
+            }
+        });
+
+        builderRemover.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
         dao.findUserClass(dao.getFireBaseUser().getUid(), getIntent().getExtras().getString("aula_id"), new ICallback<Boolean>() {
             @Override
             public void execute(Boolean param) {
@@ -263,6 +286,17 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                 alertCancel.show();
             }
         });
+
+        final AlertDialog alertRemover = builderRemover.create();
+        remover = (Button) findViewById(R.id.aula_botao_remover);
+        remover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertRemover.show();
+            }
+        });
+
+
 
 
         teacher_image = (ImageView) findViewById(R.id.profile_image);
@@ -326,6 +360,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
             public void execute(User param) {
                 if (param.getUserId().equals(mClass.getTeacherId())) {
                     participar.setVisibility(View.GONE);
+                    remover.setVisibility(View.VISIBLE);
                 }
 
                 if (param.getLat() != null && param.getLon() != null && mClass.getLat() != null && mClass.getLon() != null) {

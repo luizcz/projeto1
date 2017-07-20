@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,22 +68,26 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
 
         btProximo = (Button) findViewById(R.id.bt_salvar_perfil);
         btProximo.setOnClickListener(this);
-
+        setTextListeners();
 
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_salvar_perfil) {
-            carregarDadosUsuario();
-            usuarioAtual.setFirstTime(false);
-            dao.updateUserOnce(usuarioAtual, new ICallback() {
-                @Override
-                public void execute(Object param) {
-                    startActivity(new Intent(CadastroActivity.this, PreferenciasActivity.class));
-                    finish();
-                }
-            });
+            findViewById(R.id.bt_salvar_perfil).setEnabled(false);
+            if(checkDataForm()){
+                carregarDadosUsuario();
+                usuarioAtual.setFirstTime(false);
+                dao.updateUserOnce(usuarioAtual, new ICallback() {
+                    @Override
+                    public void execute(Object param) {
+                        startActivity(new Intent(CadastroActivity.this, PreferenciasActivity.class));
+                        finish();
+                    }
+                });
+            }
+            findViewById(R.id.bt_salvar_perfil).setEnabled(true);
         }
     }
 
@@ -99,6 +105,93 @@ public class CadastroActivity extends DrawerActivity implements View.OnClickList
         if (edtBio.getText() != null) {
             usuarioAtual.setBio(edtBio.getText().toString());
         }
+    }
+
+    private void setTextListeners() {
+        edtNome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (edtNome.getText().toString().trim().length() <= 0) {
+                    edtNome.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    edtNome.setError(null);
+                }
+            }
+        });
+        edtTelefone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (edtTelefone.getText().toString().trim().length() <= 0) {
+                    edtTelefone.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    edtTelefone.setError(null);
+                }
+            }
+        });
+
+        edtLocal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (edtLocal.getText().toString().trim().length() <= 0) {
+                    edtLocal.setError(getString(R.string.campo_nao_pode_ser_vazio));
+                } else {
+                    edtLocal.setError(null);
+                }
+            }
+        });
+
+    }
+
+    private boolean checkDataForm() {
+
+        if (edtNome.getText() == null || edtNome.getText().toString().trim().equals("")) {
+            edtNome.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            edtNome.requestFocus();
+            return false;
+        } else {
+            edtNome.setError(null);
+        }
+
+        if (edtTelefone.getText() == null || edtTelefone.getText().toString().trim().equals("")) {
+            edtTelefone.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            edtTelefone.requestFocus();
+            return false;
+        } else {
+            edtTelefone.setError(null);
+        }
+
+        if (edtLocal.getText() == null || edtLocal.getText().toString().trim().equals("")) {
+            edtLocal.setError(getString(R.string.campo_nao_pode_ser_vazio));
+            edtLocal.requestFocus();
+            return false;
+        } else {
+            edtLocal.setError(null);
+        }
+        return true;
     }
 
 
