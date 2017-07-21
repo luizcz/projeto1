@@ -8,6 +8,9 @@
     <string name="action_settings">Configurações</string>
     <string name="sair">Sair</string>
     <string name="deseja_sair">Deseja realmente sair?</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+
 
     <!-- Drawer -->
     <string name="feed">Feed</string>
@@ -49,7 +52,7 @@
     <string name="data_fim">Data de fim das aulas</string>
     <string name="tags">Tags (ex: artes, desenho,pintura)</string>
     <string name="botao_criar_aula">Criar Aula</string>
-    <string name="local_aula">Endereço da aula</string>
+    <string name="endereco_aula">Endereço da aula</string>
     <string name="dias_semana">Dias da semana</string>
     <string name="segunda">Segunda</string>
     <string name="terca">Terça</string>
@@ -69,6 +72,8 @@
     <string name="data_final_apos_inicio">Data final deve ocorrer depois da data de início.</string>
     <string name="horario_final_apos_inicio">Horario final deve ocorrer após o horário de início.</string>
     <string name="data_inicio_futuro">Data de início deve ser numa data futura.</string>
+    <string name="ja_matriculado">Você já está matriculado nessa classe.</string>
+    <string name="aula_indisponível">Aula não está mais disponível para matriculas</string>
 
     <!-- Feed -->
     <string name="aulas_cadastradas">Essas são as aulas em que você \nestá cadastrado no momento:</string>
@@ -97,6 +102,13 @@
     <string name="valor_free">Valor: Grátis!</string>
     <string name="data">Data: %s</string>
     <string name="data_n_informada">Data não informada.</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="deseja_se_inscrever">Deseja se increver nessa aula?</string>
+    <string name="matriculado_com_sucesso">Matriculado com sucesso nessa classe.</string>
+    <string name="cancelar_inscricao">Deseja cancelar inscrição nessa aula?</string>
+    <string name="desvinculado">Desvinculado com sucesso dessa classe.</string>
+    <string name="deseja_remover">Deseja realmente remover essa aula?</string>
+    <string name="local_aula">Local da Aula</string>
 
     <!-- Pesquisar -->
     <string name="pesquisar">Pesquisar</string>

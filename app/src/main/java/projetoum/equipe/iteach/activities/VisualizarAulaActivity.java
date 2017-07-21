@@ -42,8 +42,6 @@ import projetoum.equipe.iteach.utils.LocationHelper;
 import static projetoum.equipe.iteach.R.id.aula_mapa;
 
 public class VisualizarAulaActivity extends DrawerActivity implements OnMapReadyCallback {
-    private String user;
-    private String class_object;
     private ClassObject mClass;
     private GoogleMap mMap;
     private TextView aula_nome_professor;
@@ -64,7 +62,6 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
     private Date dataHoje;
     private Date dataFim;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +76,9 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
 
-        builder.setTitle("Confirmação");
-        builder.setMessage("Deseja se increver nessa aula?");
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.confirmacao);
+        builder.setMessage(R.string.deseja_se_inscrever);
+        builder.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
@@ -97,7 +94,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                         if (param.getAlunos() == null)
                             param.setAlunos(new ArrayList<String>());
                         if (param.getAlunos().contains(dao.getFireBaseUser().getUid())) {
-                            Toast.makeText(getApplicationContext(), "Você já está matriculado nessa classe.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.ja_matriculado, Toast.LENGTH_LONG).show();
                         } else {
                             param.getAlunos().add(dao.getFireBaseUser().getUid());
                             param.setId(getIntent().getExtras().getString("aula_id"));
@@ -106,7 +103,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                                 @Override
                                 public void execute(Integer result) {
                                     if (result == Constants.REQUEST_OK) {
-                                        Toast.makeText(getApplicationContext(), "Matriculado com sucesso nessa classe.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), R.string.matriculado_com_sucesso, Toast.LENGTH_LONG).show();
                                         dao.getCurrentUser(new ICallback<User>() {
                                             @Override
                                             public void execute(User user) {
@@ -142,7 +139,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
         });
 
 
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing
@@ -153,9 +150,9 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
 
         AlertDialog.Builder builderCancelar = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
 
-        builderCancelar.setTitle("Confirmação");
-        builderCancelar.setMessage("Deseja cancelar inscrição nessa aula?");
-        builderCancelar.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+        builderCancelar.setTitle(R.string.confirmacao);
+        builderCancelar.setMessage(R.string.cancelar_inscricao);
+        builderCancelar.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user-class");
                 DatabaseReference newUserClass = ref.child(dao.getFireBaseUser().getUid());
@@ -174,7 +171,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                             @Override
                             public void execute(Integer result) {
                                 if (result == Constants.REQUEST_OK) {
-                                    Toast.makeText(getApplicationContext(), "Desvinculado com sucesso dessa classe.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), R.string.desvinculado, Toast.LENGTH_LONG).show();
                                     dao.getCurrentUser(new ICallback<User>() {
                                         @Override
                                         public void execute(User user) {
@@ -208,7 +205,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
             }
         });
 
-        builderCancelar.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+        builderCancelar.setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing
@@ -219,18 +216,17 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
 
         AlertDialog.Builder builderRemover = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
 
-        builderRemover.setTitle("Confirmação");
-        builderRemover.setMessage("Deseja realmente remover essa aula?");
-        builderRemover.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+        builderRemover.setTitle(R.string.confirmacao);
+        builderRemover.setMessage(R.string.deseja_remover);
+        builderRemover.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dao.removerAula(mClass.getId());
                 dialog.dismiss();
                 finish();
-
             }
         });
 
-        builderRemover.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+        builderRemover.setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing
@@ -249,10 +245,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
         });
 
         final AlertDialog alert = builder.create();
-        participar = (Button)
-
-                findViewById(R.id.aula_botao_participar);
-
+        participar = (Button) findViewById(R.id.aula_botao_participar);
         participar.setOnClickListener(new View.OnClickListener()
 
         {
@@ -268,6 +261,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                 alert.show();
             }
         });
+
         final AlertDialog alertCancel = builderCancelar.create();
         deixar = (Button) findViewById(R.id.aula_botao_deixar);
         deixar.setOnClickListener(new View.OnClickListener() {
@@ -285,9 +279,6 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                 alertRemover.show();
             }
         });
-
-
-
 
         teacher_image = (ImageView) findViewById(R.id.profile_image);
         class_image = (ImageView) findViewById(R.id.class_image_detail);
@@ -421,7 +412,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                 if(dataFim !=null && dataFim.before(dataHoje)){
                     participar.setVisibility(View.GONE);
                     deixar.setVisibility(View.GONE);
-                    aula_data.setText("Aula não está mais disponível para matriculas");
+                    aula_data.setText(R.string.aula_indisponível);
                     dao.removerAula(mClass.getId());
                 }
             }
@@ -457,7 +448,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                         }
 
                         mMap.clear();
-                        mMap.addMarker(new MarkerOptions().position(sydney).title("Local da Aula"));
+                        mMap.addMarker(new MarkerOptions().position(sydney).title(getString(R.string.local_aula)));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f));
 

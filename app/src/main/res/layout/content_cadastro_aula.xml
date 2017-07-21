@@ -380,7 +380,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/edt_titulo"
             android:layout_marginTop="5dp"
-            android:text="@string/local_aula"
+            android:text="@string/endereco_aula"
             android:textColor="@color/cardview_light_background"
             android:textSize="18sp" />
 

@@ -21,7 +21,7 @@
     <string name="data_fim">End date of classes</string>
     <string name="tags">Tags (ex: art, drawing, painting)</string>
     <string name="botao_criar_aula">Create class</string>
-    <string name="local_aula">Class address</string>
+    <string name="endereco_aula">Class address</string>
     <string name="dias_semana">Weekdays</string>
     <string name="segunda">Monday</string>
     <string name="terca">Tuesday</string>
@@ -92,4 +92,15 @@
     <string name="logout">Log out</string>
     <string name="selecione_uma_imagem">Select a picture about the subject</string>
     <string name="editar">Edit</string>
+    <string name="aula_indisponível">Class is no longer available for enrollment</string>
+    <string name="confirmacao">Confirmation</string>
+    <string name="cancelar_inscricao">Do you want to unsubscribe from this class?</string>
+    <string name="deseja_remover">Do you really want to remove this class?</string>
+    <string name="deseja_se_inscrever">Do you want to join this class?</string>
+    <string name="desvinculado">Unlinked successfully from this class.</string>
+    <string name="ja_matriculado">You are already enrolled in this class.</string>
+    <string name="local_aula">Classroom Location</string>
+    <string name="matriculado_com_sucesso">Enrolled successfully in this class.</string>
+    <string name="nao">No</string>
+    <string name="sim">Yes</string>
 </resources>
