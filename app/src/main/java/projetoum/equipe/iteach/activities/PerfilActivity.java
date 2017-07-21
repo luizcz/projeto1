@@ -31,7 +31,6 @@ import projetoum.equipe.iteach.models.User;
 
 public class PerfilActivity extends DrawerActivity {
 
-    private GoogleApiClient mGoogleApiClient;
     private TextView name, local, bio;
     private ImageView img;
     private ProgressBar spinner;
@@ -60,17 +59,10 @@ public class PerfilActivity extends DrawerActivity {
         ratingBarSmall = (RatingBar) findViewById(R.id.ratingBarSmal);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-
-
-//        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
-//        tem_aulas = (TextView) findViewById(R.id.tem_aulas);
-
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         ministroListView = (RecyclerView) findViewById(R.id.recycler_ministro);
-//        nenhuma_aula = (TextView) findViewById(R.id.nenhuma_aula);
-//        tem_aulas = (TextView) findViewById(R.id.tem_aulas);
 
         listMinistroAdapter = new ClassAdapter(this);
         ministroListView.setHasFixedSize(true);
@@ -88,7 +80,6 @@ public class PerfilActivity extends DrawerActivity {
         Typeface giz = Typeface.createFromAsset(getAssets(), "font/giz.ttf");
         name.setTypeface(giz);
 
-
         if (getIntent().hasExtra("id")) {
             findViewById(R.id.frame_avaliacao).setVisibility(View.GONE);
             dao.findUserById(getIntent().getStringExtra("id"), new ICallback<User>() {
@@ -99,19 +90,19 @@ public class PerfilActivity extends DrawerActivity {
                     } else {
                         uncheckAll();
                     }
-                    dao.carregarNota(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), new ICallback<Double>() {
+                    dao.carregarNota(getIntent().getStringExtra("id"),
+                            dao.getFireBaseUser().getUid(), new ICallback<Double>() {
                         @Override
                         public void execute(Double param) {
                             if (param != null) {
                                 mudarParaEditar(param);
                             }
 
-                            if (getIntent().getStringExtra("id") != null && !getIntent().getStringExtra("id").
+                            if (getIntent().getStringExtra("id") != null
+                                    && !getIntent().getStringExtra("id").
                                     equals(dao.getFireBaseUser().getUid())) {
                                 findViewById(R.id.frame_avaliacao).setVisibility(View.VISIBLE);
                             }
-
-
                         }
                     });
                     preencherAvalie(param);
@@ -143,8 +134,8 @@ public class PerfilActivity extends DrawerActivity {
                     carregarClassesParticipo(param.userId);
                     carregarClassesMinistro(param.userId);
                     name.setText(pattern(param.name));
-                    local.setText("Endereço: " + param.getLocal());
-                    bio.setText("Bio: " + param.getBio());
+                    local.setText(getString(R.string.endereco, param.getLocal()));
+                    bio.setText(getString(R.string.sobre_mim, param.getBio()));
                     if (param.getNotas() != null && param.getNotas().size() > 0) {
                         ratingBar.setRating(calcularMedia(param.getNotas()).floatValue());
                     } else {
@@ -190,14 +181,16 @@ public class PerfilActivity extends DrawerActivity {
         findViewById(R.id.st_avalie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (((TextView) view).getText().toString().equals(R.string.editar)) {
+                if (((TextView) view).getText().toString().equals(getString(R.string.editar))) {
                     ratingBarSmall.setIsIndicator(false);
                     atual = (double) ratingBarSmall.getRating();
                     ((TextView) view).setText(R.string.avalie);
                     ((TextView) view).setTextColor(Color.parseColor("#000000"));
-                    ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    findViewById(R.id.fundo_avaliar).setBackgroundColor(Color.parseColor("#FFFFFF"));
                 } else {
-                    dao.avaliarProfessor(getIntent().getStringExtra("id"), dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(), professor, atual, new ICallback<Double>() {
+                    dao.avaliarProfessor(getIntent().getStringExtra("id"),
+                            dao.getFireBaseUser().getUid(), (double) ratingBarSmall.getRating(),
+                            professor, atual, new ICallback<Double>() {
                         @Override
                         public void execute(Double param) {
                             //Toast.makeText(getApplicationContext(), "Deu certo", Toast.LENGTH_LONG).show();
@@ -213,7 +206,7 @@ public class PerfilActivity extends DrawerActivity {
         ratingBarSmall.setRating(nota.floatValue());
         ratingBarSmall.setIsIndicator(true);
         TextView avalie = (TextView) findViewById(R.id.st_avalie);
-        ((RelativeLayout) findViewById(R.id.fundo_avaliar)).setBackgroundColor(Color.parseColor("#000000"));
+        findViewById(R.id.fundo_avaliar).setBackgroundColor(Color.parseColor("#000000"));
         avalie.setText(R.string.editar);
         avalie.setTextColor(Color.parseColor("#FFFFFF"));
         ratingBar.setVisibility(View.VISIBLE);

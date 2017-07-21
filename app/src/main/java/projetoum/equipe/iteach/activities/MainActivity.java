@@ -55,9 +55,6 @@ public class MainActivity extends DrawerActivity
 
     private GoogleApiClient mGoogleApiClient;
     private ICallback<Boolean> updateUI;
-    private CallbackManager mCallbackManager;
-    private NavigationView navigationView;
-    private String googleHighResPhotoUrl;
     public static Location mLastLocation;
     private RecyclerView recycler;
     private View feedEmptyText, feedEmptyImg;
@@ -77,7 +74,6 @@ public class MainActivity extends DrawerActivity
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler.setLayoutManager(mLayoutManager);
         recycler.setAdapter(new FeedAdapter(this, new ArrayList<FeedItem>()));
-
 
 
         ItemTouchHelper mIth = new ItemTouchHelper(
@@ -122,7 +118,8 @@ public class MainActivity extends DrawerActivity
     }
 
     private void showExitDialog() {
-        AlertDialog exitDialog = new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme).create();
+        AlertDialog exitDialog = new AlertDialog.Builder(MainActivity.this,
+                R.style.MyDialogTheme).create();
         exitDialog.setTitle(R.string.sair);
         exitDialog.setMessage(getString(R.string.deseja_sair));
         exitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
@@ -174,20 +171,21 @@ public class MainActivity extends DrawerActivity
         SharedPreferences appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean isAppInstalled = appPreferences.getBoolean("isAppInstalled",false);
 
-        if(isAppInstalled==false){
+        if(!isAppInstalled){
 
             Intent shortcutIntent = new Intent(getApplicationContext(),LoginActivity.class);
             shortcutIntent.setAction(Intent.ACTION_MAIN);
             Intent intent = new Intent();
             intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
             intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "SocialTeach");
-            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_launcher));
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,Intent.ShortcutIconResource.
+                    fromContext(getApplicationContext(), R.drawable.ic_launcher));
             intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 
             getApplicationContext().sendBroadcast(intent);
             SharedPreferences.Editor editor = appPreferences.edit();
             editor.putBoolean("isAppInstalled", true);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -195,7 +193,8 @@ public class MainActivity extends DrawerActivity
         if (AccessToken.getCurrentAccessToken() == null) {
             return; // already logged out
         }
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null,
+                HttpMethod.DELETE, new GraphRequest
                 .Callback() {
             @Override
             public void onCompleted(GraphResponse graphResponse) {
@@ -206,7 +205,10 @@ public class MainActivity extends DrawerActivity
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -244,7 +246,7 @@ public class MainActivity extends DrawerActivity
         }
     }
 
-    public class UpdateUI implements ICallback<Boolean> {
+    private class UpdateUI implements ICallback<Boolean> {
         @Override
         public void execute(Boolean param) {
             if (param) {
@@ -252,9 +254,12 @@ public class MainActivity extends DrawerActivity
 
                 View header = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
 
-                ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-                ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
+                ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().
+                        getDisplayName());
+                ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().
+                        getEmail());
+                Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(
+                        (ImageView) header.findViewById(R.id.card_aula_img));
                 dao.getCurrentUser(new ICallback<User>() {
                     @Override
                     public void execute(User user) {
@@ -267,8 +272,8 @@ public class MainActivity extends DrawerActivity
 
                             if (firstProvider.equals("facebook.com")) {
                                 String facebookUserId = profile.getUid();
-                                String photoUrl = "https://graph.facebook.com/" + facebookUserId + "/picture?height=500";
-                                user.highResURI = photoUrl;
+                                user.highResURI = "https://graph.facebook.com/" + facebookUserId
+                                        + "/picture?height=500";
                                 dao.updateUser(user, new ICallback() {
                                     @Override
                                     public void execute(Object param) {
@@ -297,9 +302,8 @@ public class MainActivity extends DrawerActivity
         try {
             // Configure sign-in to request the user's ID, email address, and basic profile. ID and
             // basic profile are included in DEFAULT_SIGN_IN.
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.
+                    DEFAULT_SIGN_IN).requestEmail().build();
 
             // Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
             mGoogleApiClient = new GoogleApiClient.Builder(this)

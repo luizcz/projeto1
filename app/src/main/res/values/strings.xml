@@ -87,11 +87,9 @@
     <string name="filtros_rating">Avaliação</string>
 
     <!-- Visualizar aula -->
-
     <string name="sobre_aula">Sobre a classe</string>
     <string name="conteudo_aula">Conteudo da Aula</string>
     <string name="participar">Participar da Aula</string>
-
     <string name="dist_desconhecida">Distância desconhecida.</string>
     <string name="distancia">Distância %s</string>
     <string name="vagas_ocupadas">Vagas ocupadas: %s</string>

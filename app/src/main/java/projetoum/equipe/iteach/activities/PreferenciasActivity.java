@@ -69,7 +69,7 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
 
-        List<String> rowListItem = new ArrayList<String>();
+        List<String> rowListItem = new ArrayList<>();
         GridLayoutManager layoutManager = new GridLayoutManager(PreferenciasActivity.this, 3);
 
         recycler.setHasFixedSize(false);
@@ -180,11 +180,7 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
                 }
             }
         });
-
-
-
     }
-
 
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
@@ -226,7 +222,6 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
                         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
                     }*/
                     break;
-
             }
         }
     };
@@ -278,17 +273,12 @@ public class PreferenciasActivity extends DrawerActivity implements GoogleApiCli
                                 // Merge prevUser and currentUser accounts and data
                                 // ...
                                 switchf.setClickable(true);
-
                             }
-
-                            // ...
                         }
                     });
 
         } else {
-            // Toast.makeText(this, "login fail", Toast.LENGTH_SHORT).show();
             Log.i("Login", "login fail");
-
         }
     }
 

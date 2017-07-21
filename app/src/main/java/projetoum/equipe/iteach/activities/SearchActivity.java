@@ -38,13 +38,13 @@ import projetoum.equipe.iteach.utils.Sort;
 
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ICallback {
 
-    private MenuItem menuSearch;
     private SearchView searchView;
     private RecyclerView mRecyclerView;
     private UserAdapter userAdapter;
     private ClassAdapter classAdapter;
     private DAO dao;
-    NavigationView navigationView;
+    private Menu mMenu;
+    private NavigationView navigationView;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private Fragment currentFragment;
@@ -54,7 +54,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
     public static final String SEARCH_AULAS_TAG = "SEARCH_AULAS_TAG";
     public static final String SEARCH_PROFS_TAG = "SEARCH_PROFS_TAG";
-    private Menu mMenu;
 
 
     @Override
@@ -95,9 +94,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             mRecyclerView.setAdapter(userAdapter);
         }
 
-        ((TextView) header.findViewById(R.id.label_name)).setText(dao.getFireBaseUser().getDisplayName());
-        ((TextView) header.findViewById(R.id.label_email)).setText(dao.getFireBaseUser().getEmail());
-        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(((ImageView) header.findViewById(R.id.card_aula_img)));
+        ((TextView) header.findViewById(R.id.label_name)).setText(
+                dao.getFireBaseUser().getDisplayName());
+        ((TextView) header.findViewById(R.id.label_email)).setText(
+                dao.getFireBaseUser().getEmail());
+        Picasso.with(getBaseContext()).load(dao.getFireBaseUser().getPhotoUrl()).into(
+                (ImageView) header.findViewById(R.id.card_aula_img));
 
         setUpFragments();
     }
@@ -180,7 +182,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search), new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search),
+                new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 return true;  // Return true to collapse action view
@@ -212,7 +215,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 finish();
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(this, PerfilActivity.class).putExtra("id",dao.getFireBaseUser().getUid()));
+                startActivity(new Intent(this, PerfilActivity.class).
+                        putExtra("id",dao.getFireBaseUser().getUid()));
                 finish();
             case R.id.nav_my_class:
                 startActivity(new Intent(this,MinhasAulasActivity.class));

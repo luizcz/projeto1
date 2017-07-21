@@ -131,7 +131,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         return classes.size();
     }
 
-    public static class ClassViewHolder extends RecyclerView.ViewHolder {
+    static class ClassViewHolder extends RecyclerView.ViewHolder {
 
         CardView cv;
         ImageView card_aula_img;
@@ -179,7 +179,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         classes.add(item);
         notifyItemInserted(classes.size() - 1);
         notifyItemRangeChanged(0, classes.size());
-        //notifyDataSetChanged();
     }
 
     public void remove(ClassObject item) {
@@ -263,8 +262,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             ClassObject c1 = (ClassObject) o1;
             ClassObject c2 = (ClassObject) o2;
 
-            Double lat = mLocation.getLatitude();
-            Double lon = mLocation.getLongitude();
             if (c1.getLat() == null
                     || c1.getLon() == null
                     || c2.getLat() == null
