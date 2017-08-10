@@ -1,5 +1,6 @@
 package projetoum.equipe.iteach.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +25,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONException;
+
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +70,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
     private Button remover;
     private Date dataHoje;
     private Date dataFim;
+    private static PayPalConfiguration config = new PayPalConfiguration();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,16 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(aula_mapa);
         mapFragment.getMapAsync(this);
+
+        config.environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+
+                .clientId("YOUR_CLIENT_ID_HERE");
+
+        Intent intent = new Intent(this, PayPalService.class);
+
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        startService(intent);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -127,6 +147,17 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                                         });
                                         participar.setVisibility(View.GONE);
                                         deixar.setVisibility(View.VISIBLE);
+                                        PayPalPayment payment = new PayPalPayment(new BigDecimal(aula.getValue().toString()), "BRL", aula.getName(),
+                                                PayPalPayment.PAYMENT_INTENT_SALE);
+
+                                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+
+                                        // send the same configuration for restart resiliency
+                                        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+                                        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+                                        startActivityForResult(intent, 0);
                                     }
                                 }
                             });
@@ -486,5 +517,34 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                 }
             }
         }.execute();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) {
+                try {
+                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
+                    // TODO: send 'confirm' to your server for verification.
+                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                    // for more details.
+                } catch (JSONException e) {
+                    Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                }
+            }
+        }
+        else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.i("paymentExample", "The user canceled.");
+        }
+        else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+        }
     }
 }

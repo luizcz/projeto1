@@ -48,6 +48,7 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.github.brnunes:swipeablerecyclerview:1.0.2'
+    compile 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 
 }
 configurations
