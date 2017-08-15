@@ -385,7 +385,7 @@ public class VisualizarAulaActivity extends DrawerActivity implements OnMapReady
                     endPoint.setLatitude(mClass.getLat());
                     endPoint.setLongitude(mClass.getLon());
 
-                    double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
+                    double distanceInMeters = startPoint.distanceTo(endPoint);
 
                     aula_mapa_dist.setText(getString(R.string.distancia, LocationHelper.getFormatedDistance(distanceInMeters)));
                 } else {

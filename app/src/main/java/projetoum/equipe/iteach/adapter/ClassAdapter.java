@@ -90,7 +90,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                         endPoint.setLatitude(classes.get(position).getLat());
                         endPoint.setLongitude(classes.get(position).getLon());
 
-                        double distanceInMeters = startPoint.distanceTo(endPoint) / 1000;
+                        double distanceInMeters = startPoint.distanceTo(endPoint);
                         holder.aula_dist.setText(LocationHelper.getFormatedDistance(distanceInMeters));
                     }
                 } else {

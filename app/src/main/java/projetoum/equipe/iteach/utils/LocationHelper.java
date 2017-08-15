@@ -137,10 +137,10 @@ public class LocationHelper {
     public static String getFormatedDistance(double distanceInMeters) {
         DecimalFormat df;
         if (distanceInMeters < Constants.KM_IN_METERS) {
-            df = new DecimalFormat("#3");
+            df = new DecimalFormat("###");
             return String.valueOf(df.format(distanceInMeters)) + "m";
         } else {
-            df = new DecimalFormat("#0.0");
+            df = new DecimalFormat("###.#");
             return String.valueOf(df.format(distanceInMeters / Constants.KM_IN_METERS)) + "Km";
         }
     }
